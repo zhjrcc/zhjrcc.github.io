@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"><head><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/post.css"><link rel="icon" href="https://raw.githubusercontent.com/zhjrcc/gitImages/main/favicon.ico"><title>如何把Github当图床用</title><meta name="generator" content="Hexo 6.0.0"></head><body><div class="inner"><h2>如何把Github当图床用</h2><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
+<!DOCTYPE html><html lang="zh-CN"><head><title>如何把Github当图床用</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://gitee.com/zhjrcc/git-images/raw/main/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.0.0"></head><body><div class="inner"><h1>如何把Github当图床用</h1><div class="time">Published on 2022-02-05</div><div class="updatedTime">Last updated on 2022-02-05</div><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
 <li>在markdown文件中自由粘贴图片</li>
 <li>粘贴图片生成的链接就是github库中图片的链接</li>
 <li>添加全局shell脚本，直接全局push到github库中</li>
@@ -14,12 +14,29 @@
 </li>
 </ol>
 <ul>
-<li>修改Base path：<br><img src="https://raw.githubusercontent.com/zhjrcc/gitImages/main/2022-02-05-11-20-17.png"></li>
-<li>修改Path：<br><img src="https://raw.githubusercontent.com/zhjrcc/gitImages/main/2022-02-05-11-20-43.png"></li>
-<li>修改Prefix：<br> <img src="https://raw.githubusercontent.com/zhjrcc/gitImages/main/2022-02-05-11-21-00.png"></li>
+<li>修改Base path：<br><img src="https://gitee.com/zhjrcc/git-images/raw/main/2022-02-05-11-20-17.png"></li>
+<li>修改Path：<br><img src="https://gitee.com/zhjrcc/git-images/raw/main/2022-02-05-11-20-43.png"></li>
+<li>修改Prefix：<br> <img src="https://gitee.com/zhjrcc/git-images/raw/main/2022-02-05-11-21-00.png"></li>
 </ul>
 <ol start="3">
-<li>在终端输入以下命令，来添加全局shell脚本<figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#</span><span class="bash"> 建立并编写push脚本</span></span><br><span class="line">sudo vim /usr/local/bin/push</span><br><span class="line"><span class="meta">#</span><span class="bash"> 在vim中，写入以下内容，按:wq保存</span></span><br><span class="line">cd /Users/zhjr/gitImages</span><br><span class="line">git add .</span><br><span class="line">git commit -m &#x27;add&#x27;</span><br><span class="line">git push -u origin main</span><br></pre></td></tr></table></figure></li>
+<li>在终端输入以下命令，来添加全局shell脚本<pre><code class="bash"># 建立并编写push脚本
+sudo vim /usr/local/bin/push
+# 在vim中，写入以下内容，按:wq保存
+cd /Users/zhjr/gitImages
+git add .
+git commit -m &#39;add&#39;
+git push -u origin main
+# 修改push脚本的权限
+sudo chmod +x /usr/local/bin/push
+</code></pre>
+</li>
 </ol>
-<h2 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h2><p>复制一张图片，可以直接粘贴到markdown文件中，并且生成的链接就是github仓库中的图片链接，最后只需要到终端中push就可以把图片上传到github中。</p>
-<p><span></span><a href="/">Back to home page</a><span>↶</span></p></div><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
+<h2 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h2><p>复制一张图片，可以直接粘贴到markdown文件中，并且生成的链接就是github仓库中的图片链接，最后只需要到终端输入push就可以把图片上传到github中。</p>
+<pre><code class="php">&lt;?php
+$arr[0] = 1;        // 索引数组
+$arr[&quot;a&quot;] = &quot;b&quot;;    // 关联数组
+
+echo $arr[0];       // 1
+echo $arr[&quot;a&quot;];     // b
+</code></pre>
+<p><span></span><a href="/">Back to home page</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
