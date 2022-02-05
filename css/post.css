@@ -199,8 +199,9 @@ div.date {
   margin-left: 20px;
 }
 
-.tag-list .tag-list-count {
-  margin-left: 10px;
+.tag-list .tag-list-count,
+.category-list-count {
+  margin-left: 2em;
   font-size: 16px;
 }
 
