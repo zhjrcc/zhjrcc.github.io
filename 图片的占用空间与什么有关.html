@@ -1,0 +1,16 @@
+<!DOCTYPE html><html lang="zh-CN"><head><title>图片的占用空间与什么有关</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://gitee.com/zhjrcc/git-images/raw/main/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.0.0"></head><body><div class="inner"><h1>图片的占用空间与什么有关</h1><div class="time">First published on 2022-02-14</div><div class="updatedTime">Last updated on 2022-02-14</div><h2 id="发现问题"><a href="#发现问题" class="headerlink" title="发现问题"></a>发现问题</h2><ol>
+<li>使用vscode的插件<a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=mushan.vscode-paste-image">Paste Image</a>在vscode中粘贴图片时，发现一个奇怪的现象，直接从浏览器中进行复制粘贴图片时，图片的占用空间会变大了几倍，比如在浏览器中图片大小只有500kb，你直接复制到vscode则会变成几MB以上。但是，如果复制到微信，然后发出去则只会变大几十K到100K之间，并没有vscode这么夸张。</li>
+<li>截图的时候，以前我误以为图片的尺寸大小就决定了占用空间。但事实上并不是，我的经验告诉我，在相同尺寸下（比如，500*400）你截的图片中，颜色变化越多（颜色丰富度越高），那么占用空间就会越大，反之就是你截图颜色越是单调，那么占用空间就越小。我已经试过多次这个试验，都是一样的结果。</li>
+</ol>
+<h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><ol>
+<li>直接从剪切板粘贴下来的图片的<strong>颜色描述文件</strong>会是彩色LCD，正常保存下来的则是sRGB IEC61966-2.1。那么颜色描述文件就很有可能会影响图片的占用空间。如图，两张图的尺寸都是一样的，但颜色描述文件不一样，左图是直接保存，右图则从剪切板粘贴下来，导致占用空间差异。<br><img src="https://gitee.com/zhjrcc/git-images/raw/main/2022-02-14-22-41-16.png"></li>
+<li>猜想是<a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=mushan.vscode-paste-image">Paste Image</a>的一个Bug或者vscode对图片文件的兼容性不太行，导致占用空间这么大。因为微信平台同样是复制粘贴，但只是大了几十K。</li>
+<li>当图的尺寸，颜色描述文件都一样，那么图片的颜色丰富度也会有影响。</li>
+<li>总结起来，以上因素都是对分辨率有影响，然后分辨率最终影响占用空间。</li>
+</ol>
+<h2 id="解决"><a href="#解决" class="headerlink" title="解决"></a>解决</h2><p>因缺少对图片文件的深入理解，暂时也没能力对<a target="_blank" rel="noopener" href="https://marketplace.visualstudio.com/items?itemName=mushan.vscode-paste-image">Paste Image</a>进行改善。目前为了能让博客访问到码云1M以下的图片（码云对1M以上的图片进行了限制，需要登录才能访问），我有两种解决方案，让图片的占用空间变小点：</p>
+<ol>
+<li>压缩图片，在mac中，可以使用图片预览工具中调整大小，对分辨率进行调整。</li>
+<li>先在微信平台发送给自己的文件传输助手（包括所有能粘贴图片并上传的平台也行，比如，简书，SF之类的markdown编辑器都行），再从文件助手中复制到vscode。</li>
+</ol>
+<p><span></span><a href="/">Back to homepage</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
