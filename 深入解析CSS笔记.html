@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"><head><title>深入解析CSS笔记</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://gitee.com/zhjrcc/git-images/raw/main/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.0.0"></head><body><div class="inner"><h1>深入解析CSS笔记</h1><div class="time">First published on 2022-02-22</div><div class="updatedTime">Last updated on 2022-02-22</div><h1 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h1><ol>
+<!DOCTYPE html><html lang="zh-CN"><head><title>深入解析CSS笔记</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://gitee.com/zhjrcc/git-images/raw/main/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.0.0"></head><body><div class="inner"><h1>深入解析CSS笔记</h1><div class="time">First published on 2022-02-22</div><div class="updatedTime">Last updated on 2022-02-22</div><h1 id="CSS"><a href="#CSS" class="headerlink" title="CSS"></a>CSS</h1><h2 id="第一章-基础回顾"><a href="#第一章-基础回顾" class="headerlink" title="第一章 基础回顾"></a>第一章 基础回顾</h2><ol>
 <li><p>inherit继承父级元素的某些属性，还可以使用inherit强制继承一个通常不会被继承的属性，比如边框和内边距。</p>
 </li>
 <li><p>initial将某个属性重置为默认值（初始值），这么做的好处是不需要思考太多。【display：initial等价于display：inline，而不管是什么元素，因为initial重置为属性的初始值，而不是元素的初始值。inline就是display的初始值】【auto是某些属性的默认值，但并非所有属性的默认值，而initial能得到所有属性的默认值。某些属性下，可以使用auto来得到initial的结果，但initial的使用范围更广。】</p>
@@ -11,6 +11,8 @@
 </li>
 <li><p>background-position、box-shadow、text-shadow只支持最多指定两个值，这些属性的值遵循（x水平,垂直y）的顺序原则。【笛卡尔网格原则】</p>
 </li>
+</ol>
+<h2 id="第二章-相对单位"><a href="#第二章-相对单位" class="headerlink" title="第二章 相对单位"></a>第二章 相对单位</h2><ol start="7">
 <li><p>px像素，mm毫米，cm厘米，in英寸，pt点，pc派卡是绝对单位，5px放在哪里都是一样大。【1in&#x3D;25.4mm&#x3D;2.54cm&#x3D;6pc&#x3D;72pt&#x3D;96px】【设计师习惯用pt做单位，开发者则习惯用像素】</p>
 </li>
 <li><p>em，rem是相对单位，相对单位的值会根据外部因素发生变化，5em的具体值会根据它作用到的元素（有时甚至是根据属性）而变化。因此相对单位的用法更难掌握。</p>
@@ -25,5 +27,6 @@
 </li>
 <li><p>em适合基于特定的字号进行排版，在css中，1em等于当前元素的字号，其准备值取决于作用的元素。【比如说，font-size:16px;padding: 1em;这里内边距为1em，浏览器将其乘以字号，最终为16px。浏览器会根据相对单位的值计算出绝对值，称为计算值（computed value）】</p>
 </li>
+<li></li>
 </ol>
 <p><span></span><a href="/">Back to homepage</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
