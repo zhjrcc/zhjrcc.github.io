@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"><head><title>如何使用npm作为博客图床</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://cdn.jsdelivr.net/npm/gitimages/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.0.0"></head><body><div class="inner"><h1>如何使用npm作为博客图床</h1><div class="time">First published on 2022-06-01</div><div class="updatedTime">Last updated on 2022-06-01</div><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>在之前，我使用了咱们国内的码云（Github同理的）作为博客图床，但奈何码云倒了，需要审核才能公开仓库，直接使用库内的图片的地址，会返回一个HTTP 451,也就是法律原因，不可访问的错误。既然码云不行了，才会有了今天这个解决方法。目标如下：</p>
+<!DOCTYPE html><html lang="zh-CN"><head><title>如何使用npm作为博客图床</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://npm.elemecdn.com/gitimages/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.0.0"></head><body><div class="inner"><h1>如何使用npm作为博客图床</h1><div class="time">First published on 2022-06-01</div><div class="updatedTime">Last updated on 2022-06-01</div><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><p>在之前，我使用了咱们国内的码云（Github同理的）作为博客图床，但奈何码云倒了，需要审核才能公开仓库，直接使用库内的图片的地址，会返回一个HTTP 451,也就是法律原因，不可访问的错误。既然码云不行了，才会有了今天这个解决方法。目标如下：</p>
 <ol>
 <li>在markdown文件中自由粘贴图片。</li>
 <li>粘贴图片生成的链接就是npm库中图片的链接。</li>
@@ -8,10 +8,10 @@
 <h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ol>
 <li>npm账号注册登录（不要2FA，虽然安全性提高了，但后续会非常麻烦），需要在终端中登录，使用<code>npm login</code>,登录前，需要使用官方源：npm config set registry <a target="_blank" rel="noopener" href="https://registry.npmjs.org,可以使用npm/">https://registry.npmjs.org，可以使用npm</a> config get registry查看当前你的源</li>
 <li>发布你的npm包，也就是你的图片文件夹，（需要npm init….之类的基本操作，不想啰嗦，如果不懂自己去谷歌学习一下），使用到的命令有：npm version patch，npm publish，前者意思是更新npm包的version为一个小补丁，也就是1.0.0变成1.0.1的意思；后者是发布npm包。</li>
-<li>最后，使用npm的cdn镜像去访问自己的包内容，有以下镜像：<br><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/npm/">https://cdn.jsdelivr.net/npm/</a>  # jsDelivr，网宿节点<br><a target="_blank" rel="noopener" href="https://unpkg.zhimg.com/">https://unpkg.zhimg.com/</a> # 知乎，阿里节点<br><a target="_blank" rel="noopener" href="https://code.bdstatic.com/npm/">https://code.bdstatic.com/npm/</a> # 百度，网宿节点【拉取慢，不推荐】<br><a target="_blank" rel="noopener" href="https://shadow.elemecdn.com/npm/">https://shadow.elemecdn.com/npm/</a> # 饿了么，网宿节点Copy<br>访问规则为：<code>[镜像链接]/[包名]@[版本]/[文件名]</code>,其中@版本不是必须的</li>
+<li>最后，使用npm的cdn镜像去访问自己的包内容，有以下镜像：<br><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/npm/">https://cdn.jsdelivr.net/npm/</a>  # jsDelivr，网宿节点<br><a target="_blank" rel="noopener" href="https://npm.elemecdn.com/">https://npm.elemecdn.com</a> # unpkg镜像<br>访问规则为：<code>[镜像链接]/[包名]@[版本]/[文件名]</code>,其中@版本不是必须的</li>
 <li>配合pasteImage使用，修改该扩展的相关选项就能得到图片的URL地址了</li>
 <li>最后，在&#x2F;usr&#x2F;local&#x2F;bin中编写push脚本，在之前的基础上，添加npm version patch ,npm publish即可</li>
 <li>在使用时，只需要push一下即可。</li>
 </ol>
-<p><img src="https://cdn.jsdelivr.net/npm/gitimages/2022-06-01-09-54-00.png"></p>
+<p><img src="https://npm.elemecdn.com/gitimages/2022-06-01-09-54-00.png"></p>
 <p><span></span><a href="/">Back to homepage</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
