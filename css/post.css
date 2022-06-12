@@ -248,3 +248,6 @@ pre {
   margin-bottom: 50px;
   color: darkgray;
 }
+p.backHome {
+  text-align: center;
+}
