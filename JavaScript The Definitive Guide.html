@@ -1,0 +1,34 @@
+<!DOCTYPE html><html lang="zh-CN"><head><title>JavaScript The Definitive Guide</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://npm.elemecdn.com/gitimages/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.0.0"></head><body><div class="inner"><h1>JavaScript The Definitive Guide</h1><div class="time">首次发表于2022年12月31日</div><div class="updatedTime">修改于2023年01月01日</div><h1 id="CHAPTER-1-Summary"><a href="#CHAPTER-1-Summary" class="headerlink" title="CHAPTER 1 Summary"></a>CHAPTER 1 Summary</h1><p>这本书自下而上地解释了JavaScript。这意味着我们从诸如注释、标识符、变量和类型之类的低级别细节开始；然后构建到表达式、语句、对象和函数；然后涵盖诸如类和模块之类的高级语言抽象。我认真对待这本书标题中的决定性这个词，接下来的几章详细地解释了这种语言，一开始可能会让人感到反感。然而，真正掌握JavaScript需要理解细节，我希望您能抽出时间从头到尾阅读这本书。但请不要在第一次阅读时就觉得你需要这样做。如果你发现自己陷入了某个部分的泥潭，只需跳到下一个部分。一旦你对这门语言有了整体的实用知识，你就可以回来掌握细节。</p>
+<h1 id="CHAPTER-2-Lexical-Structure-词汇结构"><a href="#CHAPTER-2-Lexical-Structure-词汇结构" class="headerlink" title="CHAPTER 2 Lexical Structure 词汇结构"></a>CHAPTER 2 Lexical Structure 词汇结构</h1><p>编程语言的词汇结构是指定如何用该语言编写程序的一组基本规则。它是一种语言的最低层语法：例如，它指定变量名看起来是什么样子，组成部分的分隔符，以及如何将一条程序语句与下一条程序语句分开。它包括：区分大小写、空格和换行符，注释，字面量，标识符和保留字，Unicode，可选分号。</p>
+<p>JavaScript是一种区分大小写的语言。</p>
+<p>JavaScript会忽略程序中出现在标记之间的空格。在大多数情况下，JavaScript也会忽略换行符</p>
+<p>字面量是直接出现在程序中的数据值。</p>
+<p>JavaScript标识符必须以字母、下划线(_)或美元符号($)开头。后续字符可以是字母、数字、下划线或美元符号。</p>
+<p>与任何语言一样，JavaScript保留了某些标识符供语言本身使用。</p>
+<p>JavaScript程序是使用Unicode字符集编写的，您可以在字符串和注释中使用任何Unicode字符。这意味着程序员可以使用非英语语言中的数学符号和单词作为常量和变量。</p>
+<p>JavaScript定义了转义序列，允许我们仅使用ASCII字符来编写Unicode字符。这些Unicode转义以字符\u开头，后面紧跟四个十六进制数字(使用大写或小写字母A-F)，或者用大括号括起一到六个十六进制数字。（\u00e9，\u{E9}）</p>
+<h1 id="CHAPTER-3-Types-Values-and-Variables-类型，值，和变量"><a href="#CHAPTER-3-Types-Values-and-Variables-类型，值，和变量" class="headerlink" title="CHAPTER 3 Types, Values, and Variables 类型，值，和变量"></a>CHAPTER 3 Types, Values, and Variables 类型，值，和变量</h1><p>计算机程序通过操作值来工作，在编程语言中可以表示和操作的值的种类称为类型，而编程语言最基本的特征之一是它所支持的类型集。当程序需要保留某个值以备将来使用时，、、、、、、、</p>
+<p>它会将该值赋给变量(或将该值“存储”在变量中)。变量有名称，它们允许在我们的程序中使用这些名称来引用值。</p>
+<p>JavaScript类型可以分为两类：原始类型和对象类型。JavaScript的原始类型包括数字，文本字符串(称为字符串)和布尔值。</p>
+<p>特殊的null和undefined是原始值，但它们不是数字，字符串或布尔值。每个值通常被视为其自身特殊类型的唯一成员。</p>
+<p>任何不是数字、字符串、布尔值、symbol、NULL或undefined的都是对象。</p>
+<p>对象(即类型对象的成员)是属性的集合，其中每个属性都有一个名称和一个值</p>
+<p>普通的JavaScript对象是命名的值的无序集合。该语言还定义了一种特殊类型的对象，称为数组，它表示数字值的有序集合。JavaScript语言包含用于处理数组的特殊语法，并且数组具有一些特殊的行为，将它们与普通对象区分开来。</p>
+<p>除了基本的对象和数组之外，JavaScript还定义了许多其他有用的对象类型。Set对象表示一组值。Map对象表示从键到值的映射。RegExp类型表示文本模式，并支持对字符串执行复杂的匹配、搜索和替换操作。DATE类型表示日期和时间，并支持基本的日期算法。Error及其子类型表示在执行JavaScript代码时可能出现的错误。</p>
+<p>JavaScript与更静态的语言的不同之处在于，函数和类不仅仅是语言语法的一部分：它们本身就是可以由JavaScript程序操作的值。与任何不是原始值的JAVASCRIPT值一样，函数和类是一种特殊类型的对象。</p>
+<p>JavaScript解释器执行自动垃圾收集。这意味着，JavaScript程序员通常不需要担心对象或其他值的释放。</p>
+<p>JavaScript支持面向对象的编程风格。大致来说，这意味着不是让全局定义的函数来操作各种类型的值，而是类型本身定义了使用值的方法。</p>
+<p>从技术上讲，只有JavaScript对象才有方法。但是数字、字符串、布尔值和符号值的行为就像它们有方法一样。在 JavaScript中，null和undefined的唯一不能调用方法的值。</p>
+<p>JavaScript的对象类型是可变的，而其原始类型是不可变的。可变类型的值可以更改：JavaScript程序可以更改对象属性和数组元素的值。数字、布尔值、符号、NULL和UNDEFINED是不变的。</p>
+<p>JavaScript可以自由地将值从一种类型转换为另一种类型。JavaScript的自由值转换规则影响其相等的定义，并且&#x3D;&#x3D;相等运算符执行类型转换。</p>
+<p>JavaScript常量和变量是非类型化的：声明不指定将分配什么类型的值。</p>
+<p>JAVASCRIPT的主要数值类型Numbers用于表示整数和近似实数。</p>
+<p>十六进制，0X，八进制0O，二进制0B。</p>
+<p>浮点数可以用指数表示法表示：xxxxxxE次方</p>
+<p>可以在数字中使用分隔符，_，表示得清楚。</p>
+<p>除了基本算术运算符之外，通过定义为Math对象特性的一组函数和常量，JavaScript还支持更复杂的数学运算。</p>
+<p>0除以0没有明确定义的值，此操作的结果是特殊的非数字值NaN。</p>
+<p>非数字值在JavaScript中有一个不同寻常的特性：它不能与任何其他值进行比较，包括它本身。您必须写入x!&#x3D;x或Number.isNaN(X)。当且仅当x与全局常量NaN具有相同的值时，这些表达式才为真。</p>
+<p>IEEE-754二进制浮点表示法不能精确地表示像0.1这样简单的数字。</p>
+<p>JavaScript为表示和操作与日期及时间相关的数据而定义了简单的Date类。 JavaScript的Date是对象，但也有数值表示形式，即自1970年1月1日起至今的毫秒数，也叫时间戳。</p>
+<p class="backHome"><span></span><a href="/">返回首页</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
