@@ -174,7 +174,7 @@ body.mobile div.outer {
 div.inner {
   margin: 0% 14%;
   padding: 2% 8% 4% 8%; 
-  border: 1px solid LightGrey;
+  /* border: 1px solid LightGrey; */
 }
 
 body.mobile div.inner {
