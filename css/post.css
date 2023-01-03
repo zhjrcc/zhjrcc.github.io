@@ -251,3 +251,7 @@ pre {
 p.backHome {
   text-align: center;
 }
+div.inner p::selection, div.inner h1::selection{
+  background-color: #FB5D88;
+  color: #fff;
+}
