@@ -1,0 +1,53 @@
+<!DOCTYPE html><html lang="zh-CN"><head><title>Write a script</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://npm.elemecdn.com/gitimages/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.0.0"></head><body><div class="inner"><h1>Write a script</h1><div class="time">First published 2023-01-04</div><div class="updatedTime">Modified 2023-01-04</div><p>Today, I wrote a script to increase the font of subtitles in the browser, so that I can learn English more easily.</p>
+<pre><code class="javascript">(function () &#123;
+  &quot;use strict&quot;;
+  if (document.readyState !== &quot;loading&quot;) &#123;
+    console.log(&quot;document is already ready, just execute code here&quot;);
+    function changeFontSize() &#123;
+      let container = document.querySelectorAll(
+        &quot;.segment.ytd-transcript-segment-renderer&quot;
+      );
+      console.log(&quot;changeFont run&quot;);
+      for (let i = 0; i &lt; container.length; i++) &#123;
+        container[i].style.fontSize = &quot;2.2rem&quot;;
+        container[i].style.lineHeight = &quot;1.2&quot;;
+      &#125;
+    &#125;
+
+    function checkBtn() &#123;
+      setTimeout(function () &#123;
+        let btn = document.querySelectorAll(&quot;#button-shape&quot;);
+        if (btn[0].hasAttribute(&#39;hidden&#39;)) &#123;
+            btn = btn[2]
+          transcriptClick(btn);
+          alert(&quot;OK&quot;);
+        &#125; else if (btn[0])&#123;
+            btn = btn[0]
+          transcriptClick(btn);
+          alert(&quot;OK&quot;);
+        &#125; else &#123;
+          checkBtn();
+        &#125;
+      &#125;, 2000);
+    &#125;
+
+    function transcriptClick(btn) &#123;
+      btn.addEventListener(&quot;click&quot;, function (e) &#123;
+        console.log(&quot;btn click&quot;);
+        let ele = document.querySelectorAll(&quot;ytd-menu-service-item-renderer&quot;);
+        ele[ele.length - 1].addEventListener(&quot;click&quot;, function (e) &#123;
+          console.log(&quot;ele click&quot;);
+          setTimeout(changeFontSize, 1000);
+        &#125;);
+      &#125;);
+    &#125;
+
+    checkBtn();
+  &#125; else &#123;
+    document.addEventListener(&quot;DOMContentLoaded&quot;, function () &#123;
+      console.log(&quot;document was not ready, place code here&quot;);
+    &#125;);
+  &#125;
+&#125;)();
+</code></pre>
+<p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
