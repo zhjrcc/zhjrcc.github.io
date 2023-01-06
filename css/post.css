@@ -265,7 +265,7 @@ div.inner li::selection
   background-color: #C885DA;
   color: #fff;
   font-size: 2rem;
-  border-radius: 10px;
+  border-radius: 5px;
 }
 
 #vocabulary em {
