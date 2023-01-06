@@ -259,3 +259,15 @@ div.inner li::selection
   background-color: #FB5D88;
   color: #fff;
 }
+
+/* Vocabulary */
+#vocabulary strong {
+  background-color: #C885DA;
+  color: #fff;
+  font-size: 2rem;
+  border-radius: 10px;
+}
+
+#vocabulary em {
+  background-color: #77CADA;
+}
