@@ -10,7 +10,7 @@
 <li>发布你的npm包，也就是你的图片文件夹，（需要npm init….之类的基本操作，不想啰嗦，如果不懂自己去谷歌学习一下），使用到的命令有：npm version patch，npm publish，前者意思是更新npm包的version为一个小补丁，也就是1.0.0变成1.0.1的意思；后者是发布npm包。</li>
 <li>最后，使用npm的cdn镜像去访问自己的包内容，有以下镜像：<br><a target="_blank" rel="noopener" href="https://cdn.jsdelivr.net/npm/packageName/fileName">https://cdn.jsdelivr.net/npm/packageName/fileName</a>  # jsDelivr，已经被墙了<br><a target="_blank" rel="noopener" href="https://unpkg.com/packageName/fileName">https://unpkg.com/packageName/fileName</a>  # unpkg镜像，国内可以访问<br>访问规则为：<code>[镜像链接]/[包名]@[版本]/[文件名]</code>,其中@版本不是必须的,默认就是最新版本。</li>
 <li>配合pasteImage使用，修改该扩展的相关选项就能得到图片的URL地址了</li>
-<li>最后，在&#x2F;usr&#x2F;local&#x2F;bin中编写push脚本，在之前的基础上，添加npm version patch ,npm publish即可</li>
+<li>最后，在&#x2F;usr&#x2F;local&#x2F;bin中编写push脚本，在之前的基础上，添加<code>npm version patch</code> ,<code>npm publish</code>即可</li>
 <li>在使用时，只需要push一下即可。</li>
 </ol>
 <p><img src="https://unpkg.com/gitimages/2022-06-01-09-54-00.png"></p>
