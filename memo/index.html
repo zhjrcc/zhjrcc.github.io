@@ -11,4 +11,33 @@
 </code></pre>
 <h2 id="解决浏览器自动加载favicon"><a href="#解决浏览器自动加载favicon" class="headerlink" title="解决浏览器自动加载favicon"></a>解决浏览器自动加载favicon</h2><pre><code class="html">&lt;link rel=&quot;icon&quot; href=&quot;data:,&quot;&gt;
 </code></pre>
+<h2 id="JavaScript异步函数的执行"><a href="#JavaScript异步函数的执行" class="headerlink" title="JavaScript异步函数的执行"></a>JavaScript异步函数的执行</h2><p>当在循环中执行异步函数时，循环结束后，并不代表异步函数也执行结束。循环结束会继续执行下面的代码，但异步函数不会结束，所以当需要得到异步函数中的数据时，要注意这个问题，否则你得到的数据很有可能并不是异步函数的数据结果，而是之前的数据。</p>
+<pre><code class="javascript">let arr = []
+do &#123;
+    // each是异步函数
+    image.each(function(item)&#123;
+        arr.push[1,2]
+    &#125;);
+  &#125;);
+&#125;
+while (i&lt;100);
+// 得到的是：[]，而不是想象中的[1,2],因为循环结束时，异步函数并没有结束。但代码会继续执行下去，所以得到的是之前的数据[]
+console.log(arr);
+</code></pre>
+<h2 id="JavaScript阶乘递归函数简单例子"><a href="#JavaScript阶乘递归函数简单例子" class="headerlink" title="JavaScript阶乘递归函数简单例子"></a>JavaScript阶乘递归函数简单例子</h2><pre><code class="javascript">function factorial(x) &#123;
+  if (x &lt;= 1) return 1;
+  return x * factorial(x - 1);
+&#125;
+</code></pre>
+<h2 id="函数声明和函数表达式"><a href="#函数声明和函数表达式" class="headerlink" title="函数声明和函数表达式"></a>函数声明和函数表达式</h2><pre><code class="javascript">// 函数声明会“提升”到当前作用域的顶层，因此在函数声明之前就可以使用函数
+sum(1,2);
+function sum(x, y) &#123;return x + y&#125;;
+
+// 函数表达式不会“提升”，在函数表达式之前调用该函数会引发错误
+// 如果将函数对象分配给var变量，则引发“类型错误” TypeError: sum is not a function
+// 如果将函数对象分配给let变量，则引发“引用错误” Reference: sum is not defined
+sum(1, 2);
+// let
+var sum = function (x, y) &#123;return x + y&#125;
+</code></pre>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
