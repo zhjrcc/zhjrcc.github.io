@@ -40,4 +40,27 @@ sum(1, 2);
 // let
 var sum = function (x, y) &#123;return x + y&#125;
 </code></pre>
+<h2 id="嵌套函数的上下文this并不是方法的调用上下文（this）"><a href="#嵌套函数的上下文this并不是方法的调用上下文（this）" class="headerlink" title="嵌套函数的上下文this并不是方法的调用上下文（this）"></a>嵌套函数的上下文this并不是方法的调用上下文（this）</h2><pre><code class="javascript">let o = &#123;
+  m() &#123;
+    let self = this;
+    this === o; // true
+    // f是一个嵌套函数，this指向全局对象而并不是对象o
+    // 可以通过在包含函数中把this保存到self变量中，再通过嵌套函数访问self
+    function f() &#123;
+      this === o; // false
+      self === o; // true
+    &#125;
+    f();
+    
+    // 还可以利用箭头函数的this绑定机制
+    const f = () =&gt; &#123;
+      this === o; // true
+    &#125;
+    // 还可以使用bind，绑定this值
+    const f = (function() &#123;
+      this. === o
+    &#125;).bind(o)
+  &#125;
+&#125;
+</code></pre>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
