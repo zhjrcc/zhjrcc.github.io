@@ -67,7 +67,7 @@ var sum = function (x, y) &#123;return x + y&#125;
 // &amp;&amp; 流行用作条件执行，相当于if，这里只有当a===b才会执行stop
 a===b &amp;&amp; stop()
 // || 流行用作条件变量赋值，当b是true时，执行a=b，否则a=[]
-a = b || []
+a = b || [];
 </code></pre>
 <h2 id="argument和parameter"><a href="#argument和parameter" class="headerlink" title="argument和parameter"></a>argument和parameter</h2><p>parameter指函数定义中的参数，也就是形式参数；argument指函数被调用时的参数，也就是实际参数。</p>
 <h2 id="解构赋值：将实参解构为单个形参"><a href="#解构赋值：将实参解构为单个形参" class="headerlink" title="解构赋值：将实参解构为单个形参"></a>解构赋值：将实参解构为单个形参</h2><pre><code class="javascript">const vectorAdd = ([x1, y1], [x2, y2]) =&gt; [x1 + x2, y1 + y2];
