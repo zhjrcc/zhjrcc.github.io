@@ -51,7 +51,7 @@ var sum = function (x, y) &#123;return x + y&#125;
       self === o; // true
     &#125;
     f();
-    
+
     // 还可以利用箭头函数的this绑定机制
     const f = () =&gt; &#123;
       this === o; // true
@@ -61,6 +61,24 @@ var sum = function (x, y) &#123;return x + y&#125;
       this. === o
     &#125;).bind(o)
   &#125;
+&#125;
+</code></pre>
+<h2 id="amp-amp-和-另一种用法"><a href="#amp-amp-和-另一种用法" class="headerlink" title="&amp;&amp;和||另一种用法"></a>&amp;&amp;和||另一种用法</h2><pre><code class="javascript">// &amp;&amp; 和 || 都是短路行为（short circuiing）
+// &amp;&amp; 流行用作条件执行，相当于if，这里只有当a===b才会执行stop
+a===b &amp;&amp; stop()
+// || 流行用作条件变量赋值，当b是true时，执行a=b，否则a=[]
+a = b || []
+</code></pre>
+<h2 id="argument和parameter"><a href="#argument和parameter" class="headerlink" title="argument和parameter"></a>argument和parameter</h2><p>parameter指函数定义中的参数，也就是形式参数；argument指函数被调用时的参数，也就是实际参数。</p>
+<h2 id="解构赋值：将实参解构为单个形参"><a href="#解构赋值：将实参解构为单个形参" class="headerlink" title="解构赋值：将实参解构为单个形参"></a>解构赋值：将实参解构为单个形参</h2><pre><code class="javascript">const vectorAdd = ([x1, y1], [x2, y2]) =&gt; [x1 + x2, y1 + y2];
+const result = vectorAdd([1, 2], [3, 4]);
+console.log(result); // [4, 6]
+</code></pre>
+<h2 id="…扩展运算符和…rest剩余函数参数"><a href="#…扩展运算符和…rest剩余函数参数" class="headerlink" title="…扩展运算符和…rest剩余函数参数"></a>…扩展运算符和…rest剩余函数参数</h2><pre><code class="javascript">// 都是三个...，但用法是完全不同的
+// rest剩余函数参数用在函数的形式参数上，把多余的参数都加入到rest数组中
+function([x, y, ...rest1], ...rest2) &#123;
+// 扩展运算符用在数组或者任何可迭代对象上，进行展开
+  return [x+y, ...rest1, ...coords]
 &#125;
 </code></pre>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
