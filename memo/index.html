@@ -81,4 +81,26 @@ function([x, y, ...rest1], ...rest2) &#123;
   return [x+y, ...rest1, ...coords]
 &#125;
 </code></pre>
+<h2 id="for循环中的闭包"><a href="#for循环中的闭包" class="headerlink" title="for循环中的闭包"></a>for循环中的闭包</h2><pre><code class="javascript">// 闭包定义在for循环外面，使用var也能输出想要的变量i，相当于把i赋值到v中
+function constfunc(v) &#123;
+  return () =&gt; v;
+&#125;
+let funcs = [];
+for (var i = 0; i &lt; 10; i++) &#123;
+  funcs[i] = constfunc(i);
+&#125;
+funcs[5]() // =&gt; 5
+
+// 闭包定义在for循环里面，因为var变量没有块级作用域，所以闭包中的i最终值是循环结束时的i的值，也就是10
+// 注意，只要用let就能解决这个问题，这里只是示范
+function constfuncs() &#123;
+  let funcs = [];
+  for (var i = 0; i &lt; 10; i++) &#123;
+    funcs[i] = () =&gt; i;
+  &#125;
+  return funcs;
+&#125;
+constfuncs(); // =&gt; 10
+</code></pre>
+<p>如下图，是当把for循环中把var改成let之后的作用域：<br><img src="https://unpkg.com/gitimages/2023-01-24-20-37-26.png"></p>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
