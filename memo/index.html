@@ -45,6 +45,7 @@ var sum = function (x, y) &#123;return x + y&#125;
     let self = this;
     this === o; // true
     // f是一个嵌套函数，this指向全局对象而并不是对象o
+    
     // 可以通过在包含函数中把this保存到self变量中，再通过嵌套函数访问self
     function f() &#123;
       this === o; // false
