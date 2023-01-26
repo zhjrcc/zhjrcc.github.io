@@ -45,7 +45,7 @@ var sum = function (x, y) &#123;return x + y&#125;
     let self = this;
     this === o; // true
     // f是一个嵌套函数，this指向全局对象而并不是对象o
-    
+
     // 可以通过在包含函数中把this保存到self变量中，再通过嵌套函数访问self
     function f() &#123;
       this === o; // false
@@ -104,4 +104,5 @@ function constfuncs() &#123;
 constfuncs(); // =&gt; 10
 </code></pre>
 <p>如下图，是当把for循环中把var改成let之后的作用域：<br><img src="https://unpkg.com/gitimages/2023-01-24-20-37-26.png"></p>
+<h2 id="clashX的监听端口"><a href="#clashX的监听端口" class="headerlink" title="clashX的监听端口"></a>clashX的监听端口</h2><p>地址：127.0.0.1，端口：7890，类型：socks5</p>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
