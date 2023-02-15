@@ -138,4 +138,15 @@ module.exports = &#123; a, b, add &#125;
 <h2 id="Buffer和Cache的区别"><a href="#Buffer和Cache的区别" class="headerlink" title="Buffer和Cache的区别"></a>Buffer和Cache的区别</h2><p>Buffer 的存在原因是生产者和消费者对资源的生产&#x2F;消费的效率不一致，提供一个缓冲区，让生产者以任何效率把资源放到缓冲区再让消费者以任何的效率消费。<br>Buffer主要用于流量整形，把突发的大数量较小规模的 I&#x2F;O， 放到缓冲区，整理成平稳的小数量较大规模的 I&#x2F;O，以<strong>减少响应次数</strong>。<br>比如，从网络下载文件，下载速度是随机的（大数量小规模的数据或者小数量小规模），设定硬盘的最小写入block是2Mb。可以先把下载到的写入buffer，直到满了2Mb，再把它写入硬盘中，而不是直接一点一点的写入硬盘中，不需要每次都访问硬盘，减少响应次数。</p>
 <p>Cache是为了弥补高速设备和低速设备的鸿沟而引入的中间层，起到加快访问速度的作用。</p>
 <h2 id="Unicode的最大容纳长度，字符串的长度length返回数值"><a href="#Unicode的最大容纳长度，字符串的长度length返回数值" class="headerlink" title="Unicode的最大容纳长度，字符串的长度length返回数值"></a>Unicode的最大容纳长度，字符串的长度length返回数值</h2><p>在ES6中新增了一种访问字符串的方法，也就是<code>/u&#123;n&#125;</code>，其中的n范围是0~0x10ffff，也就是16<strong>5 + 16</strong>4 &#x3D; 1114112。<br>字符串length返回的是以UTF-16代码单位（2个字节）表示的字符串长度。<br>如果按码点表示则是4个字节表示为字符串长度。</p>
+<h2 id="Intl-Collator按拼音排序"><a href="#Intl-Collator按拼音排序" class="headerlink" title="Intl.Collator按拼音排序"></a>Intl.Collator按拼音排序</h2><pre><code class="javascript">// zh-Hans就是简体中文的缩写，这种缩写称为‘BCP-47’语言标签
+let pinyinSort = new Intl.Collator(&#39;zh-Hans-u-co-pinyin&#39;).compare;
+// 或者通过option对象中的collation属性添加pinyin排序,其中第一个区域设置参数是必须的
+pinyinSort = new Intl.Collator(&#39;zh-Hans&#39;, &#123;
+  collation:&#39;pinyin&#39;
+&#125;).compare;
+let array = [&#39;在&#39;, &#39;我&#39;,&#39;了&#39;,&#39;饿&#39;,&#39;好&#39;];
+array.sort(pinyinSort);
+// [&#39;饿&#39;, &#39;好&#39;, &#39;了&#39;, &#39;我&#39;, &#39;在&#39;]
+// E H L W Z
+</code></pre>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
