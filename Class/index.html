@@ -1,6 +1,26 @@
-<!DOCTYPE html><html lang="zh-CN"><head><title>第9章 Classes</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://unpkg.com/gitimages/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.0.0"></head><body><div class="inner"><h1>第9章 Classes</h1><div class="time">First published 2023-04-11</div><div class="updatedTime">Modified 2023-04-11</div><p>第六章讨论了JavaScript对象，该章将每个对象视为一组独特的属性，与其他对象不同。然而定义一类共享某些属性的对象类通常很有用。类的成员或实例有自己的属性来保存或定义其状态，但它们也有定义其行为的方法。这些方法由类定义，并由所有实例共享。例如，设想一个名为Complex的类表示复数并对其执行算术运算。复数实例具有保存复数的实部和虚部（状态）的属性。Complex类将定义方法来执行这些数字的加法和乘法（行为）。</p>
+<!DOCTYPE html><html lang="zh-CN"><head><title>第9章 Classes</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://unpkg.com/gitimages/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.0.0"></head><body><div class="inner"><h1>第9章 Classes</h1><div class="time">First published 2023-08-06</div><div class="updatedTime">Modified 2023-08-06</div><p>第六章讨论了JavaScript对象，该章将每个对象视为一组独特的属性，与其他对象不同。然而定义一类共享某些属性的对象类通常很有用。类的成员或实例有自己的属性来保存或定义其状态，但它们也有定义其行为的方法。这些方法由类定义，并由所有实例共享。例如，设想一个名为Complex的类表示复数并对其执行算术运算。复数实例具有保存复数的实部和虚部（状态）的属性。Complex类将定义方法来执行这些数字的加法和乘法（行为）。</p>
 <p>在JavaScript中，类使用基于原型的继承：如果两个对象从同一个原型继承属性（通常是函数值属性或方法），那么我们就说这些对象是同一个类的实例。简而言之，这就是JavaScript类的工作方式。在6.2.3和6.3.2中介绍了JavaScript的原型和继承，你需要熟悉这两节的内容才能理解本章。在9.1中讨论了原型。</p>
 <p>如果两个对象从同一个原型继承，这通常（但不一定）意味着它们由同一个构造函数和工厂函数创建和初始化的。构造函数在4.6,6.2.2,8.2.3介绍过。在9.2中有更多介绍。</p>
 <p>JavaScript一直都允许定义类。ES6引入了一种全新的语法（包括class关键字），使创建类变得更加容易。这些新的JavaScript类的工作方式与旧式类的工作方式相同，本章首先解释创建类的旧方法，因为这更清楚地展示了在幕后是如何使类工作的。一旦我们解释了这些基本原理，我们将转换并开始使用新的，简化的类定义语法。</p>
 <p>如果你熟悉想Java或者C++这样的强类型面向对象程序设计语言，你会注意到JavaScript类与这些语言中的类有很大的不同。这里有一些语法上的相似之处，你可以在JavaScript中模拟“经典”类的许多特征，但是事先最好了解JavaScript的类和基于原型的继承机制与Java类似语言的类和基于类的继承机制有本质上的不同。</p>
-<h2 id="9-1类和原型"><a href="#9-1类和原型" class="headerlink" title="9.1类和原型"></a>9.1类和原型</h2><p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
+<h2 id="9-1-类和原型"><a href="#9-1-类和原型" class="headerlink" title="9.1 类和原型"></a>9.1 类和原型</h2><p>在JavaScript中，类是从同一个原型对象继承属性的一组对象。因此，原型对象是类的中心特性。第6章介绍了<code>Object.create()</code>，该函数返回从指定原型对象继承的新创建的对象。如果我们定义一个原型对象，然后使用<code>Object.create()</code>来创建从它继承的对象，那么我们已经定义了一个JavaScript类。通常，类的实例需要进一步初始化，通常定义一个创建和初始化新对象的函数。示例9-1演示了这一点：它为表示值范围的类定义了一个原型对象，并定义了一个工厂函数，该函数创建并初始化该类的一个新实例。</p>
+<pre><code class="JavaScript">function range(from, to)&#123;
+  let r = Object.create(range.methods);
+  r.from = from;
+  r.to = to;
+  return r;
+&#125;
+range.methods = &#123;
+  include(x) &#123; return this.from &lt;= x &amp;&amp; x &lt;= this.to; &#125;,
+  *[Symbol.iterator]() &#123;
+    for(let x = Math.ceil(this.from); x &lt;= this.to; x++) yield x;
+  &#125;,
+  toString() &#123;return `($&#123;this.from&#125;...$&#123;this.to&#125;)`&#125;
+&#125;
+let r = range(1, 3);
+r.include(2); // true
+r.toString(); // (1...3)
+[...r]; // [1, 2, 3]
+</code></pre>
+<p>在以上示例中，有几点需要注意：<br>此代码定义了一个工厂函数range()，用于创建新的Range对象。<br>它使用这个range函数的methods属性作为一个方便的地方来存储定义类的原型对象。把原型对象放在这里并没有特别或惯用的地方。<br>range函数定义每个Range对象的from和to属性。这些是定义每个单独Range对象的唯一状态的非共享、非继承属性。<br>range.methods对象使用ES6简写语法定义方法，这就是为什么看不到function关键字的原因。（6.10.5查看对象文字速记方法语法）<br>原型中的一个方法具有计算名称（6.10.2）Symbol.iterator，这意味着它正在为Range对象定义迭代器。此方法名称以*为前缀，表示它是一个生成器而不是常规函数。迭代器和生成器将在第12章中详细介绍。目前的结果是这个Range类的实例可以与for&#x2F;of和…扩散运算符一起使用。<br>range.methods中定义的共享、继承方法都使用在range函数中初始化的from和to属性。为了引用它们，它们使用this关键字来引用调用它们的对象。这种用法是任何类的方法的一个基本特征。</p>
+<h2 id="9-2-类和构造函数"><a href="#9-2-类和构造函数" class="headerlink" title="9.2 类和构造函数"></a>9.2 类和构造函数</h2><p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
