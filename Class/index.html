@@ -40,4 +40,5 @@ r.include(2)
 r.toString();
 </code></pre>
 <p>值得非常仔细地比较示例9-1和9-2，并注意这两种定义类的技术之间的差异。首先，在range()工厂函数转换为构造函数时，将其重命名为Range()。这是一种非常常见的编码约定：从某种意义上来说，构造函数定义类，类的名称以大写字母开头。常规函数和方法的名称都是以小写字母开头。</p>
+<p>接下来，请注意，使用new关键字调用Range构造函数，而不使用new调用range工厂函数。例子9-1使用常规函数调用创建新对象，例子9-2使用构造函数调用。因为Range构造函数是用new调用的，所以它不必调用Object.create()或采取任何操作来创建新对象。新对象是在调用构造函数之前自动创建的，并且可以作为this值访问。Range构造函数只需对其进行初始化。</p>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
