@@ -1,0 +1,72 @@
+<!DOCTYPE html><html lang="zh-CN"><head><title>元编程</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://unpkg.com/gitimages/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.0.0"></head><body><div class="inner"><h1>元编程</h1><div class="time">First published 2023-10-14</div><div class="updatedTime">Modified 2023-10-14</div><h2 id="元编程"><a href="#元编程" class="headerlink" title="元编程"></a>元编程</h2><p>属性描述符：<br>writable: 是否可写<br>enumerable：是否可枚举，枚举：能出现在for…in和Object.keys()中<br>configurable：是否可删除，以及属性特性是否可改变</p>
+<p>数据属性：value，writable，enumerable，configurable<br>访问器属性：get，set，enumerable，configurable</p>
+<p>获取指定对象的命名属性的属性描述符：</p>
+<pre><code class="js">// &#123;value: 1, writable: true, enumerable: true, configurable: true&#125;
+Object.getOwnPropertyDescriptor(&#123;x:1&#125;, &quot;x&quot;)
+
+// &#123;set: undefined, enumerable: true, configurable: true, get: ƒ&#125;
+const random = &#123;
+  get octet() &#123;
+    return Math.floor(Math.random * 256)
+  &#125;
+&#125;
+Object.getOwnPropertyDescriptor(random, &quot;octet&quot;)
+</code></pre>
+<p>设置指定对象的命名属性的属性描述符：</p>
+<pre><code class="js">let o = &#123;&#125;
+Object.defineProperty(o,&quot;x&quot;,&#123;
+  value: 1,
+  enumerable: false,
+  writable: true,
+  configurable: true
+&#125;);
+// x is there but can non-enumerable
+Object.keys(o); // []
+o.x; // 1
+// change the writable
+Object.defineProperty(o, &quot;x&quot;, &#123;
+  writable: false
+&#125;)
+o.x = 2;
+o.x; // 1
+Object.defineProperty(o,&quot;x&quot;, &#123;
+  value: 2
+&#125;)
+o.x; // 2
+// change x, from the accessor property get 
+Object.defineProperty(o, &quot;x&quot;, &#123;
+  get: function() &#123; return 0;&#125; // o.x = 0;
+&#125;)
+o.x; // 0
+</code></pre>
+<p>设置指定对象的多个命名属性属性的属性描述符:</p>
+<pre><code class="js">let o = &#123;&#125;;
+Object.defineProperties(o,
+&#123;
+  a: &#123;value: 3, enumerable: true, writable: true, configurable: true&#125;,
+  b: &#123;value: 4, enumerable: true, writable: true, configurable: true&#125;,
+  c: &#123;
+    get: function() &#123;
+      return Math.sqrt(Math.pow(this.a, 2) + Math.pow(this.b, 2))
+    &#125;,
+    enumerable: true,
+    configurable: true
+  &#125;
+&#125;)
+o.c; // 5
+</code></pre>
+<p>Object.create(prototype, propertyDescriptors)跟defineProperties()接受的第二个参数是一样的。</p>
+<pre><code class="js">let proto = &#123;x: 5, y: 12, color: &#39;red&#39;&#125;
+let o = Object.create(proto, &#123;
+  a: &#123;value: 3, enumerable: true, writable: true, configurable: true&#125;,
+  b: &#123;value: 4, enumerable: true, writable:true, configurable: true&#125;,
+  c: &#123;
+    get: function()&#123;
+      return Math.sqrt(Math.pow(this.x, 2) + Math.pow(this.y, 2))
+    &#125;
+  &#125;
+&#125;)
+o.c; //13
+</code></pre>
+<p>Object.assign(target, …sources),仅仅</p>
+<p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
