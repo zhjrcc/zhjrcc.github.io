@@ -1,5 +1,6 @@
 <!DOCTYPE html><html lang="zh-CN"><head><title>元编程</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://unpkg.com/gitimages/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.0.0"></head><body><div class="inner"><h1>元编程</h1><div class="time">First published 2023-10-14</div><div class="updatedTime">Modified 2023-10-14</div><h2 id="元编程"><a href="#元编程" class="headerlink" title="元编程"></a>元编程</h2><p>属性描述符：<br>writable: 是否可写<br>enumerable：是否可枚举，枚举：能出现在for…in和Object.keys()中<br>configurable：是否可删除，以及属性特性是否可改变</p>
 <p>数据属性：value，writable，enumerable，configurable<br>访问器属性：get，set，enumerable，configurable</p>
+<p>通过对象字面量或者传统的对象属性赋值的方式创建的对象，writable,enumerable,configurable都为true，而JavaScript内置的对象属性则不是。</p>
 <p>获取指定对象的命名属性的属性描述符：</p>
 <pre><code class="js">// &#123;value: 1, writable: true, enumerable: true, configurable: true&#125;
 Object.getOwnPropertyDescriptor(&#123;x:1&#125;, &quot;x&quot;)
@@ -39,6 +40,7 @@ Object.defineProperty(o, &quot;x&quot;, &#123;
 &#125;)
 o.x; // 0
 </code></pre>
+<p>四个属性特性不是必须都要进行赋值的，如果省略其中一个属性，那么它的默认值就是false或者undefined。</p>
 <p>设置指定对象的多个命名属性属性的属性描述符:</p>
 <pre><code class="js">let o = &#123;&#125;;
 Object.defineProperties(o,
@@ -68,5 +70,68 @@ let o = Object.create(proto, &#123;
 &#125;)
 o.c; //13
 </code></pre>
-<p>Object.assign(target, …sources),仅仅</p>
+<p>Object.assign(target, …sources),仅仅复制可枚举的属性值，而并非属性特性。比如说，源对象中有一个访问器属性，其中的get方法，assign复制到目标对象中时，并非是get函数本身，而是get函数的返回值。</p>
+<pre><code class="js">let o = &#123;&#125;;
+Object.defineProperties(o,
+&#123;
+  a: &#123;value: 3, enumerable: true, writable: true, configurable: true&#125;,
+  b: &#123;value: 4, enumerable: true, writable: true, configurable: true&#125;,
+  c: &#123;
+    get: function() &#123;
+      return Math.sqrt(Math.pow(this.a, 2) + Math.pow(this.b, 2))
+    &#125;,
+    enumerable: true,
+    configurable: true
+  &#125;
+&#125;)
+let o1 = &#123;&#125;
+Object.assign(o1, o);
+o1; // &#123;3, 4, 5&#125;
+</code></pre>
+<p>写一个Object.assign的变种函数，需求：实现不仅复制属性值，也复制属性特性。</p>
+<pre><code class="js">// 写一个assign的变种函数，需求是不仅仅复制值，也要复制属性特性
+Object.defineProperty(Object, &quot;assignDescriptors&quot;, &#123;
+  writable: true,
+  configurable: true,
+  enumerable: false,
+  value: function (target, ...sources) &#123;
+    for (let source of sources) &#123;
+      let names = Object.getOwnPropertyNames(source);
+      for (let name of names) &#123;
+        let desc = Object.getOwnPropertyDescriptor(source, name);
+        Object.defineProperty(target, name, desc);
+      &#125;
+      let symbols = Object.getOwnPropertySymbols(source);
+      for (let symbol of symbols) &#123;
+        let desc = Object.getOwnPropertyDescriptor(source, symbol);
+        Object.defineProperty(target, symbol, desc);
+      &#125;
+    &#125;
+    return target;
+  &#125;,
+&#125;);
+
+let o = &#123;&#125;;
+Object.defineProperties(o, &#123;
+  a: &#123; value: 1, enumerable: true, writable: true, configurable: true &#125;,
+  count: &#123;
+    get: function () &#123;
+      this.a++;
+      return this.a;
+    &#125;,
+    enumerable: true,
+    configurable: true
+  &#125;,
+&#125;);
+let o1 = &#123;&#125;;
+Object.assignDescriptors(o1, o);
+let o2 = &#123;&#125;;
+Object.assign(o2, o)
+
+console.log(o); // &#123;a: 2, count: [Getter]&#125;
+console.log(o1); // &#123;a: 1, count: [Getter]&#125;
+console.log(o1.count); // 2
+console.log(o1.count); // 3
+console.log(o2);  // &#123;a: 1, count: 2&#125;
+</code></pre>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
