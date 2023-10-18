@@ -137,5 +137,22 @@ console.log(o2);  // &#123;a: 1, count: 2&#125;
 <h2 id="对象的可扩展特性-Extensibility"><a href="#对象的可扩展特性-Extensibility" class="headerlink" title="对象的可扩展特性(Extensibility)"></a>对象的可扩展特性(Extensibility)</h2><p>对象的可扩展特性指的是一个对象能否添加一个新的对象属性。普通的对象默认都是可扩展的。它的作用是锁定对象到一个已知状态并防止外界篡改。<br>将一个对象转为不可扩展的，使用<code>Object.preventExtensions()</code>。这种转换是不可逆的。判断一个对象是否可扩展的，使用<code>Object.isExtensible()</code>。<br>对象的可扩展性通常与属性的可配置和可写入特性结合使用：<br><code>Object.seal()</code>[密封]:类似<code>Object.preventExtensions()</code>，它还会把对象转为不可配置(non-configurable)的。这种转换也是不可逆的。使用<code>Object.isSealed()</code>判断对象是否密封。<br><code>Object.freeze()</code>[冻结]:类似<code>Object.seal()</code>，它还会把对象属性转为只读的，假如对象有访问器属性setter，访问器是不受影响<br>的，还是可以对属性赋值来调用。这种转换也是不可逆的。使用<code>Object.isFrozen</code>判断对象是否冻结。<br>以上三个将对象转为不可扩展的方法都是只作用在当前的对象，而不影响它们的原型。向一个不可扩展对象的原型添加新的属性，该对象还是会继承这个新的属性。如果希望彻底的锁定该对象，那么应该将该对象的原型链也一起密封或者冻结。</p>
 <pre><code class="js">let o = Object.seal(Object.create(Object.freeze(&#123;x:1&#125;)))
 </code></pre>
-<h2 id="对象原型特性-原型对象"><a href="#对象原型特性-原型对象" class="headerlink" title="对象原型特性[原型对象]"></a>对象原型特性[原型对象]</h2><p>对象的原型特性指定一个对象，它会从这个原型对象中继承属性。<br>一个普通对象的<code>prototype</code>并不是它的原型特性，只是一个普通的名为prototype的属性，不要混淆了。<br><strong>在JavaScript中，只有构造函数的prototype属性具有特殊作用：通过该构造函数创建的对象都会把他们的原型对象指定为prototype属性的值</strong><br>当一个对象创建后，原型对象也会同时设定。<br>通过对象字面量创建的对象，原型对象是<code>Object.prototype</code>;<br>通过new创建的对象，原型对象是<code>Constructor.prototpye</code>;<br>通过Object.create()创建的对象，原型对象是该方法的第一个对象;<br>获取一个对象的原型对象：<code>Object.getPrototype()</code></p>
+<h2 id="对象原型特性-原型对象"><a href="#对象原型特性-原型对象" class="headerlink" title="对象原型特性[原型对象]"></a>对象原型特性[原型对象]</h2><p>对象的原型特性指定一个对象，它会从这个原型对象中继承属性。<br>一个普通对象的<code>prototype</code>并不是它的原型特性，只是一个普通的名为prototype的属性，不要混淆了。<br><strong>在JavaScript中，只有构造函数的prototype属性具有特殊作用：通过该构造函数创建的对象都会把他们的原型对象指定为构造函数的prototype</strong></p>
+<pre><code class="js">// 所有构造函数的prototype属性中都有一个constructor属性，指向构造函数本身
+Object === Object.prototype.constructor; // true
+</code></pre>
+<p>当一个对象创建后，它的原型对象也会同时创建。<br>通过对象字面量创建的对象，原型对象是<code>Object.prototype</code>;<br>通过new创建的对象，原型对象是<code>Constructor.prototpye</code>;<br>通过Object.create()创建的对象，原型对象是该方法的第一个对象;<br>获取一个对象的原型对象：<code>Object.getPrototype(o)</code>;<br>设定一个对象的原型对象: <code>Object.setPrototype(o, p)</code>;<br>判断一个对象是否是另一个对象的原型：<code>p.isPrototypeOf(o)</code><br>早期浏览器的JavaScript实现中，对象还有一个__proto__属性，可以直接访问和修改它的原型对象。</p>
+<h2 id="常见的Symbol"><a href="#常见的Symbol" class="headerlink" title="常见的Symbol"></a>常见的Symbol</h2><p>使用Symbol的主要原因：安全的为语言添加扩展而不破坏已经部署在web上的代码的兼容性。<br>常见的Symbol值是一组在Symbol()工厂函数中的属性。<br>Symbol.iterator,Symbol.asyncIterator：让对象可迭代。<br>Symbol.hasInstance，作用是<strong>控制instanceof操作符的返回值</strong>。正常情况下，instanceof的右侧是构造函数。 <code>o instanceof f</code>，对象o是否为f的实例，也就是要在o的原型链中寻找是否存在着f.prototype。存在则返回true，否则返回false。在ES6中，对象只要有<a href="">Symbol.hasInstance</a>方法就能出现在instanceof右侧，它会把左侧的值作为该函数的参数，该函数返回一个布尔值，作为instanceof的返回值。</p>
+<pre><code class="js">// 使用Symbol.hasInstance和instanceof操作符进行类型检查
+let uint8 = &#123;
+  [Symbol.hasInstance](x) &#123;
+    return Number.isInteger(x) &amp;&amp; x &gt;= 0 &amp;&amp; x &lt;= 255;
+  &#125;
+&#125;
+
+console.log(Math.PI instanceof uint8); // false, PI不是整数
+console.log(-1 instanceof uint8) // false
+console.log(128 instanceof uint8); // true
+console.log(256 instanceof uint8); // false
+</code></pre>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
