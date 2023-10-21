@@ -142,17 +142,77 @@ console.log(o2);  // &#123;a: 1, count: 2&#125;
 Object === Object.prototype.constructor; // true
 </code></pre>
 <p>当一个对象创建后，它的原型对象也会同时创建。<br>通过对象字面量创建的对象，原型对象是<code>Object.prototype</code>;<br>通过new创建的对象，原型对象是<code>Constructor.prototpye</code>;<br>通过Object.create()创建的对象，原型对象是该方法的第一个对象;<br>获取一个对象的原型对象：<code>Object.getPrototype(o)</code>;<br>设定一个对象的原型对象: <code>Object.setPrototype(o, p)</code>;<br>判断一个对象是否是另一个对象的原型：<code>p.isPrototypeOf(o)</code><br>早期浏览器的JavaScript实现中，对象还有一个__proto__属性，可以直接访问和修改它的原型对象。</p>
-<h2 id="常见的Symbol"><a href="#常见的Symbol" class="headerlink" title="常见的Symbol"></a>常见的Symbol</h2><p>使用Symbol的主要原因：安全的为语言添加扩展而不破坏已经部署在web上的代码的兼容性。<br>常见的Symbol值是一组在Symbol()工厂函数中的属性。<br>Symbol.iterator,Symbol.asyncIterator：让对象可迭代。<br>Symbol.hasInstance，作用是<strong>控制instanceof操作符的返回值</strong>。正常情况下，instanceof的右侧是构造函数。 <code>o instanceof f</code>，对象o是否为f的实例，也就是要在o的原型链中寻找是否存在着f.prototype。存在则返回true，否则返回false。在ES6中，对象只要有<a href="">Symbol.hasInstance</a>方法就能出现在instanceof右侧，它会把左侧的值作为该函数的参数，该函数返回一个布尔值，作为instanceof的返回值。</p>
-<pre><code class="js">// 使用Symbol.hasInstance和instanceof操作符进行类型检查
-let uint8 = &#123;
-  [Symbol.hasInstance](x) &#123;
-    return Number.isInteger(x) &amp;&amp; x &gt;= 0 &amp;&amp; x &lt;= 255;
+<h2 id="常见的Symbol"><a href="#常见的Symbol" class="headerlink" title="常见的Symbol"></a>常见的Symbol</h2><p>使用Symbol的主要原因：安全的为语言添加扩展而不破坏已经部署在web上的代码的兼容性。<br>常见的Symbol值是一组在Symbol()工厂函数中的属性。</p>
+<ol>
+<li><p>Symbol.iterator,Symbol.asyncIterator，作用是<strong>控制对象的可迭代特性</strong>。</p>
+</li>
+<li><p>Symbol.hasInstance，作用是<strong>控制instanceof操作符的返回值</strong>。正常情况下，instanceof的右侧是构造函数。 <code>o instanceof f</code>，对象o是否为f的实例，也就是要在o的原型链中寻找是否存在着f.prototype。存在则返回true，否则返回false。在ES6中，对象只要有<a href="">Symbol.hasInstance</a>方法就能出现在instanceof右侧，它会把左侧的值作为该函数的参数，该函数返回一个布尔值，作为instanceof的返回值。<br>&#96;&#96;&#96;js<br>&#x2F;&#x2F; 使用Symbol.hasInstance和instanceof操作符进行类型检查<br>let uint8 &#x3D; {<br>  <a href="x">Symbol.hasInstance</a> {<br> return Number.isInteger(x) &amp;&amp; x &gt;&#x3D; 0 &amp;&amp; x &lt;&#x3D; 255;<br>  }<br>}</p>
+</li>
+</ol>
+<p>console.log(Math.PI instanceof uint8); &#x2F;&#x2F; false, PI不是整数<br>console.log(-1 instanceof uint8) &#x2F;&#x2F; false<br>console.log(128 instanceof uint8); &#x2F;&#x2F; true<br>console.log(256 instanceof uint8); &#x2F;&#x2F; false</p>
+<pre><code>
+3. Symbol.toStringTag，**控制对象toString()的返回值**
+使用`Object.prototype.toString.call(obj)`会返回[object Class]
+```js
+function classOf(obj) &#123;
+  return Object.prototype.toString.call(obj).slice(8,-1);
+&#125;
+console.log(classOf([]))
+console.log(classOf(()=&gt;&#123;&#125;))
+console.log(classOf(false))
+console.log(classOf(&#39;&#39;))
+console.log(classOf(1))
+console.log(classOf(Symbol(&#39;sym&#39;)))
+console.log(classOf(null))
+console.log(classOf(undefined));
+console.log(classOf(/./))
+</code></pre>
+<p>在ES6之前，这种技术仅适用于内置的对象，你自定义的类仅仅会返回’Object’。在ES6后，可以使用访问器get Symbol.toStringTag函数改变这种行为，当你自定义的类中有该symbol属性时，toString会输出该函数的返回值，类似classOf函数。这个方法比使用typeof操作符实用很多，typeof只会简单地返回Object。</p>
+<pre><code class="js">class Range &#123;
+  constructor(a, b) &#123;
+    this.a = a;
+    this.b = b;
+  &#125;
+  get [Symbol.toStringTag]() &#123;
+    return &quot;Range&quot;;
   &#125;
 &#125;
+class Range1 &#123;
+  constructor(a, b) &#123;
+    this.a = a;
+    this.b = b;
+  &#125;
+&#125;
+let r = new Range(1, 10)
+// r1不具有Symbol.toStringTag属性
+let r1 = new Range1(1, 10)
 
-console.log(Math.PI instanceof uint8); // false, PI不是整数
-console.log(-1 instanceof uint8) // false
-console.log(128 instanceof uint8); // true
-console.log(256 instanceof uint8); // false
+console.log(classOf(r)) // Range
+console.log(classOf(r1)); // Object
+</code></pre>
+<ol start="4">
+<li>Symbol.species,专门用于数组几个方法，他们都会返回一个新的数组对象，分别是：map，filter，concat，slice，splice。</li>
+</ol>
+<p><strong>Symbol.species就是控制以上方法返回的新数组对象的类</strong>。</p>
+<pre><code class="js">class EZArray extends Array &#123;
+  static get [Symbol.species]() &#123;
+    // 默认返回的是this，也就是创建的每一个实例都是当前的子类，而不是父类
+    // return this;
+    // 更改为返回父类Array，则使用返回新数组的数组方法会返回父类的实例，而不是当前的子类
+    return Array;
+  &#125;
+  get last() &#123;
+    return this[this.length-1];
+  &#125;
+&#125;
+let arr = new EZArray(1,2,3);
+let arrx2 = arr.map(x =&gt; x *= 2);
+let last = arrx2.last;
+console.log(arr, arrx2, last); // [1,2,3] [2,2,6] undefined
+</code></pre>
+<ol>
+<li>Symbol.isConcatable，默认情况下，如果给concat传递一个数组对象，则会把数组展开。Symbol.isConcatable就是控制concat是否把数组或类数组参数展开。<br>&#96;&#96;&#96;js</li>
+</ol>
+<pre><code>
 </code></pre>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
