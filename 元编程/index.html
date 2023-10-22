@@ -211,8 +211,11 @@ let last = arrx2.last;
 console.log(arr, arrx2, last); // [1,2,3] [2,2,6] undefined
 </code></pre>
 <ol>
-<li>Symbol.isConcatable，默认情况下，如果给concat传递一个数组对象，则会把数组展开。Symbol.isConcatable就是控制concat是否把数组或类数组参数展开。<br>&#96;&#96;&#96;js</li>
+<li>Symbol.isConcatable，默认情况下，如果给concat传递一个数组对象，则会把数组展开。Symbol.isConcatable就是控制concat是否把数组或类数组参数展开。<br>&#96;&#96;&#96;js<br>&#x2F;&#x2F; 类数组对象，index，length都要有<br>let arrayLike &#x3D; {<br>  0: 1,<br>  1: 2,<br>  2: 3,<br>  length: 3,<br>  &#x2F;&#x2F; true，表示需要把该对象展开<br>  [Symbol.isConcatSpreadable]: true,<br><br>};</li>
 </ol>
+<p>let arr &#x3D; [].concat(arrayLike);<br>console.log(arr.length); &#x2F;&#x2F; 3</p>
+<p>Object.defineProperty(arrayLike, Symbol.isConcatSpreadable, {<br>  value: false,<br>});<br>arr &#x3D; [].concat(arrayLike);<br>console.log(arr.length); &#x2F;&#x2F; 1</p>
+<p>class NonSpreadableArray extends Array {<br>  [Symbol.isConcatSpreadable] &#x3D; false;<br>}<br>let a &#x3D; new NonSpreadableArray(1, 2, 3);<br>console.log([].concat(a).length); &#x2F;&#x2F; 1</p>
 <pre><code>
 </code></pre>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
