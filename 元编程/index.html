@@ -210,12 +210,52 @@ let arrx2 = arr.map(x =&gt; x *= 2);
 let last = arrx2.last;
 console.log(arr, arrx2, last); // [1,2,3] [2,2,6] undefined
 </code></pre>
-<ol>
-<li>Symbol.isConcatable，默认情况下，如果给concat传递一个数组对象，则会把数组展开。Symbol.isConcatable就是控制concat是否把数组或类数组参数展开。<br>&#96;&#96;&#96;js<br>&#x2F;&#x2F; 类数组对象，index，length都要有<br>let arrayLike &#x3D; {<br>  0: 1,<br>  1: 2,<br>  2: 3,<br>  length: 3,<br>  &#x2F;&#x2F; true，表示需要把该对象展开<br>  [Symbol.isConcatSpreadable]: true,<br><br>};</li>
+<ol start="5">
+<li>Symbol.isConcatable，默认情况下，如果给concat传递一个数组对象，则会把数组展开。<strong>Symbol.isConcatable就是控制concat是否把数组或类数组参数展开。</strong><br>&#96;&#96;&#96;js<br>&#x2F;&#x2F; 类数组对象，index，length都要有<br>let arrayLike &#x3D; {<br>  0: 1,<br>  1: 2,<br>  2: 3,<br>  length: 3,<br>  &#x2F;&#x2F; true，表示需要把该对象展开<br>  [Symbol.isConcatSpreadable]: true,<br><br>};</li>
 </ol>
 <p>let arr &#x3D; [].concat(arrayLike);<br>console.log(arr.length); &#x2F;&#x2F; 3</p>
 <p>Object.defineProperty(arrayLike, Symbol.isConcatSpreadable, {<br>  value: false,<br>});<br>arr &#x3D; [].concat(arrayLike);<br>console.log(arr.length); &#x2F;&#x2F; 1</p>
 <p>class NonSpreadableArray extends Array {<br>  [Symbol.isConcatSpreadable] &#x3D; false;<br>}<br>let a &#x3D; new NonSpreadableArray(1, 2, 3);<br>console.log([].concat(a).length); &#x2F;&#x2F; 1</p>
 <pre><code>
+6. pattern-matching symbols，**控制着字符串模式匹配方法的执行，作用是创建需要自定义相关模式匹配的对象**。以往字符串执行模式匹配的方法，都是通过使用RegExp对象来进行的。在ES6之后，有点调整，除了使用RegExp对象外，还可以使用任何一个定义了相关模式匹配的Symbol方法。当字符串执行模式匹配方法时`string.patternMethod(pattern, arg)`，其实调用的是对象内定义模式匹配的Symbol方法`[Symbol.pattern](string, arg)`。
+```js
+// 使用pattern-matching symbol实现文件系统的通配符?和*
+// 定义一个Glob类，目的是创建需要自定义相关模式匹配的对象
+class Glob &#123;
+  constructor(glob) &#123;
+    this.glob = glob;
+    let regexpText = glob.replaceAll(&quot;?&quot;, &quot;([^/])&quot;).replaceAll(&quot;*&quot;, &quot;([^/]*)&quot;);
+    this.regexp = new RegExp(`^$&#123;this.regexpText&#125;$`, &quot;u&quot;);
+  &#125;
+  toString() &#123;
+    return this.glob;
+  &#125;
+  [Symbol.search](s) &#123;
+    return s.search(this.regexp);
+  &#125;
+  [Symbol.match](s) &#123;
+    return s.match(this.regexp);
+  &#125;
+  [Symbol.replace](s, replacement) &#123;
+    return s.replace(this.regexp, replacement);
+  &#125;
+&#125;
+
+// 创建需要自定义相关模式匹配的对象
+let pattern = new Glob(&quot;dir/*/*.jpeg&quot;);
+
+let dir1 = &quot;dir/zhjrcc/avatar.jpeg&quot;;
+
+let dirSearch = dir1.search(pattern);
+let dirMatch = dir1.match(pattern);
+let dirReplace = dir1.replace(pattern, &quot;dir/$1/月照心头.jpeg&quot;);
+
+console.log(dirSearch, dirMatch[1], dirMatch[2], dirReplace); //0 zhjrcc avatar dir/zhjrcc/月照心头.jpeg
+</code></pre>
+<ol start="7">
+<li>[Symbol.toPrimitive],作用是<strong>控制对象类型转换为哪种原始值类型（string,number）</strong>,<a href="arg">Symbol.toPrimitive</a>返回值必须为一个原始值来表示对象，arg参数可以是string,number,default。<br>&#96;&#96;&#96;js<br>let obj &#x3D; {<br>  age: 10,<br>  name: ‘zhjrcc’,<br>  <a href="hint">Symbol.toPrimitive</a> {<br> if (hint &#x3D;&#x3D;&#x3D; ‘string’) {<br>   return this.name<br> } else if (hint &#x3D;&#x3D;&#x3D; ‘number’) {<br>   return this.age<br> }<br> return true;<br>  }<br>}<br>let number &#x3D; 20;<br>let string &#x3D; ‘my name is:’;</li>
+</ol>
+<p>console.log(number + +obj)<br>console.log(<code>$&#123;string&#125;$&#123;obj&#125;</code>)</p>
+<pre><code>8. Symbol.unscopables，作用是**控制让with语句忽略的属性**，解决了with的一些兼容性问题。
 </code></pre>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
