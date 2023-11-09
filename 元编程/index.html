@@ -143,18 +143,22 @@ Object === Object.prototype.constructor; // true
 </code></pre>
 <p>当一个对象创建后，它的原型对象也会同时创建。<br>通过对象字面量创建的对象，原型对象是<code>Object.prototype</code>;<br>通过new创建的对象，原型对象是<code>Constructor.prototpye</code>;<br>通过Object.create()创建的对象，原型对象是该方法的第一个对象;<br>获取一个对象的原型对象：<code>Object.getPrototype(o)</code>;<br>设定一个对象的原型对象: <code>Object.setPrototype(o, p)</code>;<br>判断一个对象是否是另一个对象的原型：<code>p.isPrototypeOf(o)</code><br>早期浏览器的JavaScript实现中，对象还有一个__proto__属性，可以直接访问和修改它的原型对象。</p>
 <h2 id="常见的Symbol"><a href="#常见的Symbol" class="headerlink" title="常见的Symbol"></a>常见的Symbol</h2><p>使用Symbol的主要原因：安全的为语言添加扩展而不破坏已经部署在web上的代码的兼容性。<br>常见的Symbol值是一组在Symbol()工厂函数中的属性。</p>
-<ol>
-<li><p>Symbol.iterator,Symbol.asyncIterator，作用是<strong>控制对象的可迭代特性</strong>。</p>
-</li>
-<li><p>Symbol.hasInstance，作用是<strong>控制instanceof操作符的返回值</strong>。正常情况下，instanceof的右侧是构造函数。 <code>o instanceof f</code>，对象o是否为f的实例，也就是要在o的原型链中寻找是否存在着f.prototype。存在则返回true，否则返回false。在ES6中，对象只要有<a href="">Symbol.hasInstance</a>方法就能出现在instanceof右侧，它会把左侧的值作为该函数的参数，该函数返回一个布尔值，作为instanceof的返回值。<br>&#96;&#96;&#96;js<br>&#x2F;&#x2F; 使用Symbol.hasInstance和instanceof操作符进行类型检查<br>let uint8 &#x3D; {<br>  <a href="x">Symbol.hasInstance</a> {<br> return Number.isInteger(x) &amp;&amp; x &gt;&#x3D; 0 &amp;&amp; x &lt;&#x3D; 255;<br>  }<br>}</p>
-</li>
-</ol>
-<p>console.log(Math.PI instanceof uint8); &#x2F;&#x2F; false, PI不是整数<br>console.log(-1 instanceof uint8) &#x2F;&#x2F; false<br>console.log(128 instanceof uint8); &#x2F;&#x2F; true<br>console.log(256 instanceof uint8); &#x2F;&#x2F; false</p>
-<pre><code>
-3. Symbol.toStringTag，**控制对象toString()的返回值**
-使用`Object.prototype.toString.call(obj)`会返回[object Class]
-```js
-function classOf(obj) &#123;
+<p>Symbol.iterator,Symbol.asyncIterator，作用是<strong>控制对象的可迭代特性</strong>。</p>
+<p>Symbol.hasInstance，作用是<strong>控制instanceof操作符的返回值</strong>。正常情况下，instanceof的右侧是构造函数。 <code>o instanceof f</code>，对象o是否为f的实例，也就是要在o的原型链中寻找是否存在着f.prototype。存在则返回true，否则返回false。在ES6中，对象只要有<a href="">Symbol.hasInstance</a>方法就能出现在instanceof右侧，它会把左侧的值作为该函数的参数，该函数返回一个布尔值，作为instanceof的返回值。</p>
+<pre><code class="js">// 使用Symbol.hasInstance和instanceof操作符进行类型检查
+let uint8 = &#123;
+  [Symbol.hasInstance](x) &#123;
+    return Number.isInteger(x) &amp;&amp; x &gt;= 0 &amp;&amp; x &lt;= 255;
+  &#125;
+&#125;
+
+console.log(Math.PI instanceof uint8); // false, PI不是整数
+console.log(-1 instanceof uint8) // false
+console.log(128 instanceof uint8); // true
+console.log(256 instanceof uint8); // false
+</code></pre>
+<p>Symbol.toStringTag，<strong>控制对象toString()的返回值</strong><br>使用<code>Object.prototype.toString.call(obj)</code>会返回[object Class]</p>
+<pre><code class="js">function classOf(obj) &#123;
   return Object.prototype.toString.call(obj).slice(8,-1);
 &#125;
 console.log(classOf([]))
@@ -190,10 +194,7 @@ let r1 = new Range1(1, 10)
 console.log(classOf(r)) // Range
 console.log(classOf(r1)); // Object
 </code></pre>
-<ol start="4">
-<li>Symbol.species,专门用于数组几个方法，他们都会返回一个新的数组对象，分别是：map，filter，concat，slice，splice。</li>
-</ol>
-<p><strong>Symbol.species就是控制以上方法返回的新数组对象的类</strong>。</p>
+<p>Symbol.species,专门用于数组几个方法，他们都会返回一个新的数组对象，分别是：map，filter，concat，slice，splice。<br><strong>Symbol.species就是控制以上方法返回的新数组对象的类</strong>。</p>
 <pre><code class="js">class EZArray extends Array &#123;
   static get [Symbol.species]() &#123;
     // 默认返回的是this，也就是创建的每一个实例都是当前的子类，而不是父类
@@ -210,16 +211,34 @@ let arrx2 = arr.map(x =&gt; x *= 2);
 let last = arrx2.last;
 console.log(arr, arrx2, last); // [1,2,3] [2,2,6] undefined
 </code></pre>
-<ol start="5">
-<li>Symbol.isConcatable，默认情况下，如果给concat传递一个数组对象，则会把数组展开。<strong>Symbol.isConcatable就是控制concat是否把数组或类数组参数展开。</strong><br>&#96;&#96;&#96;js<br>&#x2F;&#x2F; 类数组对象，index，length都要有<br>let arrayLike &#x3D; {<br>  0: 1,<br>  1: 2,<br>  2: 3,<br>  length: 3,<br>  &#x2F;&#x2F; true，表示需要把该对象展开<br>  [Symbol.isConcatSpreadable]: true,<br><br>};</li>
-</ol>
-<p>let arr &#x3D; [].concat(arrayLike);<br>console.log(arr.length); &#x2F;&#x2F; 3</p>
-<p>Object.defineProperty(arrayLike, Symbol.isConcatSpreadable, {<br>  value: false,<br>});<br>arr &#x3D; [].concat(arrayLike);<br>console.log(arr.length); &#x2F;&#x2F; 1</p>
-<p>class NonSpreadableArray extends Array {<br>  [Symbol.isConcatSpreadable] &#x3D; false;<br>}<br>let a &#x3D; new NonSpreadableArray(1, 2, 3);<br>console.log([].concat(a).length); &#x2F;&#x2F; 1</p>
-<pre><code>
-6. pattern-matching symbols，**控制着字符串模式匹配方法的执行，作用是创建需要自定义相关模式匹配的对象**。以往字符串执行模式匹配的方法，都是通过使用RegExp对象来进行的。在ES6之后，有点调整，除了使用RegExp对象外，还可以使用任何一个定义了相关模式匹配的Symbol方法。当字符串执行模式匹配方法时`string.patternMethod(pattern, arg)`，其实调用的是对象内定义模式匹配的Symbol方法`[Symbol.pattern](string, arg)`。
-```js
-// 使用pattern-matching symbol实现文件系统的通配符?和*
+<p>Symbol.isConcatable，默认情况下，如果给concat传递一个数组对象，则会把数组展开。<strong>Symbol.isConcatable就是控制concat是否把数组或类数组参数展开。</strong></p>
+<pre><code class="js">// 类数组对象，index，length都要有
+let arrayLike = &#123;
+  0: 1,
+  1: 2,
+  2: 3,
+  length: 3,
+  // true，表示需要把该对象展开
+  [Symbol.isConcatSpreadable]: true,
+&#125;;
+
+let arr = [].concat(arrayLike);
+console.log(arr.length); // 3
+
+Object.defineProperty(arrayLike, Symbol.isConcatSpreadable, &#123;
+  value: false,
+&#125;);
+arr = [].concat(arrayLike);
+console.log(arr.length); // 1
+
+class NonSpreadableArray extends Array &#123;
+  [Symbol.isConcatSpreadable] = false;
+&#125;
+let a = new NonSpreadableArray(1, 2, 3);
+console.log([].concat(a).length); // 1
+</code></pre>
+<p>pattern-matching symbols，<strong>控制着字符串模式匹配方法的执行，作用是创建需要自定义相关模式匹配的对象</strong>。以往字符串执行模式匹配的方法，都是通过使用RegExp对象来进行的。在ES6之后，有点调整，除了使用RegExp对象外，还可以使用任何一个定义了相关模式匹配的Symbol方法。当字符串执行模式匹配方法时<code>string.patternMethod(pattern, arg)</code>，其实调用的是对象内定义模式匹配的Symbol方法<code>[Symbol.pattern](string, arg)</code>。</p>
+<pre><code class="js">// 使用pattern-matching symbol实现文件系统的通配符?和*
 // 定义一个Glob类，目的是创建需要自定义相关模式匹配的对象
 class Glob &#123;
   constructor(glob) &#123;
@@ -252,10 +271,39 @@ let dirReplace = dir1.replace(pattern, &quot;dir/$1/月照心头.jpeg&quot;);
 
 console.log(dirSearch, dirMatch[1], dirMatch[2], dirReplace); //0 zhjrcc avatar dir/zhjrcc/月照心头.jpeg
 </code></pre>
-<ol start="7">
-<li>[Symbol.toPrimitive],作用是<strong>控制对象类型转换为哪种原始值类型（string,number）</strong>,<a href="arg">Symbol.toPrimitive</a>返回值必须为一个原始值来表示对象，arg参数可以是string,number,default。<br>&#96;&#96;&#96;js<br>let obj &#x3D; {<br>  age: 10,<br>  name: ‘zhjrcc’,<br>  <a href="hint">Symbol.toPrimitive</a> {<br> if (hint &#x3D;&#x3D;&#x3D; ‘string’) {<br>   return this.name<br> } else if (hint &#x3D;&#x3D;&#x3D; ‘number’) {<br>   return this.age<br> }<br> return true;<br>  }<br>}<br>let number &#x3D; 20;<br>let string &#x3D; ‘my name is:’;</li>
-</ol>
-<p>console.log(number + +obj)<br>console.log(<code>$&#123;string&#125;$&#123;obj&#125;</code>)</p>
-<pre><code>8. Symbol.unscopables，作用是**控制让with语句忽略的属性**，解决了with的一些兼容性问题。
+<p>[Symbol.toPrimitive],作用是<strong>控制对象类型转换为哪种原始值类型（string,number）</strong>,<a href="arg">Symbol.toPrimitive</a>返回值必须为一个原始值来表示对象，arg参数可以是string,number,default。</p>
+<pre><code class="js">let obj = &#123;
+  age: 10,
+  name: &#39;zhjrcc&#39;,
+  [Symbol.toPrimitive](hint) &#123;
+    if (hint === &#39;string&#39;) &#123;
+      return this.name
+    &#125; else if (hint === &#39;number&#39;) &#123;
+      return this.age
+    &#125;
+    return true;
+  &#125;
+&#125;
+let number = 20;
+let string = &#39;my name is:&#39;;
+
+console.log(number + +obj)
+console.log(`$&#123;string&#125;$&#123;obj&#125;`)
 </code></pre>
+<p>Symbol.unscopables，作用是<strong>控制让with语句忽略的属性</strong>，解决了with的一些兼容性问题。</p>
+<pre><code class="js">let obj = &#123;
+  fullname: &#39;zhjrcc&#39;,
+  age: 20,
+  language: &#39;javascript&#39;
+&#125;
+obj[Symbol.unscopables] = &#123;
+  language: true,
+  //language: false,
+&#125;
+with (obj) &#123;
+  // ReferenceError: language is not defined
+  console.log(fullname, age, language)
+&#125;
+</code></pre>
+<h1 id="模板标签函数"><a href="#模板标签函数" class="headerlink" title="模板标签函数"></a>模板标签函数</h1><p>当一个函数表达式后面跟着一个模板标签，我们说这个函数就是标签函数。</p>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
