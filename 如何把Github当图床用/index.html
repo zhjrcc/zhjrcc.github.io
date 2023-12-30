@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"><head><title>如何把Github当图床用</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://unpkg.com/gitimages/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.0.0"></head><body><div class="inner"><h1>如何把Github当图床用</h1><div class="time">First published 2022-02-05</div><div class="updatedTime">Modified 2023-01-13</div><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
+<!DOCTYPE html><html lang="zh-CN"><head><title>如何把Github当图床用</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://unpkg.com/gitimages/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="inner"><h1>如何把Github当图床用</h1><div class="time">First published 2022-02-05</div><div class="updatedTime">Modified 2023-01-13</div><h2 id="目标"><a href="#目标" class="headerlink" title="目标"></a>目标</h2><ol>
 <li>在markdown文件中自由粘贴图片。</li>
 <li>粘贴图片生成的链接就是github库中图片的链接。</li>
 <li>添加全局shell脚本，直接全局push到github库中。</li>
@@ -20,7 +20,9 @@
 </ul>
 <p>URL &#x3D;&#x3D;&#x3D; prefix&#x2F;filepath&#x2F;filename<br>filepath &#x3D;&#x3D;&#x3D; path - base path<br>prefix &#x3D; 图床地址，path &#x3D; base<br>URL &#x3D;&#x3D;&#x3D; 图床地址&#x2F;filename</p>
 <ol>
-<li>在终端输入以下命令，来添加全局shell脚本：<pre><code class="bash"># 建立并编写push脚本
+<li>在终端输入以下命令，来添加全局shell脚本：</li>
+</ol>
+<pre><code class="bash"># 建立并编写push脚本
 sudo vim /usr/local/bin/push
 # 在vim中，写入以下内容，按:wq保存
 cd /Users/zhjr/github/gitImages
@@ -30,8 +32,6 @@ git push -u origin main
 # 修改push脚本的权限
 sudo chmod +x /usr/local/bin/push
 </code></pre>
-</li>
-</ol>
 <h2 id="实现效果"><a href="#实现效果" class="headerlink" title="实现效果"></a>实现效果</h2><p>复制一张图片，可以直接粘贴到markdown文件中，并且生成的链接就是github仓库中的图片链接，最后只需要到终端输入push就可以把图片上传到github中。</p>
 <h2 id="延伸"><a href="#延伸" class="headerlink" title="延伸"></a>延伸</h2><p>由于Github访问不太稳定，可以根据需要选择使用码云Gitee，但在获取Gitee图片的真实地址需要将地址的blob改为raw。</p>
 <p>比如，<br>复制的地址：gitee.com&#x2F;userName&#x2F;repoName&#x2F;blob&#x2F;branch&#x2F;imageUrl</p>
