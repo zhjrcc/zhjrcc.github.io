@@ -1,9 +1,9 @@
-<!DOCTYPE html><html lang="zh-CN"><head><title>理解0.0.0.0地址</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://unpkg.com/gitimages/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="inner"><h1>理解0.0.0.0地址</h1><div class="time">First published 2023-12-31</div><div class="updatedTime">Modified 2023-12-31</div><p>在IP地址中，0.0.0.0是一个特殊的地址。在不同的上下文中，它有不同的含义：</p>
+<!DOCTYPE html><html lang="zh-CN"><head><title>理解0.0.0.0地址</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://unpkg.com/gitimages/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="inner"><h1>理解0.0.0.0地址</h1><div class="time">First published 2023-12-31</div><div class="updatedTime">Modified 2023-12-31</div><p>在 IP 地址中，0.0.0.0 是一个特殊的地址。在不同的上下文中，它有不同的含义：</p>
 <ol>
-<li>在IPv4网络中，0.0.0.0地址是一个无效的地址，它泛指网络上的所有IP地址的总集合。</li>
-<li>在服务器中，0.0.0.0指的是本机上的所有IPv4地址。如果一个主机有两个IP地址，例如192.168.1.1和10.1.2.1，并且该主机上的一个服务监听的地址是0.0.0.0，那么通过这两个IP地址都能够访问该服务。</li>
-<li>在网络路由中，0.0.0.0表示的是默认路由，即当路由表中没有找到完全匹配的路由的时候所对应的路由。</li>
-<li>在IP数据报中，0.0.0.0只能用作源IP地址，这发生在当设备启动时但又不知道自己的IP地址情况下。</li>
+<li>在 IPv4 网络中，0.0.0.0 地址是一个无效的地址，它泛指网络上的所有 IP 地址的总集合。</li>
+<li>在服务器中，0.0.0.0 指的是本机上的所有 IPv4 地址。如果一个主机有两个 IP 地址，例如 192.168.1.1 和 10.1.2.1，并且该主机上的一个服务监听的地址是 0.0.0.0，那么通过这两个 IP 地址都能够访问该服务。</li>
+<li>在网络路由中，0.0.0.0 表示的是默认路由，即当路由表中没有找到完全匹配的路由的时候所对应的路由。</li>
+<li>在 IP 数据报中，0.0.0.0 只能用作源 IP 地址，这发生在当设备启动时但又不知道自己的 IP 地址情况下。</li>
 </ol>
-<p>因此，在不同的上下文中，0.0.0.0有不同的含义，它可能表示无效的地址、本地主机上的所有地址、默认路由或源IP地址等。</p>
+<p>因此，在不同的上下文中，0.0.0.0 有不同的含义，它可能表示无效的地址、本地主机上的所有地址、默认路由或源 IP 地址等。</p>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
