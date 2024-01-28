@@ -4,7 +4,7 @@
 <li>粘贴图片生成的链接就是npm库中图片的链接。</li>
 <li>添加全局shell脚本，直接全局push到npm库中。</li>
 </ol>
-<p>在以前的文章<a href="https://zhjrcc.github.io/%E5%A6%82%E4%BD%95%E6%8A%8AGithub%E5%BD%93%E5%9B%BE%E5%BA%8A%E7%94%A8.html">如何把Github当图床用</a>，需要一起使用的扩展都写了出来，请查阅。本篇只是改用了npm。</p>
+<p>在以前的文章<a href="https://zhjrcc.github.io/%E5%A6%82%E4%BD%95%E6%8A%8AGithub%E5%BD%93%E5%9B%BE%E5%BA%8A%E7%94%A8">如何把Github当图床用</a>，需要一起使用的扩展都写了出来，请查阅。本篇只是改用了npm。</p>
 <h2 id="步骤"><a href="#步骤" class="headerlink" title="步骤"></a>步骤</h2><ol>
 <li>npm账号注册登录（不要2FA，虽然安全性提高了，但后续会非常麻烦），需要在终端中登录，使用<code>npm login</code>,登录前，需要使用官方源：<code>npm config set registry https://registry.npmjs.org</code>，可以使用npm config get registry查看当前你的源</li>
 <li>发布你的npm包，也就是你的图片文件夹，（需要npm init….之类的基本操作，不想啰嗦，如果不懂自己去谷歌学习一下），使用到的命令有：npm version patch，npm publish，前者意思是更新npm包的version为一个小补丁，也就是1.0.0变成1.0.1的意思；后者是发布npm包。</li>
