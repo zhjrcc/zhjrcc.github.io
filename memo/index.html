@@ -106,7 +106,7 @@ constfuncs(); // =&gt; 10
 <p>如下图，是当把for循环中把var改成let之后的作用域：<br><img src="https://unpkg.com/gitimages/2023-01-24-20-37-26.png"></p>
 <h2 id="clashX的监听端口"><a href="#clashX的监听端口" class="headerlink" title="clashX的监听端口"></a>clashX的监听端口</h2><p>地址：127.0.0.1，端口：7890，类型：socks5</p>
 <h2 id="Mac上查视频的码率"><a href="#Mac上查视频的码率" class="headerlink" title="Mac上查视频的码率"></a>Mac上查视频的码率</h2><p>在视频软件中，window-inspector，自带的QTP能显示视频的data rate，IINA则显示的是bit rate，要查看一般情况码率，就看data rate，要看每一帧的变化就看bit rate。<br>另外，单位换算上，1Mbps &#x3D; 1000 Kbps &#x3D; 125KBps。<br>另外，在QTP上显示的1kbit&#x2F;s，其实就是1Kbps，表示的是一样的意思</p>
-<h2 id="exports和module-exports区别"><a href="#exports和module-exports区别" class="headerlink" title="exports和module.exports区别"></a>exports和module.exports区别</h2><p><code>exports</code>只是m<code>odule.exports</code>的一个引用，在评估模块之前被分配 module.exports 的值。<br>与任何变量一样，如果将新值分配给 exports，则它就不再绑定到 module.exports。<br><code>require(module)</code>的返回值是module.exports而不是exports。<br>惯例用法：<br>将多个变量或者函数导出，则使用exports；<br>将单个变量，函数，类，导出，则使用module.exports；</p>
+<h2 id="exports和module-exports区别"><a href="#exports和module-exports区别" class="headerlink" title="exports和module.exports区别"></a>exports和module.exports区别</h2><p><code>exports</code>只是<code>module.exports</code>的一个引用，在评估模块之前被分配 module.exports 的值。<br>与任何变量一样，如果将新值分配给 exports，则它就不再绑定到 module.exports。<br><code>require(module)</code>的返回值是module.exports而不是exports。<br>惯例用法：<br>将多个变量或者函数导出，则使用exports；<br>将单个变量，函数，类，导出，则使用module.exports；</p>
 <pre><code class="javascript">// exports导出多个函数
 // 此时，相当于是module.exports的快捷方式
 exports.add = (x, y) =&gt; x + y;
