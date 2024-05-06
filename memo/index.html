@@ -492,7 +492,79 @@ console.log(obj) // 输出: &#123; age: 1 &#125;
 </ul>
 <h2 id="hexo-not-foundd"><a href="#hexo-not-foundd" class="headerlink" title="hexo not foundd"></a>hexo not foundd</h2><p>$ npm remove -g hexo-cli<br>$ npm install -g hexo-cli</p>
 <h2 id="hexo博客首页文章页数导航设置"><a href="#hexo博客首页文章页数导航设置" class="headerlink" title="hexo博客首页文章页数导航设置"></a>hexo博客首页文章页数导航设置</h2><ol>
-<li>选择显示导航，设置在&#x2F;theme&#x2F;_config.yml中：</li>
+<li>选择显示导航，设置在&#x2F;theme&#x2F;_config.yml中：<br>paginator: false<br>关闭页数导航</li>
+<li>设置每页显示的文章数量：<br>index_generator:<br>  path: ‘’<br>  per_page: 0<br>  order_by: -date</li>
 </ol>
-<h1 id="建议页数大于1开启"><a href="#建议页数大于1开启" class="headerlink" title="建议页数大于1开启"></a>建议页数大于1开启</h1><h1 id="设置页数导航开启"><a href="#设置页数导航开启" class="headerlink" title="设置页数导航开启"></a>设置页数导航开启</h1><p>paginator: false<br>关闭页数导航<br>2. 设置每页显示的文章数量：<br>index_generator:<br>  path: ‘’<br>  per_page: 0<br>  order_by: -date</p>
+<h2 id="git修改某个commit信息"><a href="#git修改某个commit信息" class="headerlink" title="git修改某个commit信息"></a>git修改某个commit信息</h2><pre><code>git commit --amend -m &quot;feat: add new feature&quot;
+</code></pre>
+<p>这将打开一个文本编辑器，其中包含当前提交消息。您可以编辑消息，然后保存并关闭编辑器以提交更改。</p>
+<p>如果您想保留原始提交消息，可以使用 <code>-C</code> 选项：</p>
+<pre><code>git commit --amend -C HEAD
+</code></pre>
+<p>这将打开一个文本编辑器，其中包含当前提交消息以及 <code>HEAD</code> 指向的提交消息。您可以编辑消息，然后保存并关闭编辑器以提交更改。</p>
+<p>注意，如果是在已经提交同步到远程仓库之后，再修改commit信息，在push之前，需要先git pull,git merge才可以git push</p>
+<h2 id="JavaScript判断一个对象为空对象"><a href="#JavaScript判断一个对象为空对象" class="headerlink" title="JavaScript判断一个对象为空对象"></a>JavaScript判断一个对象为空对象</h2><p>在 JavaScript 中，判断一个对象是否为空对象可以采用以下几种方法：</p>
+<ol>
+<li><strong>使用 Object.keys()</strong></li>
+</ol>
+<pre><code class="javascript">const obj = &#123;&#125;;
+
+if (Object.keys(obj).length === 0) &#123;
+  console.log(&quot;obj 是一个空对象&quot;);
+&#125; else &#123;
+  console.log(&quot;obj 不是一个空对象&quot;);
+&#125;
+</code></pre>
+<ol start="3">
+<li><strong>使用 JSON.stringify()</strong></li>
+</ol>
+<pre><code class="javascript">const obj = &#123;&#125;;
+
+if (JSON.stringify(obj) === &quot;&#123;&#125;&quot;) &#123;
+  console.log(&quot;obj 是一个空对象&quot;);
+&#125; else &#123;
+  console.log(&quot;obj 不是一个空对象&quot;);
+&#125;
+</code></pre>
+<ol start="4">
+<li><strong>使用lodash库</strong></li>
+</ol>
+<pre><code class="javascript">const obj = &#123;&#125;;
+
+if (_.isEmpty(obj)) &#123;
+  console.log(&quot;obj 是一个空对象&quot;);
+&#125; else &#123;
+  console.log(&quot;obj 不是一个空对象&quot;);
+&#125;
+</code></pre>
+<p>需要注意的是，以上方法判断的都是 <strong>纯空对象</strong>，即没有任何属性和方法的对象。如果对象有原型属性或方法，则可能无法被这些方法判断为空对象。</p>
+<h2 id="JavaScript双问号是什么意思"><a href="#JavaScript双问号是什么意思" class="headerlink" title="JavaScript双问号是什么意思"></a>JavaScript双问号是什么意思</h2><p><strong>JavaScript 中的双问号（??）运算符</strong>，也称为 <strong>空值合并运算符</strong>，用于检查其左侧的操作数是否为 <code>null</code> 或 <code>undefined</code>。如果左侧操作数为 <code>null</code> 或 <code>undefined</code>，则返回右侧操作数；否则，返回左侧操作数。</p>
+<p><strong>语法：</strong></p>
+<pre><code>expr1 ?? expr2
+</code></pre>
+<p><strong>示例：</strong></p>
+<pre><code class="javascript">// 如果变量 x 为 null 或 undefined，则返回 &quot;默认值&quot;，否则返回 x
+const result = x ?? &quot;默认值&quot;;
+</code></pre>
+<p><strong>双问号运算符的优点：</strong></p>
+<ul>
+<li>简洁：与传统的条件运算符（<code>? :</code>）相比，双问号运算符更加简洁。</li>
+<li>可读性强：它使代码更容易阅读和理解。</li>
+<li>可选链的替代方案：对于嵌套对象或数组，双问号运算符可以作为可选链（<code>?.</code>）的替代方案，以简化代码。</li>
+</ul>
+<p><strong>注意：</strong></p>
+<ul>
+<li>双问号运算符仅在左侧操作数为 <code>null</code> 或 <code>undefined</code> 时才返回右侧操作数。对于其他假值（如 0、空字符串或 false），它将返回左侧操作数。</li>
+<li>双问号运算符不能用于比较相等性。它只检查 <code>null</code> 和 <code>undefined</code> 值。</li>
+</ul>
+<h2 id="passport"><a href="#passport" class="headerlink" title="passport"></a>passport</h2><ol>
+<li><p>password.use返回的req.user：<br>export default passport.use(<br>  new Strategy({ usernameField: “username” }, (username, password, done) &#x3D;&gt; {<br> try {<br>   const findUser &#x3D; mockUsers.find((user) &#x3D;&gt; user.username &#x3D;&#x3D;&#x3D; username)<br>   if (!findUser || findUser.password !&#x3D;&#x3D; password)<br> throw new Error(“Unauthorized”)<br>   done(null, findUser.username)<br> } catch (err) {<br>   done(err, null)<br> }<br>  })<br>)</p>
+</li>
+<li><p>首先运行passport.use(new Stratege)，serialize,deserialize<br>第一次访问，不会触发deserialize。因为第一次运行session.id还不存在。这个阶段只会执行serialize。<br>第二次访问，因为serialize已经done(null,user.id)，那么deserialize就会先执行，而serialize会再执行一次。<br>后面的访问都跟第二次访问一样。</p>
+</li>
+<li><p>deserialize返回的也是req.user,跟passport.use的区别在于，passport.use是通过在post登录，通过中间件，passport.authenticate的形式返回的req.user。而deserialize则是在passport.session()中间件返回的。</p>
+</li>
+<li><p>serialize中，done(null, user.id)其实会在session中添加一个字段是{passport: id}</p>
+</li>
+</ol>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
