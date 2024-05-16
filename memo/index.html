@@ -146,11 +146,13 @@ asyncPromise()
 </code></pre>
 <p>在Express中有一个中间件专门处理这种，<code>express-async-handler</code>.</p>
 <h2 id="Homebrew"><a href="#Homebrew" class="headerlink" title="Homebrew"></a>Homebrew</h2><p>通过brew install安装的包，在&#x2F;usr&#x2F;local&#x2F;cellar中。</p>
-<p>brew services restart mongodb-community<br>MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017连接失败： sudo rm -rf &#x2F;tmp&#x2F;mongodb-27017.sock</p>
+<p>brew services restart mongodb-community</p>
+<p>MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017连接失败： sudo rm -rf &#x2F;tmp&#x2F;mongodb-27017.sock</p>
 <h2 id="ORM和ODM"><a href="#ORM和ODM" class="headerlink" title="ORM和ODM"></a>ORM和ODM</h2><p>object relational Mapping 对象关系映射，object document mapping 对象文档映射<br>都是用于在编程语言中的对象模型和数据库中的数据模型之间进行映射的工具。<br>常见的ORM库：Sequelize，TypeORM<br>常见的ODM库：Mongoose</p>
 <h2 id="mongodb添加用户"><a href="#mongodb添加用户" class="headerlink" title="mongodb添加用户"></a>mongodb添加用户</h2><p>db.createUser({user: “root”,pwd: “113647”,roles:[“root”]})<br>mongodb配置路径 &#x2F;usr&#x2F;local&#x2F;etc vim mongod.conf<br>验证：<br>security:<br>    authorization: enabled</p>
 <h2 id="yt-dlp"><a href="#yt-dlp" class="headerlink" title="yt-dlp"></a>yt-dlp</h2><p>原始<br>yt-dlp -f “bestvideo+bestaudio” –write-auto-sub –convert-subs&#x3D;ass –sub-lang “zh-Hans,en” –embed-sub –write-thumbnail –convert-thumbnail png –embed-thumbnail URL</p>
 <p>默认<br>yt-dlp -f “bestvideo+bestaudio” –write-auto-sub –sub-lang “zh-Hans,en” –embed-sub <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=gieEQFIfgYc">https://www.youtube.com/watch?v=gieEQFIfgYc</a></p>
+<p>原版<br>yt-dlp -f “bestvideo+bestaudio” <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=C-Gmx9ezh5g">https://www.youtube.com/watch?v=C-Gmx9ezh5g</a></p>
 <p>仅仅下载字幕<br>yt-dlp –write-auto-sub –sub-lang “zh-Hans,en” –skip-download <a target="_blank" rel="noopener" href="https://www.youtube.com/watch?v=lAFbKzO-fss">https://www.youtube.com/watch?v=lAFbKzO-fss</a></p>
 <h2 id="http状态码"><a href="#http状态码" class="headerlink" title="http状态码"></a>http状态码</h2><p><strong>HTTP 状态码分类</strong></p>
 <p>HTTP 状态码分为五类，每类都有不同的含义：</p>
@@ -558,14 +560,41 @@ const result = x ?? &quot;默认值&quot;;
 <li>双问号运算符仅在左侧操作数为 <code>null</code> 或 <code>undefined</code> 时才返回右侧操作数。对于其他假值（如 0、空字符串或 false），它将返回左侧操作数。</li>
 <li>双问号运算符不能用于比较相等性。它只检查 <code>null</code> 和 <code>undefined</code> 值。</li>
 </ul>
-<h2 id="passport"><a href="#passport" class="headerlink" title="passport"></a>passport</h2><ol>
-<li><p>password.use返回的req.user：<br>export default passport.use(<br>  new Strategy({ usernameField: “username” }, (username, password, done) &#x3D;&gt; {<br> try {<br>   const findUser &#x3D; mockUsers.find((user) &#x3D;&gt; user.username &#x3D;&#x3D;&#x3D; username)<br>   if (!findUser || findUser.password !&#x3D;&#x3D; password)<br> throw new Error(“Unauthorized”)<br>   done(null, findUser.username)<br> } catch (err) {<br>   done(err, null)<br> }<br>  })<br>)</p>
-</li>
-<li><p>首先运行passport.use(new Stratege)，serialize,deserialize<br>第一次访问，不会触发deserialize。因为第一次运行session.id还不存在。这个阶段只会执行serialize。<br>第二次访问，因为serialize已经done(null,user.id)，那么deserialize就会先执行，而serialize会再执行一次。<br>后面的访问都跟第二次访问一样。</p>
-</li>
+<h2 id="passport"><a href="#passport" class="headerlink" title="passport"></a>passport</h2><h3 id="登录POST"><a href="#登录POST" class="headerlink" title="登录POST"></a>登录POST</h3><ol>
+<li>password.use返回的req.user：<br>export default passport.use(<br>  new Strategy({ usernameField: “username” }, (username, password, done) &#x3D;&gt; {<br> try {<br>   const findUser &#x3D; mockUsers.find((user) &#x3D;&gt; user.username &#x3D;&#x3D;&#x3D; username)<br>   if (!findUser || findUser.password !&#x3D;&#x3D; password)<br> throw new Error(“Unauthorized”)<br>   done(null, findUser.username)<br> } catch (err) {<br>   done(err, null)<br> }<br>  })<br>)</li>
+</ol>
+<p>第一次访问，不会触发deserialize。因为第一次运行，session中还不存在passport。这个阶段只会执行Strategy和serialize。通过strategy返回了req.user。<br>第二次访问，因为serialize已经done(null,user.id)，在session中添加了passport，userid字段，那么deserialize就会先执行，而后执行Strategy和serialize。通过descrialize返回req.user。</p>
+<p>serialize序列化登录数据的时候，会在session中添加一个passport对象，passport包含一个user字段，这个字段就是存在数据库中的ObjectId.而deserialize的时候，就是根据这个ID找到这个用户信息的。</p>
+<h3 id="GET-STATUS"><a href="#GET-STATUS" class="headerlink" title="GET STATUS"></a>GET STATUS</h3><p>只会触发deserialize。</p>
+<ol>
 <li><p>deserialize返回的也是req.user,跟passport.use的区别在于，passport.use是通过在post登录，通过中间件，passport.authenticate的形式返回的req.user。而deserialize则是在passport.session()中间件返回的。</p>
 </li>
 <li><p>serialize中，done(null, user.id)其实会在session中添加一个字段是{passport: id}</p>
 </li>
+</ol>
+<h2 id="return-await-expression"><a href="#return-await-expression" class="headerlink" title="return await expression"></a>return await expression</h2><p>在您提供的两段代码中，主要区别在于在<code>return</code>语句中是否使用了额外的<code>await</code>关键字。</p>
+<ol>
+<li>第一段代码：</li>
+</ol>
+<pre><code class="javascript">export const hashPassword = async (password) =&gt; &#123;
+  const salt = await bcrypt.genSalt(saltRound);
+  return await bcrypt.hash(password, salt);
+&#125;
+</code></pre>
+<ol start="2">
+<li>第二段代码：</li>
+</ol>
+<pre><code class="javascript">export const hashPassword = async (password) =&gt; &#123;
+  const salt = await bcrypt.genSalt(saltRound);
+  return bcrypt.hash(password, salt);
+&#125;
+</code></pre>
+<p>在第一段代码中，<code>return</code>语句中使用了两次<code>await</code>。首先在等待生成盐值的异步操作完成后，再次使用<code>await</code>来等待密码哈希的异步操作完成。这样确保了在返回哈希后的密码之前，函数会等待两个异步操作都完成。</p>
+<p>而在第二段代码中，<code>return</code>语句中只使用了一次<code>await</code>，用于等待密码哈希的异步操作完成。这也是因为<code>async</code>函数会自动等待异步操作完成，所以在<code>return</code>语句中实际上只需要使用一次<code>await</code>就足够了。</p>
+<p>总结来说，第一段代码中多余的<code>await</code>并没有错误，但在这种情况下是不必要的。第二段代码是更简洁和有效的写法，在<code>async</code>函数中可以直接返回带有<code>await</code>关键字的表达式，而不必在<code>return</code>语句中再次使用<code>await</code>。</p>
+<h2 id="WRAP"><a href="#WRAP" class="headerlink" title="WRAP"></a>WRAP</h2><p>warp-cli set-custom-endpoint 188.114.96.198:2408<br>&#x2F;Applications&#x2F;Cloudflare WARP.app&#x2F;Contents&#x2F;Resources</p>
+<h2 id="为什么从字符串创建正则表达式需要两个反斜杠？"><a href="#为什么从字符串创建正则表达式需要两个反斜杠？" class="headerlink" title="为什么从字符串创建正则表达式需要两个反斜杠？"></a>为什么从字符串创建正则表达式需要两个反斜杠？</h2><ol>
+<li>在JS字符串中，\反斜杠用于转义后面跟着的字符，比如，\n表示换行符，而假设一个符号没有任何转义的，比如\a，就表示a字母本身。这就产生了一个问题，在字符串中不需要转义的字符，但有可能在正则表达式中是需要转义的，比如说，.在字符串中是不需要转义的，console.log(‘.‘)就只会输出一个. ， 然而在正则表达式中，.表示的匹配一个任何字符。</li>
+<li>因此，要在字符串中创建正则表达式就需要用到两个反斜杠，首先将反斜杠转义成反斜杠，再由反斜杠转义后面跟着的一个字符，这样就保证了反斜杠是肯定能转换后面跟着的一个字符，而不会像使用单个反斜杠的情况：只转义了在字符串中需要转义的。</li>
 </ol>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
