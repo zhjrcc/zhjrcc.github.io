@@ -1,0 +1,42 @@
+<!DOCTYPE html><html lang="zh-CN"><head><title>问题集</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://unpkg.com/gitimages/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="inner"><h1>问题集</h1><div class="time">First published 2024-07-07</div><div class="updatedTime">Modified 2024-07-07</div><pre><code>test.[[Prototype]]为什么不能访问原型链
+</code></pre>
+<p>在 JavaScript 中，[[Prototype]] 是一个内部属性，通常通过 <strong>proto</strong> 属性或 Object.getPrototypeOf() 方法访问对象的原型链。正如您提到的，test.[[Prototype]] 的语法不正确，因为 [[Prototype]] 不是标准的 JavaScript 语法用于访问对象的原型链。<br>正确的方式是使用如下方法之一来访问对象的原型链：<br>使用 <strong>proto</strong> 属性（不推荐使用，因为它不是标准的 ECMAScript 语法，但大多数现代浏览器支持）：<br>javascript<br>const test &#x3D; {};<br>const prototypeObj &#x3D; test.<strong>proto</strong>;<br>使用 Object.getPrototypeOf() 方法（推荐的方法，是标准的 ECMAScript 方法）：<br>javascript<br>const test &#x3D; {};<br>const prototypeObj &#x3D; Object.getPrototypeOf(test);</p>
+<p>这两种方法都可以用来获取对象 test 的原型链。JavaScript 的对象在创建时都有一个原型链，通过 <strong>proto</strong> 或 Object.getPrototypeOf() 可以访问到它们。</p>
+<pre><code>app.get(&quot;/:code&quot;, async (req, res) =&gt; &#123;
+  console.log(req.query.code)&#125;，
+为什么会输出undefined
+</code></pre>
+<p>在你的代码中，路由参数 :code 是通过路径传递的，而不是通过查询参数（query parameter）传递的。路由参数是通过路径的一部分传递的，例如 &#x2F;abc 中的 abc 部分。<br>如果你想通过查询参数访问 code，你需要确保客户端将参数作为查询字符串的一部分发送，例如 &#x2F;path?code&#x3D;value，然后你可以通过 req.query.code 来获取该参数的值。<br>现在，假设你的路由是 &#x2F;abc，那么对应的代码应该是这样的：<br>javascript<br>app.get(“&#x2F;:code”, async (req, res) &#x3D;&gt; {<br>  console.log(req.params.code); &#x2F;&#x2F; 这里使用 req.params.code 访问路由参数<br>});</p>
+<p>如果你希望通过查询参数访问 code，则客户端请求应该为 &#x2F;path?code&#x3D;value，然后可以这样访问：<br>javascript<br>app.get(“&#x2F;path”, async (req, res) &#x3D;&gt; {<br>  console.log(req.query.code); &#x2F;&#x2F; 这里使用 req.query.code 访问查询参数<br>});</p>
+<p>所以，确保你正在使用正确的方法来访问客户端发送的参数，这样就可以正确地获取和处理它们了。</p>
+<pre><code>也就是说，只需要指定开发依赖就行了，默认是普通依赖
+</code></pre>
+<p>在现代的 npm 中，默认行为已经变更，无需显式指定 –save 或 -S 选项来安装包作为普通依赖。如果你执行像 npm install package-name 这样的命令，npm 会自动将包安装为项目的普通依赖（dependencies），而不是开发依赖（devDependencies）。<br>因此，如果你希望将包作为开发依赖安装，需要显式指定 –save-dev 或 -D 选项。例如：<br>bash<br>npm install –save-dev package-name</p>
+<p>或者使用缩写形式：<br>bash<br>npm install -D package-name</p>
+<p>总结起来：<br>默认行为：npm install package-name 将包安装为项目的普通依赖（dependencies）。<br>显式指定开发依赖：需要使用 –save-dev 或 -D 选项来将包安装为项目的开发依赖（devDependencies）。</p>
+<p>这样可以确保安装的包按照你的预期添加到项目的相应依赖列表中。</p>
+<pre><code>vscode打开文件，文件夹总是自动打开
+</code></pre>
+<p>VSCODE-&gt;autoReveal-&gt;FALSE</p>
+<h2 id="React组件，React元素，React实例"><a href="#React组件，React元素，React实例" class="headerlink" title="React组件，React元素，React实例"></a>React组件，React元素，React实例</h2><ol>
+<li>React组件就是一个函数或者类， 使用JSX语法返回React元素，封装逻辑，状态。</li>
+<li>React元素就是描述UI的简单对象，可以由JSX语法创建或则CreateElement创建。</li>
+<li>React实例就是React组件的实际对象，由React在内部创建和管理。</li>
+</ol>
+<pre><code>const Text() =&gt; &#123;
+  return (
+    &lt;p&gt;
+      Text....
+    &lt;p/&gt;
+  )
+&#125;
+const App() =&gt; &#123;return(
+  &lt;div&gt;
+    &lt;Text/&gt;
+  &lt;/div&gt;
+)&#125;
+
+// Text就是React函数组件，&lt;Text/&gt;就是一个React元素。
+// 在React渲染Text组件时，在内部生成的它的一个实际对象，就是一个React实例。
+</code></pre>
+<p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
