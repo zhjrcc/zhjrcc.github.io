@@ -145,9 +145,7 @@ asyncPromise()
 &#125;;
 </code></pre>
 <p>在Express中有一个中间件专门处理这种，<code>express-async-handler</code>.</p>
-<h2 id="Homebrew"><a href="#Homebrew" class="headerlink" title="Homebrew"></a>Homebrew</h2><p>通过brew install安装的包，在&#x2F;usr&#x2F;local&#x2F;cellar中。</p>
-<p>brew services restart mongodb-community</p>
-<p>MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017连接失败： sudo rm -rf &#x2F;tmp&#x2F;mongodb-27017.sock</p>
+<h2 id="Homebrew"><a href="#Homebrew" class="headerlink" title="Homebrew"></a>Homebrew</h2><p>通过brew install安装的包，在&#x2F;usr&#x2F;local&#x2F;cellar中。<br>重启<br>brew services restart mongodb-community<br>启动<br>brew services start mongodb-community<br>停止<br>brew services stop mongodb-community<br>MongoNetworkError: connect ECONNREFUSED 127.0.0.1:27017连接失败： sudo rm -rf &#x2F;tmp&#x2F;mongodb-27017.sock</p>
 <h2 id="ORM和ODM"><a href="#ORM和ODM" class="headerlink" title="ORM和ODM"></a>ORM和ODM</h2><p>object relational Mapping 对象关系映射，object document mapping 对象文档映射<br>都是用于在编程语言中的对象模型和数据库中的数据模型之间进行映射的工具。<br>常见的ORM库：Sequelize，TypeORM<br>常见的ODM库：Mongoose</p>
 <h2 id="mongodb添加用户"><a href="#mongodb添加用户" class="headerlink" title="mongodb添加用户"></a>mongodb添加用户</h2><p>db.createUser({user: “root”,pwd: “113647”,roles:[“root”]})<br>mongodb配置路径 &#x2F;usr&#x2F;local&#x2F;etc vim mongod.conf<br>验证：<br>security:<br>    authorization: enabled</p>
 <p>mongoDB，shell界面<br>切换到admin数据库 , use admin,再db.auth(“root”,”113647”)</p>
