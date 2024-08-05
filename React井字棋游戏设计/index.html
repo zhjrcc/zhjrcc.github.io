@@ -531,15 +531,18 @@ function Board(&#123; xIsNext, squares, onPlay &#125;) &#123;
 export default function Game() &#123;
   const [xIsNext, setXIsNext] = useState(true)
   const [history, setHistory] = useState([Array(9).fill(null)])
+  cosnt [currentMove, setCurrent] = useState(0)
+  
   const currentSquares = history[history.length - 1]
 
   function handlePlay(nextSquares) &#123;
-    setHistory([...history, nextSquares])
+    const nextHistory = [history.slice(0, currentMove + 1), nextSquares]
+    setHistory(nextHistory)
     setXIsNext(!xIsNext)
   &#125;
 
   function jumpTo(nextMove) &#123;
-    // TODO
+    setCurrentMove(nextMove)
   &#125;
 
   const moves = history.map((squares, move) =&gt; &#123;
