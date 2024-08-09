@@ -100,7 +100,7 @@
 &#125;
 </code></pre>
 <ol start="7">
-<li>现在每个方块都写着“X”,需要将它显示为该有的值。要解决此问题，需要使用 props 将每个方块应有的值从父组件（Board）传递到其子组件（Square）。(value值可能是X,O,空null)</li>
+<li>现在每个方块都写着“X”,需要将它显示为该有的值。要解决此问题，需要使用 props 将每个方块应有的值从父组件（Board）传递到其子组件（Square）。(value 值可能是 X,O,空 null)</li>
 </ol>
 <pre><code class="js">function Square(&#123; value &#125;) &#123;
   return &lt;button className=&quot;square&quot;&gt;&#123;value&#125;&lt;/button&gt;
@@ -472,7 +472,7 @@ function calculateWinner(squares) &#123;
 &#125;
 </code></pre>
 <ol start="14">
-<li>显示过去的落子，你已经有一组 state 为 history 的数组，所以现在你需要将其转换为一组 React 元素。对于井字棋游戏历史中的每一步，你创建一个列表项 <li>，其中包含一个按钮 <button>。该按钮有一个 onClick 处理程序，它调用一个名为 jumpTo 的函数。在你可以实现 jumpTo 之前，你需要 Game 组件来跟踪用户当前正在查看的步骤。为此，定义一个名为 currentMove 的新 state 变量，默认为 0。接下来，更新 Game 中的 jumpTo 函数来更新 currentMove。<br>对 Game 的 handlePlay 函数进行两处更改，该函数在你单击方块时调用。 1.只保留旧历史的那部分。2.更新 currentMove 以指向最新的历史条目。<br>最后修改 Game 组件以渲染当前选定的着法，而不是始终渲染最后的着法。</li>
+<li>显示过去的落子，你已经有一组 state 为 history 的数组，所以现在你需要将其转换为一组 React 元素。对于井字棋游戏历史中的每一步，你创建一个列表项 li，其中包含一个按钮 button。该按钮有一个 onClick 处理程序，它调用一个名为 jumpTo 的函数。在你可以实现 jumpTo 之前，你需要 Game 组件来跟踪用户当前正在查看的步骤。为此，定义一个名为 currentMove 的新 state 变量，默认为 0。接下来，更新 Game 中的 jumpTo 函数来更新 currentMove。<br>对 Game 的 handlePlay 函数进行两处更改，该函数在你单击方块时调用。 1.只保留旧历史的那部分。2.更新 currentMove 以指向最新的历史条目。<br>最后修改 Game 组件以渲染当前选定的着法，而不是始终渲染最后的着法。</li>
 </ol>
 <pre><code class="js">import &#123; useState &#125; from &quot;react&quot;
 
@@ -531,8 +531,8 @@ function Board(&#123; xIsNext, squares, onPlay &#125;) &#123;
 export default function Game() &#123;
   const [xIsNext, setXIsNext] = useState(true)
   const [history, setHistory] = useState([Array(9).fill(null)])
-  cosnt [currentMove, setCurrent] = useState(0)
-  
+  cosnt[(currentMove, setCurrent)] = useState(0)
+
   const currentSquares = history[history.length - 1]
 
   function handlePlay(nextSquares) &#123;
@@ -594,6 +594,6 @@ function calculateWinner(squares) &#123;
 <ol start="15">
 <li>清理工作，如果你知道 currentMove 的值，那么你总能算出 xIsNext 应该是什么。你没有理由将这两者都存储在 state 中。事实上，总是尽量避免冗余的 state。简化你在 state 中存储的内容可以减少错误并使你的代码更易于理解。更改 Game 使其不将 xIsNext 存储为单独的 state 变量，而是根据 currentMove 计算出来：</li>
 </ol>
-<pre><code class="js"> const xIsNext = currentMove % 2 === 0;
+<pre><code class="js">const xIsNext = currentMove % 2 === 0
 </code></pre>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
