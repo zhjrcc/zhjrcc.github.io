@@ -32,9 +32,13 @@
 </ol>
 <h2 id="相对单位和绝对单位"><a href="#相对单位和绝对单位" class="headerlink" title="相对单位和绝对单位"></a>相对单位和绝对单位</h2><p>相对单位：em，rem。根据外部因素变大。<br>绝对单位：px。放在哪里都一样大。</p>
 <p>单位转换：<br>1in英寸 &#x3D; 25.4mm毫米 &#x3D; 2.54cm厘米 &#x3D; 6pc派卡 &#x3D; 72pt点 &#x3D; 96px像素<br>CSS像素并不严格等于设备显示器像素，特别是一些高清屏（视网膜屏）。</p>
-<h2 id="em和rem"><a href="#em和rem" class="headerlink" title="em和rem"></a>em和rem</h2><p>em适合基于特定的字号进行排版。1em就等于当前元素的字号，其准确值取决于作用的元素的字号。比如指定元素的字号是16px，则1em&#x3D;16px，2em&#x3D;32px。当使用em指定font-size时，是基于父元素继承的font-size属性的值。同时使用em指定元素的字号和其他属性时，会先计算出字号，再根据字号计算其他属性的值。</p>
+<h2 id="em和rem"><a href="#em和rem" class="headerlink" title="em和rem"></a>em和rem</h2><p>em和rem都是相对于元素字号进行计算的相对单位。</p>
+<p>em适合基于特定的字号进行排版。1em就等于当前元素的字号，其准确值取决于作用的元素的字号。比如指定元素的字号是16px，则1em&#x3D;16px，2em&#x3D;32px。当使用em指定font-size时，是基于父元素继承的font-size属性的值。同时使用em指定元素的字号和其他属性时，会先计算出字号，再根据字号计算其他属性的值。</p>
 <p>计算值：浏览器根据相对单位的值计算出绝对值。1em&#x3D;16px，这个16px就是根据1em计算出来的绝对值。</p>
 <p>使用em在指定多个嵌套元素的字号时，会出现文字不断缩小的问题，因为em是根据父元素font-size进行计算的。因此，使用em设定外边距、边距以及元素的大小上很好，但是指定字号就会变得复杂。<br><img src="https://gitee.com/zhjrcc/blog-images/raw/master/20240818122957.png"></p>
 <p>html标签是根节点，根节点有一个:root伪类选择器。设定字号，最好的是使用rem，rem是root em的缩写。rem不是相当于当前元素的，而是相对于根元素的字号。无论在哪个节点位置使用rem，都是相对于根元素的字号。</p>
 <p>因为浏览器能设置默认字号，但它却不能影响使用绝对单位（px）设定的字号，默认字号对于某些用户来说非常重要（尤其是视力障碍的人），为了可访问性，我们应该使用相对单位或百分比设置字号。</p>
+<p>拿不准的时候，使用rem设定字体，使用px设定边框，使用em设定其他大部分属性，主要是内边距，外边距和圆角。（容器的宽度也可以使用百分比）</p>
+<h2 id="vh-x2F-vw-x2F-vmin-x2F-vmax"><a href="#vh-x2F-vw-x2F-vmin-x2F-vmax" class="headerlink" title="vh&#x2F;vw&#x2F;vmin&#x2F;vmax"></a>vh&#x2F;vw&#x2F;vmin&#x2F;vmax</h2><p>vh、vw、vmin、vmax都是相对于浏览器视口进行计算的相对单位。这里的视口是网页中可见区域，不包含工具栏、地址栏、状态栏的部分。</p>
+<p>vh，视口高度的百分之一<br>vw，视口宽度的百分之一<br>vmin，视口宽、高中较小的一方的百分之一<br>vmax，视口宽、高中较大的一方的百分之一</p>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
