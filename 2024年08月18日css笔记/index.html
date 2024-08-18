@@ -1,0 +1,40 @@
+<!DOCTYPE html><html lang="zh-CN"><head><title>2024年08月18日笔记(css)</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://unpkg.com/gitimages/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="inner"><h1>2024年08月18日笔记(css)</h1><div class="time">First published 2024-08-18</div><div class="updatedTime">Modified 2024-08-18</div><p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p><meta name="referrer" content="no-referrer">
+
+<h2 id="层叠"><a href="#层叠" class="headerlink" title="层叠"></a>层叠</h2><p>处理层叠的两条法则：（是尽量遵守，并非不能使用）</p>
+<ol>
+<li>不要使用ID选择器</li>
+<li>不要使用!important</li>
+</ol>
+<h2 id="继承"><a href="#继承" class="headerlink" title="继承"></a>继承</h2><p>不要混淆了层叠跟继承：</p>
+<ol>
+<li>如果一个属性没有层叠值，则可能会继承来自祖先元素的样式。</li>
+<li>并非所有样式都能继承，通常就是文本相关的属性，列表相关的属性，表格边框的属性。</li>
+</ol>
+<p>浏览器开发工具的使用：</p>
+<ol>
+<li>样式检查器显示检查元素的所有的选择器，根据优先级排列，顶部的属性会覆盖下面的样式。</li>
+<li>在选择器下方是继承属性。</li>
+<li>被覆盖的属性会划有删除线。</li>
+<li>右侧显示样式表还有行号。</li>
+<li>通过顶部的筛选框选择特定的声明。<br><img src="https://gitee.com/zhjrcc/blog-images/raw/master/20240818103836.png"></li>
+</ol>
+<p>控制层叠的两个特殊值：</p>
+<ol>
+<li>inherit，强制继承一个父元素的属性。</li>
+<li>initial，CSS属性都有一个默认值（初始值），使用initial就可以将属性重置为默认值（初始值），相当于“硬复位”操作。不要混淆了auto值，auto是某些属性的默认值，比如元素的宽度默认就是width:auto，因此width:auto和width:initial是等价的。然而，使用initial更好，因为并非所有属性的默认值都是auto。还有注意，initial是将“属性”重置为默认值，而不是将“元素”重置为默认值。比如display的默认值就是inline，赋值initial就会相当于是inline，而不会因为元素是inline元素（span）还是block元素（div）。</li>
+</ol>
+<h2 id="简写属性"><a href="#简写属性" class="headerlink" title="简写属性"></a>简写属性</h2><p>简写属性就是可以同时给多个属性赋值。比如，font，background，border。</p>
+<p>简写属性的怪异行为：<br>默默地覆盖其他样式，简写属性可以省略一些属性不写，但这些省略掉的属性会被隐式的设置会初始值。比如设置font:black;省略掉的font-weight就会设置会normal。</p>
+<p>简写属性的顺序：<br>简写属性的值如果是对应不同类型，则顺序可以随意。border: 1px solid #000; 等价于，border: #000 1px solid;<br>但如果值是比较模糊，则需要注意顺序：</p>
+<ol>
+<li>margin，padding，border-width,这种设置盒子四个方向的属性。他们的顺序是：上，右，下，左。top，right，bottom，left。TRouBLe原则，顺时针原则。也还可以进一步省略为三个属性，则left&#x3D;right，省略为两个属性，则bottom&#x3D;top，left&#x3D;right。</li>
+<li>background-position，box-shadow，text-shadow,这种指定水平，垂直两个方向的属性。他们的顺序是：（x,y），表示的是一个笛卡尔网格。</li>
+</ol>
+<h2 id="相对单位和绝对单位"><a href="#相对单位和绝对单位" class="headerlink" title="相对单位和绝对单位"></a>相对单位和绝对单位</h2><p>相对单位：em，rem。根据外部因素变大。<br>绝对单位：px。放在哪里都一样大。</p>
+<p>单位转换：<br>1in英寸 &#x3D; 25.4mm毫米 &#x3D; 2.54cm厘米 &#x3D; 6pc派卡 &#x3D; 72pt点 &#x3D; 96px像素<br>CSS像素并不严格等于设备显示器像素，特别是一些高清屏（视网膜屏）。</p>
+<h2 id="em和rem"><a href="#em和rem" class="headerlink" title="em和rem"></a>em和rem</h2><p>em适合基于特定的字号进行排版。1em就等于当前元素的字号，其准确值取决于作用的元素的字号。比如指定元素的字号是16px，则1em&#x3D;16px，2em&#x3D;32px。当使用em指定font-size时，是基于父元素继承的font-size属性的值。同时使用em指定元素的字号和其他属性时，会先计算出字号，再根据字号计算其他属性的值。</p>
+<p>计算值：浏览器根据相对单位的值计算出绝对值。1em&#x3D;16px，这个16px就是根据1em计算出来的绝对值。</p>
+<p>使用em在指定多个嵌套元素的字号时，会出现文字不断缩小的问题，因为em是根据父元素font-size进行计算的。因此，使用em设定外边距、边距以及元素的大小上很好，但是指定字号就会变得复杂。<br><img src="https://gitee.com/zhjrcc/blog-images/raw/master/20240818122957.png"></p>
+<p>html标签是根节点，根节点有一个:root伪类选择器。设定字号，最好的是使用rem，rem是root em的缩写。rem不是相当于当前元素的，而是相对于根元素的字号。无论在哪个节点位置使用rem，都是相对于根元素的字号。</p>
+<p>因为浏览器能设置默认字号，但它却不能影响使用绝对单位（px）设定的字号，默认字号对于某些用户来说非常重要（尤其是视力障碍的人），为了可访问性，我们应该使用相对单位或百分比设置字号。</p>
+<p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
