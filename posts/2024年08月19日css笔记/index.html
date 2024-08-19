@@ -1,4 +1,4 @@
-<!DOCTYPE html><html lang="zh-CN"><head><title>2024年08月19日css笔记</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://gitee.com/zhjrcc/blog-images/raw/master/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="inner"><h1>2024年08月19日css笔记</h1><div class="time">First published 2024-08-19</div><div class="updatedTime">Modified 2024-08-19</div><p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p><meta name="referrer" content="no-referrer">
+<!DOCTYPE html><html lang="zh-CN"><head><title>2024年08月19日css笔记</title><meta name="referrer" content="no-referrer"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://gitee.com/zhjrcc/blog-images/raw/master/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="inner"><h1>2024年08月19日css笔记</h1><div class="time">First published 2024-08-19</div><div class="updatedTime">Modified 2024-08-19</div><p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p><meta name="referrer" content="no-referrer">
 
 <h2 id="盒模型"><a href="#盒模型" class="headerlink" title="盒模型"></a>盒模型</h2><p>将页面的盒模型设为 border-box</p>
 <pre><code class="css">:root &#123;
@@ -11,6 +11,29 @@
   box-sizing: inherit;
 &#125;
 </code></pre>
-<h2 id="负外边距"><a href="#负外边距" class="headerlink" title="负外边距"></a>负外边距</h2><p>正的外边距会将容器的边缘往里推，而负的外边距则会将边缘往外拉</p>
+<h2 id="负外边距"><a href="#负外边距" class="headerlink" title="负外边距"></a>负外边距</h2><p>正的外边距会将容器的边缘往里推，而负的外边距则会将边缘往外拉。<br>负外边距的具体行为取决于设置在元素的哪边。<br><img src="https://gitee.com/zhjrcc/blog-images/raw/master/20240819165604.png"></p>
 <h2 id="控制溢出行为"><a href="#控制溢出行为" class="headerlink" title="控制溢出行为"></a>控制溢出行为</h2><p>overflow：visible hidden scroll auto。<br>visible,默认值，内容可见，就算溢出容器。<br>hidden，隐藏溢出的内容。<br>scroll，显示滚动条。<br>auto，如果内容溢出显示滚动条。</p>
+<h2 id="表格布局"><a href="#表格布局" class="headerlink" title="表格布局"></a>表格布局</h2><p>容器使用display:table，主栏和侧边栏使用display:table-cell。 单元格间距使用border-spacing(margin在单元格上不生效)，使用负边距抵消单元格外边缘的边距。<br><a href="https://zhjrcc.github.io/project/%E8%A1%A8%E6%A0%BC%E5%B8%83%E5%B1%80%E5%AE%9E%E7%8E%B0%E4%B8%A4%E5%88%97%E7%AD%89%E9%AB%98/">table</a></p>
+<h2 id="Flexbox"><a href="#Flexbox" class="headerlink" title="Flexbox"></a>Flexbox</h2><p>将容纳器设定display:flex;设定容器内的各个元素的宽度占比以及外边距，子元素默认是等高的。<br><a href="https://zhjrcc.github.io/project/Flex%E5%B8%83%E5%B1%80%E5%AE%9E%E7%8E%B0%E4%B8%A4%E5%88%97%E7%AD%89%E9%AB%98/">table</a></p>
+<h2 id="min-height-x2F-width和max-height-x2F-width"><a href="#min-height-x2F-width和max-height-x2F-width" class="headerlink" title="min-height&#x2F;width和max-height&#x2F;width"></a>min-height&#x2F;width和max-height&#x2F;width</h2><p>不要明确指定元素的高度，会导致更复杂的情况。</p>
+<p>使用min-height和max-height指定最大值和最小值，而不明确指定高度。元素就能在界限内自动决定高度度。</p>
+<h2 id="垂直居中内容"><a href="#垂直居中内容" class="headerlink" title="垂直居中内容"></a>垂直居中内容</h2><p>vertical-align:middle,只对行内元素或者table-cell单元格有效，无法作用到块级元素中。</p>
+<ol>
+<li>自然高度的容器：给容器加上相等的上下内边距让内容居中</li>
+<li>不需要指定高度或者避免使用内边距：对容器使用 display: table-cell 和vertical-align: middle</li>
+<li>Flexbox居中内容</li>
+<li>容器里面的内容只有一行文字：设置一个大的行高，让它等于理想的容器高度</li>
+<li>容器和内容的高度都知道：将内容绝对定位</li>
+<li>不知道内部元素的高度： 用绝对定位结合变形(transform)</li>
+</ol>
+<h2 id="外边距折叠"><a href="#外边距折叠" class="headerlink" title="外边距折叠"></a>外边距折叠</h2><p>当顶部和底部的外边距相邻时，就会重叠，就产生了单个外边距，这种现象就是外边距折叠。（只有上下外边距会产生折叠，左右外边距不会折叠。）</p>
+<p>外边距折叠的主要原因与包含文字的块之间的间隔相关，分别标出了标题(左图)和段落(右图)的外边距：<br><img src="https://gitee.com/zhjrcc/blog-images/raw/master/20240819172739.png"><br>折叠外边距的大小等于相邻外边距中的最大值。</p>
+<p>防止外边距折叠：</p>
+<ol>
+<li>对容器使用 overflow: auto(或者非 visible 的值)，防止内部元素的外边距跟容器外部的外边距折叠。这种方式副作用最小。</li>
+<li>在两个外边距之间加上边框或者内边距，防止它们折叠。</li>
+<li>如果容器为浮动元素、内联块、绝对定位或固定定位时，外边距不会在它外面折叠。</li>
+<li>当使用 Flexbox&#x2F;Gird 布局时，弹性布局内的元素之间不会发生外边距折叠</li>
+<li>当元素显示为 table-cell 时不具备外边距属性，因此它们不会折叠。</li>
+</ol>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
