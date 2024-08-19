@@ -41,4 +41,17 @@
 <p>拿不准的时候，使用rem设定字体，使用px设定边框，使用em设定其他大部分属性，主要是内边距，外边距和圆角。（容器的宽度也可以使用百分比）</p>
 <h2 id="vh-x2F-vw-x2F-vmin-x2F-vmax"><a href="#vh-x2F-vw-x2F-vmin-x2F-vmax" class="headerlink" title="vh&#x2F;vw&#x2F;vmin&#x2F;vmax"></a>vh&#x2F;vw&#x2F;vmin&#x2F;vmax</h2><p>vh、vw、vmin、vmax都是相对于浏览器视口进行计算的相对单位。这里的视口是网页中可见区域，不包含工具栏、地址栏、状态栏的部分。</p>
 <p>vh，视口高度的百分之一<br>vw，视口宽度的百分之一<br>vmin，视口宽、高中较小的一方的百分之一<br>vmax，视口宽、高中较大的一方的百分之一</p>
+<p>使用vw和calc()定义字号：font-size:calc(0.5em + 1vw)</p>
+<h2 id="无单位的数值和行高"><a href="#无单位的数值和行高" class="headerlink" title="无单位的数值和行高"></a>无单位的数值和行高</h2><p>有些属性允许无单位的值（不指定单位的数），比如line-height，z-index，font-weight，任何长度单位都允许使用0,0px，0em都等价。</p>
+<p>其中，line-height比较特殊。它的值可以有单位也可以没有单位。<br>如果没单位，则子元素会直接继承这个没有单位的数。比如，line-height：1.2,则子元素的line-height也是1.2。最终根据子元素的字号而变化，如果字号是16px，则行高就是1.2<em>16px。<br>如果有单位，则继承的是line-height的计算值。比如，line-height：1.2em，假设当前父元素字号是16px，则子元素的line-height是1.2</em>16px，而不是根据当前子元素的字号而改变了。<br>因此，我们应该对于line-height我们应该使用无单位值。</p>
+<h2 id="自定义属性（CSS变量）"><a href="#自定义属性（CSS变量）" class="headerlink" title="自定义属性（CSS变量）"></a>自定义属性（CSS变量）</h2><p>声明变量，在声明块中使用–varname。<br>使用变量，调用var(varname，备用值)。如果对于当前元素来说，变量值算出来是一个非法值，则会使用初始值。</p>
+<p>自定义属性可以减少重复代码，更重要的是，它可以层叠和继承：在多个选择器中定义相同的变量，这个变量在不同的地方有不同的值。</p>
+<p>使用JavaScript改变自定义属性：</p>
+<pre><code class="js">// 获取html根节点
+var rootElement = document.documentElement;
+var styles = getComputedStyle(rootElement);
+var mainColor = styles.getPropertyValue(&#39;--main-bg&#39;);
+console.log(String(mainColor).trim());
+</code></pre>
+<p>在不支持自定义属性的浏览器上，var()会被忽略，因此尽量为这些浏览器提供回退方案：color:#000;color: var(–main-color)</p>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
