@@ -1,0 +1,16 @@
+<!DOCTYPE html><html lang="zh-CN"><head><title>2024年08月19日css笔记</title><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://unpkg.com/gitimages/favicon.ico"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="inner"><h1>2024年08月19日css笔记</h1><div class="time">First published 2024-08-19</div><div class="updatedTime">Modified 2024-08-19</div><p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p><meta name="referrer" content="no-referrer">
+
+<h2 id="盒模型"><a href="#盒模型" class="headerlink" title="盒模型"></a>盒模型</h2><p>将页面的盒模型设为 border-box</p>
+<pre><code class="css">:root &#123;
+  box-sizing: border-box;
+&#125;
+
+*,
+::before,
+::after &#123;
+  box-sizing: inherit;
+&#125;
+</code></pre>
+<h2 id="负外边距"><a href="#负外边距" class="headerlink" title="负外边距"></a>负外边距</h2><p>正的外边距会将容器的边缘往里推，而负的外边距则会将边缘往外拉</p>
+<h2 id="控制溢出行为"><a href="#控制溢出行为" class="headerlink" title="控制溢出行为"></a>控制溢出行为</h2><p>overflow：visible hidden scroll auto。<br>visible,默认值，内容可见，就算溢出容器。<br>hidden，隐藏溢出的内容。<br>scroll，显示滚动条。<br>auto，如果内容溢出显示滚动条。</p>
+<p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>

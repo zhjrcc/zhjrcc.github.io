@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>表格布局实现两列等高</title>
+    <style>
+      /* 将页面的盒模型设定为border-box */
+      :root {
+        box-sizing: border-box;
+      }
+      *,
+      ::before,
+      ::after {
+        box-sizing: inherit;
+      }
+      body {
+        background-color: #eee;
+        font-family: Helvetica, Arial, sans-serif;
+      }
+      header { 
+        color: #fff;
+        background-color: #0072b0;
+        border-radius: .5em;
+      }
+      /* 设定一个负边距，抵消border-spacing产生的外边距 */
+      .wrapper {
+        margin: 0 -1.5em;
+      }
+      /* 将容器显示为表格，将其宽度拉满，将边框间隔设为水平1.5em，垂直方向0 */
+      .container {
+        display: table;
+        width: 100%;
+        border-spacing: 1.5em 0;
+      }
+      /* 将main主栏显示为table-cell表示一个单元格td，
+      这里省略了table-row(表格的一行)，因为我们只需要一行来显示两列，
+      并将主栏的宽度设定为70% */
+      .main {
+        display: table-cell;
+        width: 70%;
+        padding: 1.5em;
+        background-color: #fff;
+        border-radius: .5em;
+      }
+
+      /* 这里是侧栏，宽度占比是剩下的30%，也是作为table-cell显示一个单元格 */
+      .sidebar {
+        display: table-cell;
+        width: 30%;
+        background-color: #fff;
+        border-radius: .5em;
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <h1>表格布局实现两列等高</h1>
+    </header>
+    <div class="wrapper">
+      <div class="container">
+        <main class="main">
+          <h2>实现方式</h2>
+          <p>
+            需求：两列等高，1.5em间距，外边缘跟头部对齐。
+          </p>
+          <p>
+            容器使用display:table，主栏和侧边栏使用display:table-cell。
+            单元格间距使用border-spacing，使用负边距抵消单元格外边缘的边距。
+          </p>
+        </main>
+        <aside class="sidebar">
+          <div class="widget"></div>
+          <div class="widget"></div>
+          <div class="gizmo"></div>
+        </aside>
+      </div>
+    </div>
+  </body>
+</html>
