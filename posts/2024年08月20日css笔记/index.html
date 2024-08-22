@@ -2,13 +2,13 @@
 
 <h2 id="浮动"><a href="#浮动" class="headerlink" title="浮动"></a>浮动</h2><p>width: 50%;float:left;<br>浮动元素不同于普通文档流的元素，它们的高度不会加到父元素上。</p>
 <ol>
-<li><p>一个解决办法是使用跟浮动配套的 clear 属性。将一个元素放在主容器的末尾，并对它使用clear，这会让容器扩展到浮动元素下面。<br>clear:both声明让该元素移动到浮动元素的下面，而不是侧面，表示清除浮动元素。clear的值还可以是right和left，这样只会清除向左或者向右浮动的元素。<br>因为这个clear元素并没有浮动，所以容器就会扩展，直到包含它为止，因此包含该div上面的浮动元素。缺点是要在html中添加不必要的标记，才能实现。</p>
+<li><p>一个解决办法是使用跟浮动配套的 clear 属性。将一个元素放在主容器的末尾，并对它使用 clear，这会让容器扩展到浮动元素下面。<br>clear:both 声明让该元素移动到浮动元素的下面，而不是侧面，表示清除浮动元素。clear 的值还可以是 right 和 left，这样只会清除向左或者向右浮动的元素。<br>因为这个 clear 元素并没有浮动，所以容器就会扩展，直到包含它为止，因此包含该 div 上面的浮动元素。缺点是要在 html 中添加不必要的标记，才能实现。</p>
 </li>
-<li><p>可以用伪元素(pseudo-element)来实现，使用::after伪元素选择器就可以在DOM容器末尾添加一个元素，而不用在HTML中添加一个标记。伪元素是一种特殊的选择器，可以选中文档中的特定部分。伪元素以双冒号开头，为了向后兼容也支持单冒号的形式。最常见的伪元素是::before,::after.用来向元素的开始或者结束位置插入内容。使用伪元素清除浮动就是clearfix。</p>
+<li><p>可以用伪元素(pseudo-element)来实现，使用::after 伪元素选择器就可以在 DOM 容器末尾添加一个元素，而不用在 HTML 中添加一个标记。伪元素是一种特殊的选择器，可以选中文档中的特定部分。伪元素以双冒号开头，为了向后兼容也支持单冒号的形式。最常见的伪元素是::before,::after.用来向元素的开始或者结束位置插入内容。使用伪元素清除浮动就是 clearfix。</p>
 </li>
 </ol>
-<pre><code class="css">.clearfix::after&#123;
-  clear:both;
+<pre><code class="css">.clearfix::after &#123;
+  clear: both;
   display: block;
   content: &quot; &quot;;
 &#125;
@@ -23,7 +23,7 @@
   display: table;
 &#125;
 .clearfix::after &#123;
-  clear:both;
+  clear: both;
 &#125;
 </code></pre>
 <ol start="4">
@@ -33,11 +33,12 @@
   clear: left;
 &#125;
 </code></pre>
-<h2 id="BFC"><a href="#BFC" class="headerlink" title="BFC"></a>BFC</h2><p>Block formatting context ,块级格式化上下文。BFC是网页的一块区域，元素基于这块区域布局。虽然 BFC 本身是环绕文档流的一部分， 但它将内部的内容与外部的上下文隔离开。创建一个BFC能让容器内的文字不再跟浮动的图片重叠。</p>
-<p>创建一个BFC:</p>
+<h2 id="BFC"><a href="#BFC" class="headerlink" title="BFC"></a>BFC</h2><p>Block formatting context ,块级格式化上下文。BFC 是网页的一块区域，元素基于这块区域布局。虽然 BFC 本身是环绕文档流的一部分， 但它将内部的内容与外部的上下文隔离开。创建一个 BFC 能让容器内的文字不再跟浮动的图片重叠。</p>
+<p>创建一个 BFC:</p>
 <ol>
-<li>float,不为none</li>
+<li>float,不为 none</li>
 <li>display，inline-block、table-cell、table-caption、flex、inline-flex、 grid 或 inline-grid。拥有这些属性的元素称为块级容器(block container)。</li>
 <li>postion,absolute,fixed</li>
 </ol>
+<h2 id="网格系统"><a href="#网格系统" class="headerlink" title="网格系统"></a>网格系统</h2><p>网格系统提高代码的可复用性。网格系统提供了一系列的类名， 可添加到标记中，将网页的一部分构造成行和列。大部分流行的 CSS 框架包含了自己的网格系统。它们的实现细节各不相同，但是设计思想 相同:在一个行容器里放置一个或多个列容器。列容器的类决定每列的宽度。它应该只给容器设置宽度和定位，不给网页提 供视觉样式，比如颜色和边框。</p>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
