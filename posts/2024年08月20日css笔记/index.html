@@ -1,4 +1,43 @@
 <!DOCTYPE html><html lang="zh-CN"><head><title>2024年08月20日css笔记</title><meta name="referrer" content="no-referrer"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://gitee.com/zhjrcc/blog-images/raw/master/favicon.ico?v=2"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="inner"><h1>2024年08月20日css笔记</h1><div class="time">First published 2024-08-20</div><div class="updatedTime">Modified 2024-08-20</div><p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p><meta name="referrer" content="no-referrer">
 
-<h2 id="浮动"><a href="#浮动" class="headerlink" title="浮动"></a>浮动</h2><p>1. </p>
+<h2 id="浮动"><a href="#浮动" class="headerlink" title="浮动"></a>浮动</h2><p>width: 50%;float:left;<br>浮动元素不同于普通文档流的元素，它们的高度不会加到父元素上。</p>
+<ol>
+<li><p>一个解决办法是使用跟浮动配套的 clear 属性。将一个元素放在主容器的末尾，并对它使用clear，这会让容器扩展到浮动元素下面。<br>clear:both声明让该元素移动到浮动元素的下面，而不是侧面，表示清除浮动元素。clear的值还可以是right和left，这样只会清除向左或者向右浮动的元素。<br>因为这个clear元素并没有浮动，所以容器就会扩展，直到包含它为止，因此包含该div上面的浮动元素。缺点是要在html中添加不必要的标记，才能实现。</p>
+</li>
+<li><p>可以用伪元素(pseudo-element)来实现，使用::after伪元素选择器就可以在DOM容器末尾添加一个元素，而不用在HTML中添加一个标记。伪元素是一种特殊的选择器，可以选中文档中的特定部分。伪元素以双冒号开头，为了向后兼容也支持单冒号的形式。最常见的伪元素是::before,::after.用来向元素的开始或者结束位置插入内容。使用伪元素清除浮动就是clearfix。</p>
+</li>
+</ol>
+<pre><code class="css">.clearfix::after&#123;
+  clear:both;
+  display: block;
+  content: &quot; &quot;;
+&#125;
+</code></pre>
+<ol start="3">
+<li>上面的方法有一个缺点：浮动元素的外边距不会折叠到清除浮动容器的外部，非浮动元素的外边距则会正常折叠。修改版可以包含所有外边距，防止折叠：</li>
+</ol>
+<pre><code class="css">.clearfix::before,
+.clearfix::after &#123;
+  content: &quot;&quot;;
+  /* table块级元素能防止外边距折叠 */
+  display: table;
+&#125;
+.clearfix::after &#123;
+  clear:both;
+&#125;
+</code></pre>
+<ol start="4">
+<li>因为浏览器会将浮动元素尽可能地放在靠上的地方，如果媒体盒子的高度不一样，那么媒体盒子不会如预期那样均匀地占据两行。<br><img src="https://gitee.com/zhjrcc/blog-images/raw/master/20240822162100.png"><br>解决办法是：清除每行的 第一个元素上面的浮动。由于已知每行有两个盒子，因此只需要清除每行的第奇数个元素上面那行的浮动即可。你可以用:nth-child()伪类选择器选中这些目标元素。</li>
+</ol>
+<pre><code class="css">.media:nth-child(odd) &#123;
+  clear: left;
+&#125;
+</code></pre>
+<h2 id="BFC"><a href="#BFC" class="headerlink" title="BFC"></a>BFC</h2><p>Block formatting context ,块级格式化上下文。BFC是网页的一块区域，元素基于这块区域布局。虽然 BFC 本身是环绕文档流的一部分， 但它将内部的内容与外部的上下文隔离开。创建一个BFC能让容器内的文字不再跟浮动的图片重叠。</p>
+<p>创建一个BFC:</p>
+<ol>
+<li>float,不为none</li>
+<li>display，inline-block、table-cell、table-caption、flex、inline-flex、 grid 或 inline-grid。拥有这些属性的元素称为块级容器(block container)。</li>
+<li>postion,absolute,fixed</li>
+</ol>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
