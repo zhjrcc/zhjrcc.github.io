@@ -593,7 +593,7 @@ const result = x ?? &quot;默认值&quot;;
 <p>在第一段代码中，<code>return</code>语句中使用了两次<code>await</code>。首先在等待生成盐值的异步操作完成后，再次使用<code>await</code>来等待密码哈希的异步操作完成。这样确保了在返回哈希后的密码之前，函数会等待两个异步操作都完成。</p>
 <p>而在第二段代码中，<code>return</code>语句中只使用了一次<code>await</code>，用于等待密码哈希的异步操作完成。这也是因为<code>async</code>函数会自动等待异步操作完成，所以在<code>return</code>语句中实际上只需要使用一次<code>await</code>就足够了。</p>
 <p>总结来说，第一段代码中多余的<code>await</code>并没有错误，但在这种情况下是不必要的。第二段代码是更简洁和有效的写法，在<code>async</code>函数中可以直接返回带有<code>await</code>关键字的表达式，而不必在<code>return</code>语句中再次使用<code>await</code>。</p>
-<h2 id="WRAP"><a href="#WRAP" class="headerlink" title="WRAP"></a>WRAP</h2><p>warp-cli set-custom-endpoint 188.114.96.198:2408<br>&#x2F;Applications&#x2F;Cloudflare WARP.app&#x2F;Contents&#x2F;Resources</p>
+<h2 id="WRAP"><a href="#WRAP" class="headerlink" title="WRAP"></a>WRAP</h2><p>&#x2F;Applications&#x2F;Cloudflare WARP.app&#x2F;Contents&#x2F;Resources<br>&#x2F;Applications&#x2F;Cloudflare\ WARP.app&#x2F;Contents&#x2F;Resources<br>warp-cli set-custom-endpoint 188.114.96.198:2408</p>
 <h2 id="为什么从字符串创建正则表达式需要两个反斜杠？"><a href="#为什么从字符串创建正则表达式需要两个反斜杠？" class="headerlink" title="为什么从字符串创建正则表达式需要两个反斜杠？"></a>为什么从字符串创建正则表达式需要两个反斜杠？</h2><ol>
 <li>在JS字符串中，\反斜杠用于转义后面跟着的字符，比如，\n表示换行符，而假设一个符号没有任何转义的，比如\a，就表示a字母本身。这就产生了一个问题，在字符串中不需要转义的字符，但有可能在正则表达式中是需要转义的，比如说，.在字符串中是不需要转义的，console.log(‘.‘)就只会输出一个. ， 然而在正则表达式中，.表示的匹配一个任何字符。</li>
 <li>因此，要在字符串中创建正则表达式就需要用到两个反斜杠，首先将反斜杠转义成反斜杠，再由反斜杠转义后面跟着的一个字符，这样就保证了反斜杠是肯定能转换后面跟着的一个字符，而不会像使用单个反斜杠的情况：只转义了在字符串中需要转义的。</li>
