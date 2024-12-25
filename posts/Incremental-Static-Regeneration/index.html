@@ -1,6 +1,6 @@
 <!DOCTYPE html><html lang="zh-CN"><head><title>Incremental Static Regeneration</title><meta name="referrer" content="no-referrer"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://gitee.com/zhjrcc/blog-images/raw/master/favicon.ico?v=2"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="inner"><h1>Incremental Static Regeneration</h1><div class="time">First published 2024-12-25</div><div class="updatedTime">Modified 2024-12-25</div><p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p><meta name="referrer" content="no-referrer">
-![](https://gitee.com/zhjrcc/blog-images/raw/master/20241225203624.png)
 
+<p><img src="https://gitee.com/zhjrcc/blog-images/raw/master/20241225203624.png"></p>
 <h3 id="总结：增量静态生成-Incremental-Static-Regeneration-ISR"><a href="#总结：增量静态生成-Incremental-Static-Regeneration-ISR" class="headerlink" title="总结：增量静态生成 (Incremental Static Regeneration, ISR)"></a>总结：增量静态生成 (Incremental Static Regeneration, ISR)</h3><p>ISR 是 Next.js 提供的一项功能，使静态页面能够在运行时动态更新，既保持高性能的静态渲染优势，又实现了动态内容更新的灵活性。</p>
 <h4 id="核心特性"><a href="#核心特性" class="headerlink" title="核心特性"></a><strong>核心特性</strong></h4><ol>
 <li><strong>无需完整重建</strong>：页面内容可以在运行时更新，无需重新构建整个站点。</li>
