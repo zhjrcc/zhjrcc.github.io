@@ -1,0 +1,142 @@
+<!DOCTYPE html><html lang="zh-CN"><head><title>useContext和useReducer配合使用</title><meta name="referrer" content="no-referrer"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://gitee.com/zhjrcc/blog-images/raw/master/favicon.ico?v=2"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="inner"><h1>useContext和useReducer配合使用</h1><div class="time">First published 2025-02-11</div><div class="updatedTime">Modified 2025-02-11</div><p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p><meta name="referrer" content="no-referrer">
+
+<p><strong><code>useReducer</code></strong> 和 <strong><code>useContext</code></strong> 经常一起使用，是因为它们搭配可以帮助我们在 React 应用中更高效地管理和共享全局状态。让我分别解释它们的作用，再讲讲为什么它们是“黄金搭档”。</p>
+<hr>
+<h3 id="1-useReducer-的作用："><a href="#1-useReducer-的作用：" class="headerlink" title="1. useReducer 的作用："></a>1. <strong><code>useReducer</code> 的作用：</strong></h3><p><code>useReducer</code> 是 React 提供的一个 <strong>状态管理钩子</strong>，适用于处理复杂状态逻辑，尤其是状态之间存在相互依赖或者需要基于上一个状态计算新状态的情况。</p>
+<ul>
+<li>它类似于 <code>useState</code>，但更适合处理复杂的状态变化逻辑。</li>
+<li>你可以把 <code>useReducer</code> 想象成 <strong>Redux 的简化版</strong>，它有 <strong>state</strong>（当前状态）和 <strong>dispatch</strong>（触发动作以更新状态）。</li>
+</ul>
+<p><strong>基本用法：</strong></p>
+<pre><code class="jsx">const [state, dispatch] = useReducer(reducer, initialState)
+</code></pre>
+<ul>
+<li>**<code>reducer</code>**：一个函数，接受当前状态和一个动作，返回新的状态。</li>
+<li>**<code>initialState</code>**：初始状态。</li>
+<li>**<code>dispatch</code>**：用于触发状态更新的函数。</li>
+</ul>
+<p><strong>例子：</strong></p>
+<pre><code class="jsx">const initialState = &#123; count: 0 &#125;
+
+function reducer(state, action) &#123;
+  switch (action.type) &#123;
+    case &quot;increment&quot;:
+      return &#123; count: state.count + 1 &#125;
+    case &quot;decrement&quot;:
+      return &#123; count: state.count - 1 &#125;
+    default:
+      return state
+  &#125;
+&#125;
+
+function Counter() &#123;
+  const [state, dispatch] = useReducer(reducer, initialState)
+
+  return (
+    &lt;div&gt;
+      &lt;p&gt;Count: &#123;state.count&#125;&lt;/p&gt;
+      &lt;button onClick=&#123;() =&gt; dispatch(&#123; type: &quot;increment&quot; &#125;)&#125;&gt;+&lt;/button&gt;
+      &lt;button onClick=&#123;() =&gt; dispatch(&#123; type: &quot;decrement&quot; &#125;)&#125;&gt;-&lt;/button&gt;
+    &lt;/div&gt;
+  )
+&#125;
+</code></pre>
+<hr>
+<h3 id="2-useContext-的作用："><a href="#2-useContext-的作用：" class="headerlink" title="2. useContext 的作用："></a>2. <strong><code>useContext</code> 的作用：</strong></h3><p><code>useContext</code> 是 React 提供的一个 <strong>跨组件传递数据的钩子</strong>，用来避免一层层的 <strong>props drilling</strong>（逐层传递 props）。</p>
+<ul>
+<li>它可以让你在组件树中，<strong>在不通过 props 的情况下共享数据</strong>。</li>
+<li>适合用来传递一些全局信息，比如主题（theme）、用户信息（user）、语言设置（locale）等。</li>
+</ul>
+<p><strong>基本用法：</strong></p>
+<pre><code class="jsx">const MyContext = React.createContext()
+
+function MyComponent() &#123;
+  const contextValue = useContext(MyContext)
+  return &lt;div&gt;&#123;contextValue&#125;&lt;/div&gt;
+&#125;
+</code></pre>
+<hr>
+<h3 id="3-为什么-useReducer-和-useContext-经常配合使用？"><a href="#3-为什么-useReducer-和-useContext-经常配合使用？" class="headerlink" title="3. 为什么 useReducer 和 useContext 经常配合使用？"></a>3. <strong>为什么 <code>useReducer</code> 和 <code>useContext</code> 经常配合使用？</strong></h3><p>这两个 Hook 结合起来，<strong>可以实现类似 Redux 的全局状态管理</strong>，而且不需要引入额外的库，代码简洁且高效。</p>
+<p><strong>具体来说：</strong></p>
+<ol>
+<li><strong><code>useReducer</code> 负责管理复杂的状态逻辑</strong>，处理状态的更新和变化。</li>
+<li><strong><code>useContext</code> 负责将状态和 <code>dispatch</code> 分发函数传递给需要的组件</strong>，实现全局共享。</li>
+</ol>
+<p>通过这种组合，你可以在 React 应用中创建一个轻量级的状态管理系统。</p>
+<hr>
+<h3 id="4-例子：用-useReducer-和-useContext-创建全局状态管理"><a href="#4-例子：用-useReducer-和-useContext-创建全局状态管理" class="headerlink" title="4. 例子：用 useReducer 和 useContext 创建全局状态管理"></a>4. <strong>例子：用 <code>useReducer</code> 和 <code>useContext</code> 创建全局状态管理</strong></h3><p>假设我们要做一个简单的计数器应用，状态需要在多个组件中共享。</p>
+<h4 id="步骤-1：创建-Context-和-Reducer"><a href="#步骤-1：创建-Context-和-Reducer" class="headerlink" title="步骤 1：创建 Context 和 Reducer"></a><strong>步骤 1：创建 Context 和 Reducer</strong></h4><pre><code class="jsx">import React, &#123; createContext, useReducer, useContext &#125; from &quot;react&quot;
+
+// 创建 Context
+const CounterContext = createContext()
+
+// 定义初始状态
+const initialState = &#123; count: 0 &#125;
+
+// 定义 Reducer 函数
+function counterReducer(state, action) &#123;
+  switch (action.type) &#123;
+    case &quot;increment&quot;:
+      return &#123; count: state.count + 1 &#125;
+    case &quot;decrement&quot;:
+      return &#123; count: state.count - 1 &#125;
+    default:
+      return state
+  &#125;
+&#125;
+
+// 创建 Provider 组件，提供状态和 dispatch
+function CounterProvider(&#123; children &#125;) &#123;
+  const [state, dispatch] = useReducer(counterReducer, initialState)
+
+  return (
+    &lt;CounterContext.Provider value=&#123;&#123; state, dispatch &#125;&#125;&gt;
+      &#123;children&#125;
+    &lt;/CounterContext.Provider&gt;
+  )
+&#125;
+</code></pre>
+<hr>
+<h4 id="步骤-2：在子组件中使用-useContext-获取状态"><a href="#步骤-2：在子组件中使用-useContext-获取状态" class="headerlink" title="步骤 2：在子组件中使用 useContext 获取状态"></a><strong>步骤 2：在子组件中使用 <code>useContext</code> 获取状态</strong></h4><pre><code class="jsx">// 显示计数器的组件
+function DisplayCounter() &#123;
+  const &#123; state &#125; = useContext(CounterContext) // 通过 useContext 获取状态
+  return &lt;h1&gt;Count: &#123;state.count&#125;&lt;/h1&gt;
+&#125;
+
+// 控制按钮的组件
+function CounterControls() &#123;
+  const &#123; dispatch &#125; = useContext(CounterContext) // 通过 useContext 获取 dispatch
+
+  return (
+    &lt;div&gt;
+      &lt;button onClick=&#123;() =&gt; dispatch(&#123; type: &quot;increment&quot; &#125;)&#125;&gt;Increase&lt;/button&gt;
+      &lt;button onClick=&#123;() =&gt; dispatch(&#123; type: &quot;decrement&quot; &#125;)&#125;&gt;Decrease&lt;/button&gt;
+    &lt;/div&gt;
+  )
+&#125;
+</code></pre>
+<hr>
+<h4 id="步骤-3：在根组件中使用-Provider-包裹所有子组件"><a href="#步骤-3：在根组件中使用-Provider-包裹所有子组件" class="headerlink" title="步骤 3：在根组件中使用 Provider 包裹所有子组件"></a><strong>步骤 3：在根组件中使用 Provider 包裹所有子组件</strong></h4><pre><code class="jsx">function App() &#123;
+  return (
+    &lt;CounterProvider&gt;
+      &lt;DisplayCounter /&gt;
+      &lt;CounterControls /&gt;
+    &lt;/CounterProvider&gt;
+  )
+&#125;
+
+export default App
+</code></pre>
+<hr>
+<h3 id="5-总结"><a href="#5-总结" class="headerlink" title="5. 总结"></a>5. <strong>总结</strong></h3><ul>
+<li>**<code>useReducer</code>**：负责管理复杂的状态和更新逻辑，类似 Redux 的 <code>reducer</code>。</li>
+<li>**<code>useContext</code>**：负责在组件树中共享状态和 <code>dispatch</code>，避免层层传递 props。</li>
+</ul>
+<p><strong>它们的组合优势：</strong></p>
+<ul>
+<li><strong>全局状态管理</strong>：实现轻量级的全局状态共享。</li>
+<li><strong>代码清晰</strong>：逻辑清晰分离，易于维护。</li>
+<li><strong>无需第三方库</strong>：不需要引入 Redux 或 MobX，使用 React 内置功能即可。</li>
+</ul>
+<hr>
+<p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
