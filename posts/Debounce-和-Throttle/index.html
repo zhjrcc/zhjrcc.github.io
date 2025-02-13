@@ -3,62 +3,70 @@
 <p><strong>Debounce</strong> 和 <strong>Throttle</strong> 是两种用于控制函数执行频率的技术，常用于优化高频事件（如滚动、输入、窗口调整等）的处理。它们的主要目的是减少不必要的函数调用，提升性能。</p>
 <hr>
 <h3 id="1-Debounce（防抖）"><a href="#1-Debounce（防抖）" class="headerlink" title="1. Debounce（防抖）"></a>1. <strong>Debounce（防抖）</strong></h3><ul>
-<li><strong>定义</strong>：在事件被触发后，等待一段时间（延迟），如果在这段时间内没有再次触发事件，才执行函数。如果在等待期间事件被再次触发，则重新计时。</li>
-<li><strong>应用场景</strong>：<ul>
+<li><p><strong>定义</strong>：在事件被触发后，等待一段时间（延迟），如果在这段时间内没有再次触发事件，才执行函数。如果在等待期间事件被再次触发，则重新计时。</p>
+</li>
+<li><p><strong>应用场景</strong>：</p>
+<ul>
 <li>搜索框输入：用户停止输入一段时间后再发送请求。</li>
 <li>窗口调整大小：用户停止调整窗口大小后再执行计算。</li>
 <li>按钮防重复点击：防止用户快速多次点击按钮。</li>
 </ul>
 </li>
-<li><strong>实现原理</strong>：<ul>
+<li><p><strong>实现原理</strong>：</p>
+<ul>
 <li>使用 <code>setTimeout</code> 设置一个延迟时间，每次触发事件时清除之前的定时器并重新计时。</li>
 </ul>
 </li>
-<li><strong>代码示例</strong>：<pre><code class="javascript">function debounce(func, delay) &#123;
-  let timeoutId;
+<li><p><strong>代码示例</strong>：</p>
+<pre><code class="javascript">function debounce(func, delay) &#123;
+  let timeoutId
   return function (...args) &#123;
-    clearTimeout(timeoutId);
+    clearTimeout(timeoutId)
     timeoutId = setTimeout(() =&gt; &#123;
-      func.apply(this, args);
-    &#125;, delay);
-  &#125;;
+      func.apply(this, args)
+    &#125;, delay)
+  &#125;
 &#125;
 
 // 使用示例
-const handleInput = () =&gt; console.log(&#39;Input debounced!&#39;);
-const debouncedInput = debounce(handleInput, 300);
-document.querySelector(&#39;input&#39;).addEventListener(&#39;input&#39;, debouncedInput);
+const handleInput = () =&gt; console.log(&quot;Input debounced!&quot;)
+const debouncedInput = debounce(handleInput, 300)
+document.querySelector(&quot;input&quot;).addEventListener(&quot;input&quot;, debouncedInput)
 </code></pre>
 </li>
 </ul>
 <hr>
 <h3 id="2-Throttle（节流）"><a href="#2-Throttle（节流）" class="headerlink" title="2. Throttle（节流）"></a>2. <strong>Throttle（节流）</strong></h3><ul>
-<li><strong>定义</strong>：在一定时间间隔内，无论事件触发多少次，函数只会执行一次。</li>
-<li><strong>应用场景</strong>：<ul>
+<li><p><strong>定义</strong>：在一定时间间隔内，无论事件触发多少次，函数只会执行一次。</p>
+</li>
+<li><p><strong>应用场景</strong>：</p>
+<ul>
 <li>滚动事件：每隔一段时间执行一次滚动处理函数。</li>
 <li>鼠标移动事件：限制鼠标移动事件的触发频率。</li>
 <li>游戏中的按键操作：限制按键触发的频率。</li>
 </ul>
 </li>
-<li><strong>实现原理</strong>：<ul>
+<li><p><strong>实现原理</strong>：</p>
+<ul>
 <li>使用时间戳或标志位来判断是否达到执行条件。</li>
 </ul>
 </li>
-<li><strong>代码示例</strong>：<pre><code class="javascript">function throttle(func, limit) &#123;
-  let inThrottle;
+<li><p><strong>代码示例</strong>：</p>
+<pre><code class="javascript">function throttle(func, limit) &#123;
+  let inThrottle
   return function (...args) &#123;
     if (!inThrottle) &#123;
-      func.apply(this, args);
-      inThrottle = true;
-      setTimeout(() =&gt; (inThrottle = false), limit);
+      func.apply(this, args)
+      inThrottle = true
+      setTimeout(() =&gt; (inThrottle = false), limit)
     &#125;
-  &#125;;
+  &#125;
 &#125;
 
 // 使用示例
-const handleScroll = () =&gt; console.log(&#39;Scroll throttled!&#39;);
-const throttledScroll = throttle(handleScroll, 300);
-window.addEventListener(&#39;scroll&#39;, throttledScroll);
+const handleScroll = () =&gt; console.log(&quot;Scroll throttled!&quot;)
+const throttledScroll = throttle(handleScroll, 300)
+window.addEventListener(&quot;scroll&quot;, throttledScroll)
 </code></pre>
 </li>
 </ul>
