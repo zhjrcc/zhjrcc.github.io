@@ -1,0 +1,30 @@
+<!DOCTYPE html><html lang="zh-CN"><head><title>TEST</title><meta name="referrer" content="no-referrer"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://gitee.com/zhjrcc/blog-images/raw/master/favicon.ico?v=2"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="inner"><h1>TEST</h1><div class="time">First published 2025-12-13</div><div class="updatedTime">Modified 2025-12-13</div><p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p><meta name="referrer" content="no-referrer">
+
+
+<p><img src="https://gitee.com/zhjrcc/blog-images/raw/master/20251213145100.png"></p>
+<pre><code class="js">const express = require(&quot;express&quot;)
+const mongoose = require(&quot;mongoose&quot;)
+const cors = require(&quot;cors&quot;)
+
+const app = express()
+const port = 5000
+
+app.use(cors())
+app.use(express.json())
+
+mongoose.connect(&quot;mongodb://localhost:27017/mydatabase&quot;, &#123;
+  useNewUrlParser: true,
+  useUnifiedTopology: true,
+&#125;)
+
+const db = mongoose.connection
+db.on(&quot;error&quot;, console.error.bind(console, &quot;connection error:&quot;))
+db.once(&quot;open&quot;, () =&gt; &#123;
+  console.log(&quot;Connected to MongoDB&quot;)
+&#125;)
+
+app.listen(port, () =&gt; &#123;
+  console.log(`Server is running on port: $&#123;port&#125;`)
+&#125;)
+</code></pre>
+<p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
