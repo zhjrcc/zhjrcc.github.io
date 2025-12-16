@@ -1,38 +1,29 @@
 <!DOCTYPE html><html lang="zh-CN"><head><title>Typescript</title><meta name="referrer" content="no-referrer"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://gitee.com/zhjrcc/blog-images/raw/master/favicon.ico?v=2"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="inner"><h1>Typescript</h1><div class="time">First published 2025-12-16</div><div class="updatedTime">Modified 2025-12-16</div><p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p><meta name="referrer" content="no-referrer">
 
-<h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><ol>
-<li>类型声明</li>
-</ol>
+<h2 id="基本用法"><a href="#基本用法" class="headerlink" title="基本用法"></a>基本用法</h2><p>1.类型声明</p>
 <pre><code class="js">let a: number = 1
 function add(a: number, b: number): number &#123;
   return a + b
 &#125;
 </code></pre>
-<ol start="2">
-<li>类型推断<br>函数结果自动推断为一个 number</li>
-</ol>
+<p>2.类型推断<br>函数结果自动推断为一个 number</p>
 <pre><code class="js">let add(a: number ,b: number) &#123;
   return a + b
 &#125;
 </code></pre>
-<ol start="3">
-<li><p>Typescript编译<br>npx tsc xx.ts</p>
-</li>
-<li><p>值与类型<br>typescript处理的是类型，javascript处理的是值</p>
-</li>
-<li><p>Typescript Playground<br>Typescript官方的在线TS编辑器，可自动生成JS</p>
-</li>
-<li><p>TSC编译器<br>TS官方的编译器，npm i typescript</p>
-</li>
-<li><p>TS-NODE<br>直接在终端中执行TS文件，不需要编译JS再执行。</p>
-</li>
-</ol>
-<h2 id="any-unknown-never"><a href="#any-unknown-never" class="headerlink" title="any unknown never"></a>any unknown never</h2><ol>
-<li><p>any<br>表示任何类型，any类型可以被赋值为任何类型,any类型可以赋值给任何类型。</p>
-</li>
-<li><p>unknown<br>表示未知类型，unknown类型可以被赋值为任何类型，但unknown类型不能赋值给任何类型，除非它通过类型断言或类型守卫被缩小为具体类型。unknown可以被认为是安全版本的any类型。</p>
-</li>
-<li><p>never<br>表示一个空类型，never类型可以赋值给任何类型,但never类型不能被赋值为任何类型。never可以被认为是unknown的对立面。</p>
-</li>
-</ol>
+<p>3.Typescript编译<br>npx tsc xx.ts</p>
+<p>4.值与类型<br>typescript处理的是类型，javascript处理的是值</p>
+<p>5.Typescript Playground<br>Typescript官方的在线TS编辑器，可自动生成JS</p>
+<p>6.TSC编译器<br>TS官方的编译器，npm i typescript</p>
+<p>7.TS-NODE<br>直接在终端中执行TS文件，不需要编译JS再执行。</p>
+<h2 id="any-unknown-never"><a href="#any-unknown-never" class="headerlink" title="any unknown never"></a>any unknown never</h2><p>1.any<br>表示任何类型，any类型可以被赋值为任何类型,any类型可以赋值给任何类型。</p>
+<p>2.unknown<br>表示未知类型，unknown类型可以被赋值为任何类型，但unknown类型不能赋值给任何类型，除非它通过类型断言或类型守卫被缩小为具体类型。unknown可以被认为是安全版本的any类型。</p>
+<p>3.never<br>表示一个空类型，never类型可以赋值给任何类型,但never类型不能被赋值为任何类型。never可以被认为是unknown的对立面。</p>
+<h2 id="TypeScript的类型系统"><a href="#TypeScript的类型系统" class="headerlink" title="TypeScript的类型系统"></a>TypeScript的类型系统</h2><p>1.基本类型<br>number,string,boolean,symbol,object,null,undefined,bigint</p>
+<p>2.包装对象类型<br>number,string,boolean都有各自的包装对象Number,String,Boolean。为此，TS也给出了类型Number,String,Boolean。包装对象类型包含了基本类型，也就是说，Number类型相当于type T &#x3D; Number | number.</p>
+<p>3.Object与object<br>跟包装对象同理，object表示我们日常开发用到的一般对象(数组，对象，函数)，Object则包含JS所有广义的对象（包含了包装对象），因此Object类型可以表示所有JS的对象，除了特殊的null和undefined.</p>
+<p>4.undefined和null<br>undefined和null类型都分别只有一个值，就是它们本身，在严格模式下(strict:true或者strictNullChecks:true),直接将undefined或null赋值给一个变量，会自动将类型定义为undefined或null，如果不是严格模式下，则会隐式将类型定义为any。</p>
+<p>5.值类型<br>TS中，可以将值作为一种类型.<code>let b:1=2</code>会报错，因为b的类型是1，值只能为1。number是这种数值类型的父类型，<code>let a =1;let b:number = a</code>这样设置是没问题的。同理，string,boolean等其他基本类型也是各自值类型的父类型。</p>
+<p>6.联合类型<br>联合类型也就是多个基本类型组合在一起，比如<code>type T = number | string</code>，那么T类型就表示可以数字或者字符串。</p>
+<p>7.交叉类型</p>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
