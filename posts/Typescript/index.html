@@ -11,7 +11,7 @@ function add(a: number, b: number): number &#123;
   return a + b
 &#125;
 </code></pre>
-<p>3.Typescript编译<br>npx tsc xx.ts</p>
+<p>3.Typescript编译<br>npx tsc xx.ts,将ts文件编译成js文件，该命令可以添加一些参数，也可以在当前目录在床见一个tsconfig.json，在这个文件中填入相关的参数，执行该命令时就会依照配置执行。</p>
 <p>4.值与类型<br>typescript处理的是类型，javascript处理的是值</p>
 <p>5.Typescript Playground<br>Typescript官方的在线TS编辑器，可自动生成JS</p>
 <p>6.TSC编译器<br>TS官方的编译器，npm i typescript</p>
@@ -23,7 +23,17 @@ function add(a: number, b: number): number &#123;
 <p>2.包装对象类型<br>number,string,boolean都有各自的包装对象Number,String,Boolean。为此，TS也给出了类型Number,String,Boolean。包装对象类型包含了基本类型，也就是说，Number类型相当于type T &#x3D; Number | number.</p>
 <p>3.Object与object<br>跟包装对象同理，object表示我们日常开发用到的一般对象(数组，对象，函数)，Object则包含JS所有广义的对象（包含了包装对象），因此Object类型可以表示所有JS的对象，除了特殊的null和undefined.</p>
 <p>4.undefined和null<br>undefined和null类型都分别只有一个值，就是它们本身，在严格模式下(strict:true或者strictNullChecks:true),直接将undefined或null赋值给一个变量，会自动将类型定义为undefined或null，如果不是严格模式下，则会隐式将类型定义为any。</p>
-<p>5.值类型<br>TS中，可以将值作为一种类型.<code>let b:1=2</code>会报错，因为b的类型是1，值只能为1。number是这种数值类型的父类型，<code>let a =1;let b:number = a</code>这样设置是没问题的。同理，string,boolean等其他基本类型也是各自值类型的父类型。</p>
-<p>6.联合类型<br>联合类型也就是多个基本类型组合在一起，比如<code>type T = number | string</code>，那么T类型就表示可以数字或者字符串。</p>
-<p>7.交叉类型</p>
+<p>5.值类型<br>TS中，可以将值作为一种类型.<code>let b:1=2</code>会报错，因为b的类型是1，值只能为1。number是这种数值类型的父类型，<code>let a=1;let b:number = a</code>这样设置是没问题的。同理，string,boolean等其他基本类型也是各自值类型的父类型。</p>
+<p>6.联合类型<br>联合类型就是多个类型组合在一起，它的值是这个组合中其中的一个类型，比如<code>type T = number | string</code>，那么T类型就表示值类型可以数字或者字符串。</p>
+<p>7.交叉类型<br>交叉类型就是多个类型组合在一起，它的值必须同时符合组合中所有的类型，比如<code>type T = number &amp; string</code>，那么T类型就表示值类型必须是数字也是字符串，那就相当于是never空类型了，因为没有任何一个值能同时满足这个条件。</p>
+<p>8.type命令<br>可以通过使用type命令来创建类型别名,比如<code>type Name = string; type Age = number; let name:Name = &#39;aa&#39;; let age:Age = 18</code>.</p>
+<p>9.typeof运算符<br>typeof type，返回一个TS类型，注意，这个命令的操作值是一个值，但返回的是该值的类型，而不是字符串。这个跟JS中的typeof是有区别的，JS的typeof返回的是该值的类型的一个字符串，比如typeof 1，得到的就是’number’.</p>
+<pre><code class="js">// TS中的typeof
+let a:number = 1;
+let b:typeof a = &#39;adsf&#39;; // 报错，b的类型是a的number类型
+
+console.log(typeof a) //输出number
+</code></pre>
+<p>10.块级类型声明<br>使用type命令声明类型时，它的作用域是块级作用域。</p>
+<p>11.类型的兼容<br>一个类型如果可以赋值给子类型，那么必定可以赋值给父类型。反之，则不行。</p>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
