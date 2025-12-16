@@ -36,4 +36,14 @@ console.log(typeof a) //输出number
 </code></pre>
 <p>10.块级类型声明<br>使用type命令声明类型时，它的作用域是块级作用域。</p>
 <p>11.类型的兼容<br>一个类型如果可以赋值给子类型，那么必定可以赋值给父类型。反之，则不行。</p>
+<pre><code class="js">let a: 1 = 1
+let b: number = 2
+// 不报错
+let c: typeof b = a
+
+let a1: 1 = 1
+let b1: number = 2
+//报错，类型number不能分配给类型1
+let c1: typeof a1 = b1
+</code></pre>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
