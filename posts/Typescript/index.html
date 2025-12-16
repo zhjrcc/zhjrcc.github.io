@@ -15,4 +15,24 @@ function add(a: number, b: number): number &#123;
   return a + b
 &#125;
 </code></pre>
+<ol start="3">
+<li><p>Typescript编译<br>npx tsc xx.ts</p>
+</li>
+<li><p>值与类型<br>typescript处理的是类型，javascript处理的是值</p>
+</li>
+<li><p>Typescript Playground<br>Typescript官方的在线TS编辑器，可自动生成JS</p>
+</li>
+<li><p>TSC编译器<br>TS官方的编译器，npm i typescript</p>
+</li>
+<li><p>TS-NODE<br>直接在终端中执行TS文件，不需要编译JS再执行。</p>
+</li>
+</ol>
+<h2 id="any-unknown-never"><a href="#any-unknown-never" class="headerlink" title="any unknown never"></a>any unknown never</h2><ol>
+<li><p>any<br>表示任何类型，any类型可以被赋值为任何类型,any类型可以赋值给任何类型。</p>
+</li>
+<li><p>unknown<br>表示未知类型，unknown类型可以被赋值为任何类型，但unknown类型不能赋值给任何类型，除非它通过类型断言或类型守卫被缩小为具体类型。unknown可以被认为是安全版本的any类型。</p>
+</li>
+<li><p>never<br>表示一个空类型，never类型可以赋值给任何类型,但never类型不能被赋值为任何类型。never可以被认为是unknown的对立面。</p>
+</li>
+</ol>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
