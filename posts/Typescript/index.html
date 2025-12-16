@@ -35,15 +35,39 @@ let b:typeof a = &#39;adsf&#39;; // 报错，b的类型是a的number类型
 console.log(typeof a) //输出number
 </code></pre>
 <p>10.块级类型声明<br>使用type命令声明类型时，它的作用域是块级作用域。</p>
-<p>11.类型的兼容<br>一个类型如果可以赋值给子类型，那么必定可以赋值给父类型。反之，则不行。</p>
+<p>11.类型的兼容<br>子类型可以用于所有使用父类型的场合。反之，则不行。</p>
 <pre><code class="js">let a: 1 = 1
-let b: number = 2
 // 不报错
-let c: typeof b = a
+let b: number = a
 
-let a1: 1 = 1
-let b1: number = 2
-//报错，类型number不能分配给类型1
-let c1: typeof a1 = b1
+// 报错，不能将number类型分配给1类型
+a = b
+</code></pre>
+<h2 id="TypeScript的数组类型"><a href="#TypeScript的数组类型" class="headerlink" title="TypeScript的数组类型"></a>TypeScript的数组类型</h2><p>Typescript规定数组的所有成员的类型必须相同，数量可以不确定。<br>1.数组类型声明方式</p>
+<pre><code class="js">let arr:number[] = [1,2]
+let arr:(number|string)[] = [1,&#39;test&#39;]
+
+let arr:Array&lt;number&gt; = [1,2]
+let arr:Array&lt;number|string&gt; = [1,&#39;test&#39;]
+</code></pre>
+<p>2.数组的类型推断</p>
+<pre><code class="js">// arr会被类型推断为是any[]
+let arr = []
+// arr类型推断更新为number[]
+arr.push(1)
+// arr类型推断更新为(number|string)[]
+arr.push(&#39;test&#39;)
+// 只有初始值为空数组会这样进行推断，如果不为空数组则不会更新类型
+</code></pre>
+<p>3.只读数组<br>只读数组不能做任何修改，是数组的父类型</p>
+<pre><code class="js">let arr1:number[] = [1,2]
+let arr2: readonly number[] = arr1
+
+let arr3: ReadonlyArray&lt;number&gt; = arr1
+let arr4: Readonly&lt;number[]&gt; = arr1
+let arr5 = [1, 2] as const
+</code></pre>
+<p>4.多维数组<br>多维数组的类型定义是给最底层的成员</p>
+<pre><code class="js">let arr: number[][] = [[1,2],[3,4,5]]
 </code></pre>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
