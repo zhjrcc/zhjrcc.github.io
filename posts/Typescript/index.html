@@ -20,7 +20,7 @@ function add(a: number, b: number): number &#123;
 <p>2.unknown<br>表示未知类型，unknown类型可以被赋值为任何类型，但unknown类型不能赋值给任何类型，除非它通过类型断言或类型守卫被缩小为具体类型。unknown可以被认为是安全版本的any类型。</p>
 <p>3.never<br>表示一个空类型，never类型可以赋值给任何类型,但never类型不能被赋值为任何类型。never可以被认为是unknown的对立面。</p>
 <h2 id="TypeScript的类型系统"><a href="#TypeScript的类型系统" class="headerlink" title="TypeScript的类型系统"></a>TypeScript的类型系统</h2><p>1.基本类型<br>number,string,boolean,symbol,object,null,undefined,bigint</p>
-<p>2.包装对象类型<br>number,string,boolean都有各自的包装对象Number,String,Boolean。为此，TS也给出了类型Number,String,Boolean。包装对象类型包含了基本类型，也就是说，Number类型相当于type T &#x3D; Number | number.</p>
+<p>2.包装对象类型<br>number,string,boolean都有各自的包装对象Number,String,Boolean，使用new即创建这些对象。为此，TS也给出了类型Number,String,Boolean。(这里注意，symbol也属于基本类型，但它没有真正的包装对象，new Symbol()是会报错的，只能通过Object(symbol)来达到包装对象的目的，所以并没有真的Symbol这个对象)。包装对象类型包含了基本类型，也就是说，Number类型相当于type T &#x3D; Number | number.</p>
 <p>3.Object与object<br>跟包装对象同理，object表示我们日常开发用到的一般对象(数组，对象，函数)，Object则包含JS所有广义的对象（包含了包装对象），因此Object类型可以表示所有JS的对象，除了特殊的null和undefined.</p>
 <p>4.undefined和null<br>undefined和null类型都分别只有一个值，就是它们本身，在严格模式下(strict:true或者strictNullChecks:true),直接将undefined或null赋值给一个变量，会自动将类型定义为undefined或null，如果不是严格模式下，则会隐式将类型定义为any。</p>
 <p>5.值类型<br>TS中，可以将值作为一种类型.<code>let b:1=2</code>会报错，因为b的类型是1，值只能为1。number是这种数值类型的父类型，<code>let a=1;let b:number = a</code>这样设置是没问题的。同理，string,boolean等其他基本类型也是各自值类型的父类型。</p>
@@ -101,4 +101,16 @@ console.log(t[2]) // 报错索引2处没元素
 console.log(t1[4]) // 报错索引4处没元素
 console.log(t2[10]) //不报错，扩展元组无法推测其长度
 </code></pre>
+<h2 id="Typescript的symbol类型"><a href="#Typescript的symbol类型" class="headerlink" title="Typescript的symbol类型"></a>Typescript的symbol类型</h2><p>symbol用于让对象属性名具有唯一性。TS中使用symbol作为其类型。</p>
+<ol>
+<li>unique symbol<br>unique symbol可以理解是一个Symbol的值类型，每个unique symbol都是不同的类型。因为symbol和其他基本类型（number，string，boolean）不一样，symbol并没有值类型。unique symbol是TS创建的一个symbol值类型。unique symbol必须是使用用const声明的。其实，只要使用const声明一个Symbol，默认就是unique symbol.</li>
+</ol>
+<pre><code>const s1: unique symbol = Symbol(&#39;s1&#39;)
+const s2: unique symbol = Symbol(&#39;s2&#39;)
+
+s1 = s2 // 报错
+</code></pre>
+<ol start="2">
+<li>类型推断<br>除了const声明的默认推断就是unique symbol，其他的都是推断为symbol。</li>
+</ol>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
