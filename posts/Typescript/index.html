@@ -70,4 +70,35 @@ let arr5 = [1, 2] as const
 <p>4.多维数组<br>多维数组的类型定义是给最底层的成员</p>
 <pre><code class="js">let arr: number[][] = [[1,2],[3,4,5]]
 </code></pre>
+<h2 id="TypeScript的元组类型"><a href="#TypeScript的元组类型" class="headerlink" title="TypeScript的元组类型"></a>TypeScript的元组类型</h2><p>元组是Typescript的特有类型，JS只有数组。元组的成员类型可以不一致，可选，数量也可以确定或者不确定,通过扩展运算符可以做到无限数量。需要注意的是，可选元素必须在必选元素之后，可选元素必须在扩展元算符前面。其实可选元素就相当于是T|undefined。<br>如果想让变量定义为元组，需要明确定义类型，否则TS会将它推断为数组。</p>
+<pre><code class="js">type T = [number, string]
+type T1 = [number, string?]
+type T2 = [number, ...string[], boolean]
+type T3 = [number,  boolean?,...string[]]
+
+let t: T = [1, &quot;str&quot;]
+let t1: T1 = [1]
+let t2: T2 = [1, &quot;str1&quot;, &quot;str2&quot;, true]
+let t3: T3 = [1, , &quot;str2&quot;]
+
+// TS类型推断为数组，而不是元组
+// 此时的arr类型是Array&lt;number|string&gt;,(number|string)[]
+let arr = [1, 2]
+
+// 只读元组
+let t4: Readonly&lt;[number, string]&gt; = [1, &quot;str&quot;]
+let t5: readonly [number, string] = [1,&#39;str&#39;]
+</code></pre>
+<p>成员数量的推断,TS会对元组的长度进行推断，在各种情况下有差异。</p>
+<pre><code class="js">// 一般元组,推断长度为2
+let t: [number, string] = [1, &quot;str&quot;]
+// 可选元组，推断其可能长度为 1|2|3..|.
+let t1: [number, string?, boolean?] = [1, &quot;str&quot;]
+// 扩展元组，无法确定其长度
+let t2: [number, ...string[]] = [1, &quot;str&quot;, &quot;str&quot;]
+
+console.log(t[2]) // 报错索引2处没元素
+console.log(t1[4]) // 报错索引4处没元素
+console.log(t2[10]) //不报错，扩展元组无法推测其长度
+</code></pre>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
