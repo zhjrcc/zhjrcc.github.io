@@ -103,14 +103,123 @@ console.log(t2[10]) //不报错，扩展元组无法推测其长度
 </code></pre>
 <h2 id="Typescript的symbol类型"><a href="#Typescript的symbol类型" class="headerlink" title="Typescript的symbol类型"></a>Typescript的symbol类型</h2><p>symbol用于让对象属性名具有唯一性。TS中使用symbol作为其类型。</p>
 <ol>
-<li>unique symbol<br>unique symbol可以理解是一个Symbol的值类型，每个unique symbol都是不同的类型。因为symbol和其他基本类型（number，string，boolean）不一样，symbol并没有值类型。unique symbol是TS创建的一个symbol值类型。unique symbol必须是使用用const声明的。其实，只要使用const声明一个Symbol，默认就是unique symbol.</li>
+<li>unique symbol<br>unique symbol可以理解是一个Symbol的值类型，每个unique symbol都是不同的类型。因为symbol和其他基本类型（number，string，boolean）不一样，symbol并没有值类型。unique symbol是TS创建的一个symbol值类型。unique symbol必须是使用用const声明的。其实，只要使用const声明一个Symbol，默认就是unique symbol.将unique symbol作为类属性时，必须要配合static+readonly使用，保证不可改变。</li>
 </ol>
 <pre><code>const s1: unique symbol = Symbol(&#39;s1&#39;)
 const s2: unique symbol = Symbol(&#39;s2&#39;)
 
-s1 = s2 // 报错
+s1 = s2 // 报错，这里本身const是常量也是不能重新赋值的
 </code></pre>
 <ol start="2">
 <li>类型推断<br>除了const声明的默认推断就是unique symbol，其他的都是推断为symbol。</li>
 </ol>
+<h2 id="Typescript的函数类型"><a href="#Typescript的函数类型" class="headerlink" title="Typescript的函数类型"></a>Typescript的函数类型</h2><pre><code class="js">// 基本用法
+function f1(x: number, y: number): number &#123;
+  return x + y
+&#125;
+
+// Function类型,相当于参数类型和返回值都是any
+let f2: Function = function (x: number, y: number) &#123;
+  return x + y
+&#125;
+
+// 可选参数,必须放在必选参数的后面
+function f3(x: number, y: number, z?: boolean): number &#123;
+  if (z) &#123;
+    return x + y
+  &#125;
+  return 0
+&#125;
+
+// 参数默认值
+function f4(x: number = 0, y: number = 1): number &#123;
+  return x + y
+&#125;
+
+// 参数解构
+// 下面这个是错误的参数解构模式，因为冒号:在解构里是重命名变量的意思，不标注是类型
+function f5(&#123; x: number, y: number &#125;) &#123;
+  return x + y
+&#125;
+// 正确的参数解构模式
+function f6(&#123; x, y &#125;: &#123; x: number; y: number &#125;) &#123;
+  return x + y
+&#125;
+f6(&#123; x: 1, y: 2 &#125;)
+
+// rest参数
+// 数组
+function f7(x: number, ...nums: number[]) &#123;
+  let sum = nums.reduce((p, c) =&gt; p + c)
+  console.log(sum + x)
+&#125;
+f7(1, 3, 4)
+// 元组
+function f8(x: number, ...args: [number, string]) &#123;
+  args.push(x)
+  console.log(args)
+&#125;
+f8(1, 1, &quot;str1&quot;)
+
+// readonly只读参数
+function f9(arr: readonly number[]) &#123;
+  arr[0] = 3
+&#125;
+
+// void 类型,如果没显示return，默认就是void
+function f10(x: number, y: number): void &#123;
+  console.log(x + y)
+&#125;
+
+// never类型，空类型，是函数不会正常执行完的类型
+// 抛出错误
+function fail(msg: string): never &#123;
+  throw new Error(msg)
+&#125;
+// 无线循环执行的函数
+const sing = function (): never &#123;
+  while (true) &#123;
+    console.log(&quot;sing&quot;)
+  &#125;
+&#125;
+// void是正常执行完，没有返回值。never是不能正常执行完，不可能有返回值
+// 报错，这个函数是能正常执行完的，只是没有返回值（其实相当于return undefined）
+function f11(): never &#123;
+  console.log(&quot;void&quot;)
+&#125;
+
+// 函数重载
+function fo(x: number): number
+function fo(x: string, y: string): string
+function fo(x: number | string, y?: string): string | number &#123;
+  if (typeof x === &quot;number&quot;) &#123;
+    return Math.pow(x, x)
+  &#125; else if (typeof y === &quot;string&quot;) &#123;
+    return x
+  &#125;
+  throw new Error(&quot;worong parameters&quot;)
+&#125;
+
+// 构造函数
+class Person &#123;
+  name: string
+  age: number
+  constructor(name: string, age: number) &#123;
+    this.name = name
+    this.age = age
+  &#125;
+&#125;
+
+type Create = (
+  c: new (name: string, age: number) =&gt; Person,
+  name: string,
+  age: number
+) =&gt; Person
+
+const create: Create = function (c, name, age) &#123;
+  return new c(name, age)
+&#125;
+
+const p = create(Person, &quot;zhjrcc&quot;, 19)
+</code></pre>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
