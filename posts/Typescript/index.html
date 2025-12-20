@@ -222,4 +222,91 @@ const create: Create = function (c, name, age) &#123;
 
 const p = create(Person, &quot;zhjrcc&quot;, 19)
 </code></pre>
+<h2 id="TypeScript对象类型"><a href="#TypeScript对象类型" class="headerlink" title="TypeScript对象类型"></a>TypeScript对象类型</h2><pre><code class="js">// 1.基本使用
+let o1: &#123; name: string; age: number &#125; = &#123;
+  name: &quot;joe&quot;,
+  age: 13,
+&#125;
+
+// 2.可选属性
+type T = &#123; name: string; age: number; adult?: boolean &#125;f
+
+let o2: T = &#123;
+  name: &quot;zoey&quot;,
+  age: 30,
+  adult: true,
+&#125;
+
+let o3: T = &#123;
+  name: &quot;mike&quot;,
+  age: 12,
+&#125;
+
+// 3.只读属性
+type T1 = &#123; name: string; age: number; readonly sex: string &#125;
+
+let o4:T1 = &#123;
+  name: &#39;zusy&#39;,
+  age: 33,
+  sex: &#39;MM&#39;
+&#125;
+o4.sex = &#39;GG&#39;
+
+// 4.属性名的索引类型
+type T2 = &#123;
+  [property: string]: string;
+&#125;
+
+let o5: T2 = &#123;
+  name: &#39;huyu&#39;,
+  age: 27
+&#125;
+
+// 5. 解构赋值
+
+type T3 = &#123;
+  name: string,
+  age: number
+&#125;
+
+let &#123;name:o6,age:o7&#125;:T3 = &#123;
+  name: &#39;yuki&#39;,
+  age: 43
+&#125;
+
+// 结构类型原则
+type T4 = &#123;
+  name: string,
+  age: number
+&#125;
+type T5 = &#123;
+  name: string,
+  age: number,
+  gender: &#39;male&#39;|&#39;femal&#39;
+&#125;
+let o8:T5 = &#123;
+  name: &#39;yuji&#39;,
+  age: 187,
+  gender: &#39;male&#39;
+&#125;
+// 这里必须要用变量赋值,不能用字面量,使用字面量会触发&quot;多余属性检查&quot;
+let o9: T4 = o8
+let o10: T4 = &#123;
+  name: &#39;yuji&#39;,
+  age: 187,
+  gender: &#39;male&#39;
+&#125;
+
+// 最小可选属性
+type T6 = &#123;
+  name?: string,
+  age?: number,
+&#125;
+// 必须含有一个可选属性
+let o11: T6 = &#123;gend: &#39;asdf&#39;&#125;
+
+// kong &#123;&#125;
+let o12:&#123;&#125; = &#123;&#125;
+o12.prop = 12
+</code></pre>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
