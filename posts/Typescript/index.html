@@ -309,4 +309,116 @@ let o11: T6 = &#123;gend: &#39;asdf&#39;&#125;
 let o12:&#123;&#125; = &#123;&#125;
 o12.prop = 12
 </code></pre>
+<h2 id="Typescript的interface"><a href="#Typescript的interface" class="headerlink" title="Typescript的interface"></a>Typescript的interface</h2><pre><code class="js">// 基本用法
+interface O1 &#123;
+  name: string
+&#125;
+let p1: O1 = &#123;
+  name: &quot;yuki&quot;,
+&#125;
+
+// 继承
+interface O2 &#123;
+  name: string
+&#125;
+
+interface O3 extends O2 &#123;
+  age: number
+&#125;
+let p2: O3 = &#123;
+  name: &quot;kusu&quot;,
+  age: 12,
+&#125;
+
+// 接口合并
+interface O4 &#123;
+  name: string
+&#125;
+
+interface O4 &#123;
+  age: number
+&#125;
+
+let p3: O4 = &#123;
+  name: &quot;ku&quot;,
+  age: 12,
+&#125;
+
+// type异同
+// type不能合并,interface可以
+type T2 = number
+type T2 = number
+
+interface I1 &#123;
+  name: string
+&#125;
+interface I1 &#123;
+  age: number
+&#125;
+
+// type不能继承,interface可以
+// type实现继承,需要用&amp;交叉类型
+type T3 = &#123; age: number &#125;
+type T4 = T3 &amp; &#123;
+  name: string
+&#125;
+let p4: T4 = &#123;
+  name: &#39;huko&#39;
+  ,age: 12
+&#125;
+
+// type不能用this,interface可以
+// 正确
+interface Foo &#123;
+  add(num: number): this;
+&#125;
+// 报错
+type Foo = &#123;
+  add(num: number): this;
+&#125;;
+
+// type可以用于表示任何类型,interface只能用于表示对象类型
+type T1 = number
+
+// type可以包含属性映射,interface不行
+interface Point &#123;
+  x: number;
+  y: number;
+&#125;
+
+// 正确
+type PointCopy1 = &#123;
+  [Key in keyof Point]: Point[Key];
+&#125;;
+
+// 报错
+interface PointCopy2 &#123;
+  [Key in keyof Point]: Point[Key];
+&#125;;
+
+// type可以扩展原始类型,interface不行
+// 正确
+type MyStr = string &amp; &#123;
+  type: &quot;new&quot;;
+&#125;;
+
+// 报错
+interface MyStr extends string &#123;
+  type: &quot;new&quot;;
+&#125;
+
+// type可以表达某些复杂类型,interface不行
+type A = &#123;
+  /* ... */
+&#125;;
+type B = &#123;
+  /* ... */
+&#125;;
+
+type AorB = A | B;
+type AorBwithName = AorB &amp; &#123;
+  name: string;
+&#125;;
+</code></pre>
+<p>综上所述，如果有复杂的类型运算，那么没有其他选择只能使用type；一般情况下,interface灵活性比较高，便于扩充类型或自动合并，建议优先使用。<br>核心原则是：对外暴露的公共类型用 interface（语义清晰），内部复杂类型逻辑用 type（灵活性高）。<br><img src="https://gitee.com/zhjrcc/blog-images/raw/master/20251221161115.png"><br><img src="https://gitee.com/zhjrcc/blog-images/raw/master/20251221161140.png"></p>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
