@@ -1,4 +1,283 @@
 <!DOCTYPE html><html lang="zh-CN"><head><title>原型</title><meta name="referrer" content="no-referrer"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://gitee.com/zhjrcc/blog-images/raw/master/favicon.ico?v=2"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="inner"><h1>原型</h1><div class="time">First published 2025-12-21</div><div class="updatedTime">Modified 2025-12-21</div><p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p><meta name="referrer" content="no-referrer">
 
-<p>1.原型是 JS 实现继承的核心，目的是共享公共属性 &#x2F; 方法，减少内存消耗；<br>2.所有对象（除 null&#x2F;undefined）都有 __proto__，指向原型对象；<br>3.构造函数的 prototype 是实例的原型对象，原型的 constructor 指回构造函数；<br>4.原型链是 <strong>proto</strong> 串联的链条，查找属性时沿链条向上，直到 null；<br>5.ES6 class 是原型的语法糖，底层逻辑不变；<br>6.操作原型优先用 Object.getPrototypeOf&#x2F;Object.create，避免直接改 __proto__。</p>
+<p>要彻底理解 JavaScript 中的<strong>原型（Prototype）</strong>，需要从「为什么存在原型」「原型的核心概念」「原型链」「原型的操作方法」「实际应用」等维度拆解——原型是 JS 实现<strong>继承</strong>的核心机制，也是理解 JS 面向对象的关键，下面用「零基础可懂 + 代码实例 + 底层逻辑」的方式讲透。</p>
+<h3 id="一、先搞懂：为什么-JS-需要原型？"><a href="#一、先搞懂：为什么-JS-需要原型？" class="headerlink" title="一、先搞懂：为什么 JS 需要原型？"></a>一、先搞懂：为什么 JS 需要原型？</h3><p>JS 没有传统面向对象语言（如 Java）的「类（Class）」概念（ES6 的 <code>class</code> 只是语法糖），它的<strong>继承是基于原型的</strong>。</p>
+<ul>
+<li>核心痛点：如果每个对象都独立定义属性&#x2F;方法，会造成内存浪费。<pre><code class="javascript">// 不好的写法：每个对象都重复定义 sayHi 方法，内存存多份
+const person1 = &#123; name: &quot;张三&quot;, sayHi: () =&gt; console.log(&quot;Hi&quot;) &#125;;
+const person2 = &#123; name: &quot;李四&quot;, sayHi: () =&gt; console.log(&quot;Hi&quot;) &#125;;
+</code></pre>
+</li>
+<li>原型的解决思路：<strong>把公共的属性&#x2F;方法抽离到一个「原型对象」中，所有实例对象共享这个原型对象的内容</strong>，内存只存一份，实现复用。</li>
+</ul>
+<h3 id="二、原型的-3-个核心概念（必须死记）"><a href="#二、原型的-3-个核心概念（必须死记）" class="headerlink" title="二、原型的 3 个核心概念（必须死记）"></a>二、原型的 3 个核心概念（必须死记）</h3><p>JS 中<strong>所有对象（除 <code>null/undefined</code>）都有原型</strong>，核心关联的 3 个关键属性：</p>
+<table>
+<thead>
+<tr>
+<th>概念</th>
+<th>含义</th>
+<th>访问方式</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>原型对象（Prototype）</td>
+<td>存储公共属性&#x2F;方法的对象，是实例的「模板」</td>
+<td><code>构造函数.prototype</code></td>
+</tr>
+<tr>
+<td><code>__proto__</code></td>
+<td>实例对象的「原型指针」，指向它的原型对象（非标准但浏览器普遍支持）</td>
+<td><code>实例.__proto__</code></td>
+</tr>
+<tr>
+<td><code>constructor</code></td>
+<td>原型对象上的属性，指向关联的构造函数（反向引用）</td>
+<td><code>原型对象.constructor</code> &#x2F; <code>实例.constructor</code></td>
+</tr>
+</tbody></table>
+<h4 id="用一张图记住核心关系："><a href="#用一张图记住核心关系：" class="headerlink" title="用一张图记住核心关系："></a>用一张图记住核心关系：</h4><pre><code>构造函数（如 Person）
+  ↓ （prototype 指向）
+原型对象（Person.prototype）
+  ↓ （constructor 指回）
+构造函数（Person）
+  ↑ （new 生成）
+实例对象（如 p1）
+  ↓ （__proto__ 指向）
+原型对象（Person.prototype）
+</code></pre>
+<h4 id="代码实例：验证核心关系"><a href="#代码实例：验证核心关系" class="headerlink" title="代码实例：验证核心关系"></a>代码实例：验证核心关系</h4><pre><code class="javascript">// 1. 定义构造函数（用于创建实例）
+function Person(name) &#123;
+  this.name = name; // 实例私有属性（每个实例独立）
+&#125;
+
+// 2. 给原型对象添加公共方法（所有实例共享）
+Person.prototype.sayHi = function () &#123;
+  console.log(`Hi, 我是$&#123;this.name&#125;`);
+&#125;;
+
+// 3. 创建实例
+const p1 = new Person(&quot;张三&quot;);
+const p2 = new Person(&quot;李四&quot;);
+
+// 验证核心关系：
+console.log(p1.__proto__ === Person.prototype); // true（实例的__proto__指向构造函数的prototype）
+console.log(Person.prototype.constructor === Person); // true（原型的constructor指回构造函数）
+console.log(p1.constructor === Person); // true（实例的constructor继承自原型）
+
+// 验证共享性：p1和p2的sayHi是同一个方法
+console.log(p1.sayHi === p2.sayHi); // true
+p1.sayHi(); // Hi, 我是张三
+p2.sayHi(); // Hi, 我是李四
+</code></pre>
+<h3 id="三、原型链：原型的「继承链条」（核心中的核心）"><a href="#三、原型链：原型的「继承链条」（核心中的核心）" class="headerlink" title="三、原型链：原型的「继承链条」（核心中的核心）"></a>三、原型链：原型的「继承链条」（核心中的核心）</h3><h4 id="1-什么是原型链？"><a href="#1-什么是原型链？" class="headerlink" title="1. 什么是原型链？"></a>1. 什么是原型链？</h4><p>每个对象的 <code>__proto__</code> 都指向一个原型对象，而这个原型对象本身也是对象，它的 <code>__proto__</code> 又指向更高层的原型……直到指向 <code>null</code>（没有更上层原型）。这条「<code>__proto__</code> 串联的链条」就是<strong>原型链</strong>。</p>
+<h4 id="2-原型链的终点：Object-prototype"><a href="#2-原型链的终点：Object-prototype" class="headerlink" title="2. 原型链的终点：Object.prototype"></a>2. 原型链的终点：Object.prototype</h4><p>JS 中所有对象最终都继承自 <code>Object.prototype</code>（顶级原型），它的 <code>__proto__</code> 是 <code>null</code>。</p>
+<h4 id="3-完整原型链示例（以-Person-实例为例）"><a href="#3-完整原型链示例（以-Person-实例为例）" class="headerlink" title="3. 完整原型链示例（以 Person 实例为例）"></a>3. 完整原型链示例（以 Person 实例为例）</h4><pre><code>p1（Person实例）
+  __proto__ → Person.prototype（Person的原型）
+                __proto__ → Object.prototype（Object的原型）
+                              __proto__ → null
+</code></pre>
+<h4 id="代码验证原型链："><a href="#代码验证原型链：" class="headerlink" title="代码验证原型链："></a>代码验证原型链：</h4><pre><code class="javascript">// 接上面的例子
+console.log(p1.__proto__ === Person.prototype); // true
+console.log(Person.prototype.__proto__ === Object.prototype); // true
+console.log(Object.prototype.__proto__); // null
+
+// 原型链的查找规则：先找自身 → 找原型 → 找原型的原型 → 直到null
+// p1 自身没有 toString 方法，会沿原型链找到 Object.prototype.toString
+console.log(p1.toString()); // [object Object]
+</code></pre>
+<h4 id="原型链查找的「坑」：属性遮蔽"><a href="#原型链查找的「坑」：属性遮蔽" class="headerlink" title="原型链查找的「坑」：属性遮蔽"></a>原型链查找的「坑」：属性遮蔽</h4><p>如果实例自身有和原型同名的属性&#x2F;方法，会「遮蔽」原型的内容（优先用自身的）：</p>
+<pre><code class="javascript">p1.sayHi = function () &#123;
+  console.log(&quot;我是自定义的sayHi&quot;);
+&#125;;
+p1.sayHi(); // 我是自定义的sayHi（用自身的）
+p2.sayHi(); // Hi, 我是李四（用原型的）
+</code></pre>
+<h3 id="四、不同类型对象的原型链（一网打尽）"><a href="#四、不同类型对象的原型链（一网打尽）" class="headerlink" title="四、不同类型对象的原型链（一网打尽）"></a>四、不同类型对象的原型链（一网打尽）</h3><p>JS 中不同类型（对象、数组、函数、基本类型包装对象）的原型链各有特点，逐一拆解：</p>
+<h4 id="1-普通对象（-）"><a href="#1-普通对象（-）" class="headerlink" title="1. 普通对象（{}）"></a>1. 普通对象（{}）</h4><pre><code class="javascript">const obj = &#123; a: 1 &#125;;
+// 原型链：obj → Object.prototype → null
+console.log(obj.__proto__ === Object.prototype); // true
+</code></pre>
+<h4 id="2-数组（-）"><a href="#2-数组（-）" class="headerlink" title="2. 数组（[]）"></a>2. 数组（[]）</h4><p>数组的原型是 <code>Array.prototype</code>，它继承自 <code>Object.prototype</code>：</p>
+<pre><code class="javascript">const arr = [1, 2, 3];
+// 原型链：arr → Array.prototype → Object.prototype → null
+console.log(arr.__proto__ === Array.prototype); // true
+console.log(Array.prototype.__proto__ === Object.prototype); // true
+
+// 数组的 push、forEach 等方法都在 Array.prototype 上
+console.log(Array.prototype.push === arr.push); // true
+</code></pre>
+<h4 id="3-函数（function）"><a href="#3-函数（function）" class="headerlink" title="3. 函数（function）"></a>3. 函数（function）</h4><p>函数也是对象，原型是 <code>Function.prototype</code>，最终继承自 <code>Object.prototype</code>：</p>
+<pre><code class="javascript">function fn() &#123;&#125;
+// 原型链：fn → Function.prototype → Object.prototype → null
+console.log(fn.__proto__ === Function.prototype); // true
+console.log(Function.prototype.__proto__ === Object.prototype); // true
+
+// 函数的 call、apply 方法在 Function.prototype 上
+console.log(Function.prototype.call === fn.call); // true
+</code></pre>
+<h4 id="4-基本类型（字符串-x2F-数字-x2F-布尔）"><a href="#4-基本类型（字符串-x2F-数字-x2F-布尔）" class="headerlink" title="4. 基本类型（字符串&#x2F;数字&#x2F;布尔）"></a>4. 基本类型（字符串&#x2F;数字&#x2F;布尔）</h4><p>基本类型本身没有原型，但<strong>访问属性时会自动创建包装对象</strong>，临时生成原型链：</p>
+<pre><code class="javascript">const str = &quot;hello&quot;;
+// 访问 str.length 时，JS 会临时创建 String 包装对象：new String(str)
+// 原型链：临时包装对象 → String.prototype → Object.prototype → null
+console.log(str.__proto__ === String.prototype); // true（浏览器中可访问，实际是包装对象的__proto__）
+console.log(String.prototype.__proto__ === Object.prototype); // true
+</code></pre>
+<h3 id="五、原型的常用操作方法（避免直接用-proto-）"><a href="#五、原型的常用操作方法（避免直接用-proto-）" class="headerlink" title="五、原型的常用操作方法（避免直接用 __proto__）"></a>五、原型的常用操作方法（避免直接用 __proto__）</h3><p><code>__proto__</code> 是非标准属性（ES6 已纳入规范但不推荐直接修改），推荐用以下标准方法操作原型：</p>
+<table>
+<thead>
+<tr>
+<th>方法</th>
+<th>作用</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>Object.getPrototypeOf(实例)</code></td>
+<td>获取实例的原型对象（替代 <code>实例.__proto__</code>）</td>
+</tr>
+<tr>
+<td><code>Object.setPrototypeOf(实例, 新原型)</code></td>
+<td>设置实例的原型对象（谨慎用：性能差）</td>
+</tr>
+<tr>
+<td><code>Object.create(原型对象)</code></td>
+<td>创建一个新对象，指定其原型（推荐：替代 <code>new</code> 或 <code>__proto__</code>）</td>
+</tr>
+<tr>
+<td><code>obj.hasOwnProperty(属性名)</code></td>
+<td>判断属性是「实例自身」的，还是「原型」的（核心：避免原型链干扰）</td>
+</tr>
+</tbody></table>
+<h4 id="代码实例："><a href="#代码实例：" class="headerlink" title="代码实例："></a>代码实例：</h4><pre><code class="javascript">// 1. 获取原型
+const p1Proto = Object.getPrototypeOf(p1);
+console.log(p1Proto === Person.prototype); // true
+
+// 2. 创建指定原型的对象
+const p3 = Object.create(Person.prototype);
+p3.name = &quot;王五&quot;;
+p3.sayHi(); // Hi, 我是王五（继承原型的sayHi）
+
+// 3. 判断属性归属
+console.log(p1.hasOwnProperty(&quot;name&quot;)); // true（自身属性）
+console.log(p1.hasOwnProperty(&quot;sayHi&quot;)); // false（原型属性）
+
+// 4. 遍历对象属性（避开原型属性）
+for (let key in p1) &#123;
+  if (p1.hasOwnProperty(key)) &#123;
+    console.log(key); // 只打印 name，不打印 sayHi
+  &#125;
+&#125;
+</code></pre>
+<h3 id="六、原型的实际应用（面试-x2F-工作高频）"><a href="#六、原型的实际应用（面试-x2F-工作高频）" class="headerlink" title="六、原型的实际应用（面试&#x2F;工作高频）"></a>六、原型的实际应用（面试&#x2F;工作高频）</h3><h4 id="1-实现继承（原型链继承）"><a href="#1-实现继承（原型链继承）" class="headerlink" title="1. 实现继承（原型链继承）"></a>1. 实现继承（原型链继承）</h4><p>经典的「原型链继承 + 构造函数继承」组合（解决原型链继承的缺陷）：</p>
+<pre><code class="javascript">// 父构造函数
+function Parent(name) &#123;
+  this.name = name;
+  this.hobbies = [&quot;看书&quot;, &quot;运动&quot;]; // 引用类型属性
+&#125;
+Parent.prototype.sayName = function () &#123;
+  console.log(this.name);
+&#125;;
+
+// 子构造函数
+function Child(name, age) &#123;
+  // 构造函数继承：继承父类的实例属性（解决引用类型共享问题）
+  Parent.call(this, name);
+  this.age = age;
+&#125;
+
+// 原型链继承：继承父类的原型方法
+Child.prototype = Object.create(Parent.prototype);
+// 修复 constructor 指向（否则 Child.prototype.constructor 是 Parent）
+Child.prototype.constructor = Child;
+
+// 子类扩展方法
+Child.prototype.sayAge = function () &#123;
+  console.log(this.age);
+&#125;;
+
+// 测试
+const c1 = new Child(&quot;小明&quot;, 18);
+const c2 = new Child(&quot;小红&quot;, 20);
+
+c1.sayName(); // 小明
+c1.sayAge(); // 18
+c1.hobbies.push(&quot;游戏&quot;);
+console.log(c1.hobbies); // [&quot;看书&quot;, &quot;运动&quot;, &quot;游戏&quot;]
+console.log(c2.hobbies); // [&quot;看书&quot;, &quot;运动&quot;]（引用类型不共享，解决原型链继承缺陷）
+</code></pre>
+<h4 id="2-扩展内置对象的原型（谨慎用）"><a href="#2-扩展内置对象的原型（谨慎用）" class="headerlink" title="2. 扩展内置对象的原型（谨慎用）"></a>2. 扩展内置对象的原型（谨慎用）</h4><p>可以给 <code>Array</code>&#x2F;<code>String</code> 等内置对象的原型加方法，但<strong>不推荐在全局环境用</strong>（可能冲突）：</p>
+<pre><code class="javascript">// 给数组加一个求和方法
+Array.prototype.sum = function () &#123;
+  return this.reduce((total, cur) =&gt; total + cur, 0);
+&#125;;
+
+const arr = [1, 2, 3];
+console.log(arr.sum()); // 6
+</code></pre>
+<h4 id="3-实现单例模式（利用原型）"><a href="#3-实现单例模式（利用原型）" class="headerlink" title="3. 实现单例模式（利用原型）"></a>3. 实现单例模式（利用原型）</h4><pre><code class="javascript">function Singleton() &#123;&#125;
+// 唯一实例
+const instance = new Singleton();
+// 重写原型，让所有 new Singleton() 都指向同一个实例
+Singleton.prototype = instance;
+Singleton.prototype.constructor = Singleton;
+
+// 测试：多次 new 都是同一个实例
+const s1 = new Singleton();
+const s2 = new Singleton();
+console.log(s1 === s2); // true
+</code></pre>
+<h3 id="七、ES6-class-与原型的关系（语法糖本质）"><a href="#七、ES6-class-与原型的关系（语法糖本质）" class="headerlink" title="七、ES6 class 与原型的关系（语法糖本质）"></a>七、ES6 class 与原型的关系（语法糖本质）</h3><p>ES6 新增的 <code>class</code> 只是原型的语法糖，底层依然是原型链机制：</p>
+<pre><code class="javascript">// ES6 class 写法
+class Person &#123;
+  constructor(name) &#123;
+    this.name = name; // 实例属性（对应构造函数的 this.xxx）
+  &#125;
+
+  sayHi() &#123;
+    console.log(`Hi, 我是$&#123;this.name&#125;`); // 原型方法（对应 Person.prototype.sayHi）
+  &#125;
+
+  static sayHello() &#123;
+    console.log(&quot;Hello&quot;); // 静态方法（对应 Person.sayHello，不在原型上）
+  &#125;
+&#125;
+
+const p = new Person(&quot;张三&quot;);
+
+// 等价于 ES5 原型写法：
+// function Person(name) &#123; this.name = name; &#125;
+// Person.prototype.sayHi = function() &#123; ... &#125;;
+// Person.sayHello = function() &#123; ... &#125;;
+
+// 验证：class 的方法依然在原型上
+console.log(p.sayHi === Person.prototype.sayHi); // true
+console.log(Person.prototype.constructor === Person); // true
+</code></pre>
+<h3 id="八、常见面试题（检验是否真懂）"><a href="#八、常见面试题（检验是否真懂）" class="headerlink" title="八、常见面试题（检验是否真懂）"></a>八、常见面试题（检验是否真懂）</h3><ol>
+<li><p><strong><code>new</code> 操作符做了什么？</strong></p>
+<ul>
+<li>创建空对象 <code>obj</code>；</li>
+<li>让 <code>obj.__proto__</code> 指向构造函数的 <code>prototype</code>；</li>
+<li>执行构造函数，<code>this</code> 绑定到 <code>obj</code>；</li>
+<li>如果构造函数返回对象，返回该对象；否则返回 <code>obj</code>。</li>
+</ul>
+</li>
+<li><p><strong><code>Object.create(null)</code> 创建的对象有原型吗？</strong><br>没有！它的 <code>__proto__</code> 是 <code>null</code>，不会继承 <code>Object.prototype</code> 的任何方法（如 <code>toString</code>）。</p>
+</li>
+<li><p><strong>为什么修改数组的 <code>length</code> 会改变数组？</strong><br><code>length</code> 是 <code>Array.prototype</code> 上的访问器属性，修改时会触发底层逻辑调整数组元素。</p>
+</li>
+<li><p><strong>原型链查找和 <code>in</code> 运算符的关系？</strong><br><code>in</code> 运算符会检查属性是否在实例或原型链上，而 <code>hasOwnProperty</code> 只检查实例自身：</p>
+<pre><code class="javascript">console.log(&quot;sayHi&quot; in p1); // true（原型上有）
+console.log(p1.hasOwnProperty(&quot;sayHi&quot;)); // false
+</code></pre>
+</li>
+</ol>
+<h3 id="九、总结（核心记忆点）"><a href="#九、总结（核心记忆点）" class="headerlink" title="九、总结（核心记忆点）"></a>九、总结（核心记忆点）</h3><ol>
+<li>原型是 JS 实现继承的核心，目的是<strong>共享公共属性&#x2F;方法</strong>，减少内存消耗；</li>
+<li>所有对象（除 <code>null/undefined</code>）都有 <code>__proto__</code>，指向原型对象；</li>
+<li>构造函数的 <code>prototype</code> 是实例的原型对象，原型的 <code>constructor</code> 指回构造函数；</li>
+<li>原型链是 <code>__proto__</code> 串联的链条，查找属性时沿链条向上，直到 <code>null</code>；</li>
+<li>ES6 <code>class</code> 是原型的语法糖，底层逻辑不变；</li>
+<li>操作原型优先用 <code>Object.getPrototypeOf</code>&#x2F;<code>Object.create</code>，避免直接改 <code>__proto__</code>。</li>
+</ol>
+<p>如果能把上面的代码逐行运行、理解每一步的输出，原型的知识就彻底掌握了——核心是「记住关系 + 验证规则 + 结合应用」。</p>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
