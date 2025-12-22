@@ -421,4 +421,56 @@ type AorBwithName = AorB &amp; &#123;
 &#125;;
 </code></pre>
 <p>综上所述，如果有复杂的类型运算，那么没有其他选择只能使用type；一般情况下,interface灵活性比较高，便于扩充类型或自动合并，建议优先使用。<br>核心原则是：对外暴露的公共类型用 interface（语义清晰），内部复杂类型逻辑用 type（灵活性高）。<br><img src="https://gitee.com/zhjrcc/blog-images/raw/master/20251221161115.png"><br><img src="https://gitee.com/zhjrcc/blog-images/raw/master/20251221161140.png"></p>
+<h2 id="Typescript的类"><a href="#Typescript的类" class="headerlink" title="Typescript的类"></a>Typescript的类</h2><pre><code class="js">// 1.基本用法, class作为实例类型,描述实例类型
+class Person1 &#123;
+  name: string
+  age: number
+  constructor(name: string, age: number) &#123;
+    this.name = name
+    this.age = age
+  &#125;
+&#125;
+const p1: Person1 = new Person1(&quot;jack&quot;, 48)
+
+// class作为一个类使用,其实就是一个构造函数
+function createPerson(fn: typeof Person1, name: string, age: number): Person1 &#123;
+  return new fn(name, age)
+&#125;
+
+function createPerson1(
+  fn: new (name: string, age: number) =&gt; Person1,
+  name: string,
+  age: number
+) &#123;
+  return new fn(name, age)
+&#125;
+
+// 2. 类的interface接口
+interface Country &#123;
+  name: string
+  capital: string
+&#125;
+// 或者
+type Country = &#123;
+  name: string
+  capital: string
+&#125;
+
+class MyCountry implements Country &#123;
+  name = &quot;&quot;
+  capital = &quot;&quot;
+&#125;
+
+// 类的继承
+class A &#123;
+  greet() &#123;
+    console.log(&quot;Hello, world!&quot;)
+  &#125;
+&#125;
+
+class B extends A &#123;&#125;
+
+const b = new B()
+b.greet() // &quot;Hello, world!&quot;
+</code></pre>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
