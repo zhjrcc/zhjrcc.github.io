@@ -473,4 +473,10 @@ class B extends A &#123;&#125;
 const b = new B()
 b.greet() // &quot;Hello, world!&quot;
 </code></pre>
+<h2 id="TS的泛型"><a href="#TS的泛型" class="headerlink" title="TS的泛型"></a>TS的泛型</h2><pre><code class="js">// 基本用法
+function getFirst&lt;T&gt;(arr: Array&lt;T&gt;) &#123;
+  return arr[0]
+&#125;
+getFirst&lt;number&gt;([1, 2, 3])
+</code></pre>
 <p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>

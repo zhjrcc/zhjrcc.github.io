@@ -1,0 +1,224 @@
+<!DOCTYPE html><html lang="zh-CN"><head><title>在vue中写CSS</title><meta name="referrer" content="no-referrer"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://gitee.com/zhjrcc/blog-images/raw/master/favicon.ico?v=2"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="inner"><h1>在vue中写CSS</h1><div class="time">First published 2026-01-10</div><div class="updatedTime">Modified 2026-01-10</div><p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p><meta name="referrer" content="no-referrer">
+
+<p>这是一个<strong>非常典型、而且问得很“对阶段”的问题</strong> 👍<br>我按<strong>Vue 项目真实开发中的推荐做法</strong>，一步一步帮你把 <strong>CSS 的“分层 &#x2F; 分文件 &#x2F; 职责”</strong>理清楚。<br>（不依赖 Tailwind，纯手写 CSS &#x2F; 少量 scoped）</p>
+<hr>
+<h2 id="一句话先给结论（你可以先记住这个）"><a href="#一句话先给结论（你可以先记住这个）" class="headerlink" title="一句话先给结论（你可以先记住这个）"></a>一句话先给结论（你可以先记住这个）</h2><blockquote>
+<p><strong>不要把所有 CSS 都写到一个文件里</strong><br><strong>也不要所有样式都写在组件的 <code>&lt;style&gt;</code> 里</strong></p>
+</blockquote>
+<p>👉 <strong>推荐做法是：分层 + 分类型管理</strong></p>
+<hr>
+<h2 id="一、Vue-项目里常见的-CSS-分层结构（强烈推荐）"><a href="#一、Vue-项目里常见的-CSS-分层结构（强烈推荐）" class="headerlink" title="一、Vue 项目里常见的 CSS 分层结构（强烈推荐）"></a>一、Vue 项目里常见的 CSS 分层结构（强烈推荐）</h2><p>以 <strong>Vite + Vue 3</strong> 为例：</p>
+<pre><code class="txt">src/
+├─ assets/
+│  └─ styles/
+│     ├─ main.css        # 全局入口样式（被 main.ts 引入）
+│     ├─ reset.css       # 样式重置 / normalize
+│     ├─ base.css        # 全局基础样式（body、a、img…）
+│     ├─ variables.css   # CSS 变量（主题、颜色、间距）
+│     ├─ layout.css      # 通用布局（container、grid、flex）
+│     ├─ components.css  # 可复用组件样式（按钮、卡片）
+│     └─ utils.css       # 工具类（mt-8、text-center）
+│
+├─ components/
+│  └─ MovieList.vue
+│
+├─ App.vue
+└─ main.ts
+</code></pre>
+<hr>
+<h2 id="二、main-css-是干嘛的？（重点）"><a href="#二、main-css-是干嘛的？（重点）" class="headerlink" title="二、main.css 是干嘛的？（重点）"></a>二、<code>main.css</code> 是干嘛的？（重点）</h2><h3 id="1️⃣-main-css-不是“写所有-CSS-的地方”"><a href="#1️⃣-main-css-不是“写所有-CSS-的地方”" class="headerlink" title="1️⃣ main.css 不是“写所有 CSS 的地方”"></a>1️⃣ <code>main.css</code> <strong>不是“写所有 CSS 的地方”</strong></h3><p>它的作用是：</p>
+<blockquote>
+<p><strong>作为全局样式入口文件</strong></p>
+</blockquote>
+<p>通常只干一件事：</p>
+<pre><code class="css">/* src/assets/styles/main.css */
+
+@import &#39;./reset.css&#39;;
+@import &#39;./variables.css&#39;;
+@import &#39;./base.css&#39;;
+@import &#39;./layout.css&#39;;
+@import &#39;./components.css&#39;;
+@import &#39;./utils.css&#39;;
+</code></pre>
+<p>然后在 <code>main.ts</code> 中引入一次：</p>
+<pre><code class="ts">import &#123; createApp &#125; from &#39;vue&#39;
+import App from &#39;./App.vue&#39;
+import &#39;./assets/styles/main.css&#39;
+
+createApp(App).mount(&#39;#app&#39;)
+</code></pre>
+<p>⚠️ <strong>只引入一次，全局生效</strong></p>
+<hr>
+<h2 id="三、各个-CSS-文件分别写什么？（非常关键）"><a href="#三、各个-CSS-文件分别写什么？（非常关键）" class="headerlink" title="三、各个 CSS 文件分别写什么？（非常关键）"></a>三、各个 CSS 文件分别写什么？（非常关键）</h2><h3 id="1️⃣-reset-css-x2F-normalize"><a href="#1️⃣-reset-css-x2F-normalize" class="headerlink" title="1️⃣ reset.css &#x2F; normalize"></a>1️⃣ <code>reset.css</code> &#x2F; <code>normalize</code></h3><p>作用：<strong>消除浏览器默认样式差异</strong></p>
+<pre><code class="css">/* reset.css */
+*,
+*::before,
+*::after &#123;
+  box-sizing: border-box;
+&#125;
+
+body &#123;
+  margin: 0;
+&#125;
+</code></pre>
+<p>✔ 不写业务样式<br>✔ 一劳永逸</p>
+<hr>
+<h3 id="2️⃣-variables-css（你未来一定会用得很爽）"><a href="#2️⃣-variables-css（你未来一定会用得很爽）" class="headerlink" title="2️⃣ variables.css（你未来一定会用得很爽）"></a>2️⃣ <code>variables.css</code>（你未来一定会用得很爽）</h3><p>放 <strong>CSS 变量（相当于没用 Tailwind 的 design tokens）</strong></p>
+<pre><code class="css">:root &#123;
+  --color-primary: #42b883;
+  --color-bg: #0f172a;
+  --color-text: #e5e7eb;
+
+  --radius-sm: 4px;
+  --radius-md: 8px;
+
+  --space-sm: 0.5rem;
+  --space-md: 1rem;
+&#125;
+</code></pre>
+<p>用的时候：</p>
+<pre><code class="css">button &#123;
+  background: var(--color-primary);
+  border-radius: var(--radius-md);
+&#125;
+</code></pre>
+<p>👉 <strong>以后换主题，只改这里</strong></p>
+<hr>
+<h3 id="3️⃣-base-css（全局基础规则）"><a href="#3️⃣-base-css（全局基础规则）" class="headerlink" title="3️⃣ base.css（全局基础规则）"></a>3️⃣ <code>base.css</code>（全局基础规则）</h3><p>作用：<strong>页面“基调”</strong></p>
+<pre><code class="css">body &#123;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont;
+  background: var(--color-bg);
+  color: var(--color-text);
+&#125;
+
+a &#123;
+  color: inherit;
+  text-decoration: none;
+&#125;
+
+img &#123;
+  max-width: 100%;
+  display: block;
+&#125;
+</code></pre>
+<p>✔ 不和业务强绑定<br>✔ 不写具体页面结构</p>
+<hr>
+<h3 id="4️⃣-layout-css（非常适合你现在的项目）"><a href="#4️⃣-layout-css（非常适合你现在的项目）" class="headerlink" title="4️⃣ layout.css（非常适合你现在的项目）"></a>4️⃣ <code>layout.css</code>（非常适合你现在的项目）</h3><p>你之前经常写这些 👇，就该放这里：</p>
+<pre><code class="css">.container &#123;
+  max-width: 1500px;
+  margin: 0 auto;
+  padding: 1rem;
+&#125;
+
+.grid-auto &#123;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 0.5rem;
+&#125;
+</code></pre>
+<p>👉 <strong>页面结构级别的样式</strong></p>
+<hr>
+<h3 id="5️⃣-components-css（无状态-UI-组件）"><a href="#5️⃣-components-css（无状态-UI-组件）" class="headerlink" title="5️⃣ components.css（无状态 UI 组件）"></a>5️⃣ <code>components.css</code>（无状态 UI 组件）</h3><p>放<strong>跨页面复用的样式</strong></p>
+<pre><code class="css">.btn &#123;
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+&#125;
+
+.card &#123;
+  background: #111827;
+  border-radius: var(--radius-md);
+  padding: 1rem;
+&#125;
+</code></pre>
+<p>✔ 不和 Vue 组件强耦合<br>✔ 类似「没有 Tailwind 的 utility + component」</p>
+<hr>
+<h3 id="6️⃣-utils-css（工具类，慎用但很爽）"><a href="#6️⃣-utils-css（工具类，慎用但很爽）" class="headerlink" title="6️⃣ utils.css（工具类，慎用但很爽）"></a>6️⃣ <code>utils.css</code>（工具类，慎用但很爽）</h3><pre><code class="css">.text-center &#123;
+  text-align: center;
+&#125;
+
+.mt-8 &#123;
+  margin-top: 2rem;
+&#125;
+
+.flex-center &#123;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+&#125;
+</code></pre>
+<p>👉 少量即可，不要写成“手搓 Tailwind 全家桶”</p>
+<hr>
+<h2 id="四、那-Vue-组件里的-lt-style-gt-写什么？"><a href="#四、那-Vue-组件里的-lt-style-gt-写什么？" class="headerlink" title="四、那 Vue 组件里的 &lt;style&gt; 写什么？"></a>四、那 Vue 组件里的 <code>&lt;style&gt;</code> 写什么？</h2><h3 id="✅-只写“这个组件独有的样式”"><a href="#✅-只写“这个组件独有的样式”" class="headerlink" title="✅ 只写“这个组件独有的样式”"></a>✅ <strong>只写“这个组件独有的样式”</strong></h3><pre><code class="vue">&lt;template&gt;
+  &lt;div class=&quot;movie-list&quot;&gt;
+    ...
+  &lt;/div&gt;
+&lt;/template&gt;
+
+&lt;style scoped&gt;
+.movie-list &#123;
+  position: relative;
+&#125;
+
+.movie-list .mask &#123;
+  position: absolute;
+&#125;
+&lt;/style&gt;
+</code></pre>
+<p>✔ 页面私有<br>✔ 强绑定结构<br>✔ <code>scoped</code> 非常推荐</p>
+<hr>
+<h3 id="❌-不推荐这样做"><a href="#❌-不推荐这样做" class="headerlink" title="❌ 不推荐这样做"></a>❌ 不推荐这样做</h3><pre><code class="vue">&lt;style scoped&gt;
+.container &#123;
+  max-width: 1500px;
+&#125;
+&lt;/style&gt;
+</code></pre>
+<p>❌ container 是全局概念<br>❌ 不该分散在组件里</p>
+<hr>
+<h2 id="五、什么时候写全局？什么时候写-scoped？（判断口诀）"><a href="#五、什么时候写全局？什么时候写-scoped？（判断口诀）" class="headerlink" title="五、什么时候写全局？什么时候写 scoped？（判断口诀）"></a>五、什么时候写全局？什么时候写 scoped？（判断口诀）</h2><blockquote>
+<p><strong>“是否会被多个组件 &#x2F; 页面用到？”</strong></p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>情况</th>
+<th>写在哪</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>页面结构、布局</td>
+<td><code>layout.css</code></td>
+</tr>
+<tr>
+<td>通用 UI 样式</td>
+<td><code>components.css</code></td>
+</tr>
+<tr>
+<td>主题 &#x2F; 颜色</td>
+<td><code>variables.css</code></td>
+</tr>
+<tr>
+<td>只属于这个组件</td>
+<td><code>&lt;style scoped&gt;</code></td>
+</tr>
+<tr>
+<td>浏览器重置</td>
+<td><code>reset.css</code></td>
+</tr>
+</tbody></table>
+<hr>
+<h2 id="六、你的阶段建议（非常重要）"><a href="#六、你的阶段建议（非常重要）" class="headerlink" title="六、你的阶段建议（非常重要）"></a>六、你的阶段建议（非常重要）</h2><p>你现在：</p>
+<ul>
+<li>✅ Vue 3</li>
+<li>✅ 手写 CSS</li>
+<li>❌ 还没用 Tailwind</li>
+</ul>
+<p>👉 <strong>这套分层是最适合你的，不会浪费，也不会过度设计</strong></p>
+<p>以后你要上 Tailwind：</p>
+<ul>
+<li><code>variables.css</code> 的思想直接迁移</li>
+<li>scoped 样式依然继续用</li>
+<li>layout &#x2F; utils 会自然减少</li>
+</ul>
+<hr>
+<p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
