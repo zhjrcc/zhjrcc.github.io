@@ -1,0 +1,36 @@
+<!DOCTYPE html><html lang="zh-CN"><head><title>mongodb compass 命令</title><meta name="referrer" content="no-referrer"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://gitee.com/zhjrcc/blog-images/raw/master/favicon.ico?v=2"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="inner"><h1>mongodb compass 命令</h1><div class="time">First published 2026-02-20</div><div class="updatedTime">Modified 2026-02-20</div><p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p><meta name="referrer" content="no-referrer">
+
+
+<ol>
+<li>查看日期相关:<br>{uploadDate:{$gte:new Date(“2026-01-01”)}}</li>
+</ol>
+<table>
+<thead>
+<tr>
+<th>操作符</th>
+<th>含义</th>
+<th>示例</th>
+</tr>
+</thead>
+<tbody><tr>
+<td><code>$gt</code></td>
+<td>大于 (&gt;)</td>
+<td><code>&#123; &quot;date&quot;: &#123; &quot;$gt&quot;: new Date(&quot;2024-01-01&quot;) &#125; &#125;</code></td>
+</tr>
+<tr>
+<td><code>$gte</code></td>
+<td>大于等于 (≥)</td>
+<td><code>&#123; &quot;date&quot;: &#123; &quot;$gte&quot;: new Date(&quot;2024-01-01&quot;) &#125; &#125;</code></td>
+</tr>
+<tr>
+<td><code>$lt</code></td>
+<td>小于 (&lt;)</td>
+<td><code>&#123; &quot;date&quot;: &#123; &quot;$lt&quot;: new Date(&quot;2024-12-31&quot;) &#125; &#125;</code></td>
+</tr>
+<tr>
+<td><code>$lte</code></td>
+<td>小于等于 (≤)</td>
+<td><code>&#123; &quot;date&quot;: &#123; &quot;$lte&quot;: new Date(&quot;2024-12-31&quot;) &#125; &#125;</code></td>
+</tr>
+</tbody></table>
+<p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p></div><script src="/js/highlight.min.js"></script><script src="/js/jquery.min.js"></script><script src="/js/main.js"></script></body></html>
