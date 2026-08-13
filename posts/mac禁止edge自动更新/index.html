@@ -1,24 +1,24 @@
 <!DOCTYPE html><html lang="zh-CN"><head><title>mac禁止edge自动更新</title><meta name="referrer" content="no-referrer"><meta http-equiv="content-type" content="text/html; charset=utf-8"><meta name="viewport" content="width=device-width, initial-scale=0.5"><link rel="stylesheet" href="/css/highlight/xcode.min.css"><link rel="icon" href="https://gitee.com/zhjrcc/blog-images/raw/master/favicon.ico?v=2"><link rel="stylesheet" href="/css/post.css"><meta name="generator" content="Hexo 6.3.0"></head><body><div class="inner"><h1>mac禁止edge自动更新</h1><div class="time">First published 2026-08-13</div><div class="updatedTime">Modified 2026-08-13</div><p class="backHome"><span></span><a href="/">Back</a><span>↶</span></p><meta name="referrer" content="no-referrer">
 
 <ol>
-<li><p>&#x2F;Library目录下新建一个Managed Preferences目录</p>
-</li>
-<li><p>在该目录中新建一个文件’com.microsoft.EdgeUpdater.plist’, 写入以下内容:</p>
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" http://www.apple.com/DTDs/PropertyList-1.0.dtd>
-<plist version="1.0">
-<dict>
- <key>updatePolicies</key>
- <dict>
-     <key>global</key>
-     <dict>
-         <key>UpdateDefault</key>
-         <integer>3</integer>
-     </dict>
- </dict>
-</dict>
-</plist>
-</li>
+<li>&#x2F;Library目录下新建一个Managed Preferences目录</li>
+<li>在该目录中新建一个文件’com.microsoft.EdgeUpdater.plist’, 写入以下内容:<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" http://www.apple.com/DTDs/PropertyList-1.0.dtd></li>
+</ol>
+<pre><code>&lt;plist version=&quot;1.0&quot;&gt;
+&lt;dict&gt;
+    &lt;key&gt;updatePolicies&lt;/key&gt;
+    &lt;dict&gt;
+        &lt;key&gt;global&lt;/key&gt;
+        &lt;dict&gt;
+            &lt;key&gt;UpdateDefault&lt;/key&gt;
+            &lt;integer&gt;3&lt;/integer&gt;
+        &lt;/dict&gt;
+    &lt;/dict&gt;
+&lt;/dict&gt;
+&lt;/plist&gt;
+</code></pre>
+<ol start="3">
 <li><p>终端中输入, sudo chown root:wheel ‘&#x2F;Library&#x2F;Managed Preferences&#x2F;com.microsoft.EdgeUpdater.plist’, 不报错就可以.报错就再根据报错信息检查plist文件.</p>
 </li>
 <li><p>输入 defaults write com.microsoft.Edge UpdatePolicyOverride -string manual-only, 这个输不输入都无所谓了, 在新版本中, 似乎不管用, 在低版本里有用.</p>
